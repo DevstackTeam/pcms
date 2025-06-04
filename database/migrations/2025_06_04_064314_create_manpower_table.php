@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('manpower', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('designation_id')->constrained('designations');
+            $table->foreignId('scenario_id')->constrained('scenarios');
+            $table->decimal('rate_per_day', 8, 2);
+            $table->integer('no_of_people');
+            $table->integer('total_day');
+            $table->decimal('total_cost', 8, 2);
             $table->timestamps();
         });
     }

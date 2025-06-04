@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('scenarios', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('project_id')->constrained('projects');
+            $table->decimal('markup', 2, 1);
+            $table->string('duration');
+            $table->string('remark');
+            $table->decimal('total_cost', 10, 2);
+            $table->decimal('final_cost', 10, 2);
             $table->timestamps();
         });
     }
