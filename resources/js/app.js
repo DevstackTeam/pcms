@@ -3,6 +3,7 @@ import { createInertiaApp } from '@inertiajs/vue3'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
 import '../css/custom-bootstrap.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
 createInertiaApp({
     resolve: name => import(`./Pages/${name}.vue`),
