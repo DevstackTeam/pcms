@@ -34,16 +34,26 @@
             />
           </div>
 
-          <div class="mb-3">
+          <div class="mb-3 position-relative">
             <label for="password" class="form-label">Password</label>
-            <input
-              v-model="form.password"
-              type="password"
-              class="form-control"
-              id="password"
-              placeholder="Enter your password"
-              required
-            />
+            <div class="input-group">
+              <input
+                :type="showPassword ? 'text' : 'password'"
+                v-model="form.password"
+                class="form-control"
+                id="password"
+                placeholder="Enter your password"
+                required
+              />
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                @click="togglePassword"
+                tabindex="-1"
+              >
+                <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+              </button>
+            </div>
           </div>
 
           <div class="d-flex justify-content-between align-items-center mb-3">
@@ -77,15 +87,21 @@
 <script setup>
   import { reactive } from 'vue'
   import { useForm, usePage } from '@inertiajs/vue3'
+  import { ref } from 'vue'
 
   const page = usePage()
   const errors = page.props.errors || {}
+  const showPassword = ref(false)
 
   const form = useForm({
     email: '',
     password: '',
     remember: false,
   })
+
+  function togglePassword() {
+    showPassword.value = !showPassword.value
+  }
 
   function submit() {
     form.post('/login')
