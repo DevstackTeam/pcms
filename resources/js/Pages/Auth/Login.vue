@@ -1,4 +1,7 @@
 <template>
+  <Head>
+    <title> - Login</title>
+  </Head>
   <div class="d-flex min-vh-100">
     <!-- Left Panel - Add width and display properties -->
     <div class="bg-primary d-none d-lg-flex" style="flex: 1;">
