@@ -18,55 +18,26 @@
         </div>
         <h4 class="mb-3 text-center fw-bold" style="color: #525252;">Login to your Account</h4>
 
-        <!-- Display form errors using form.errors -->
-        <div v-if="form.errors.email || form.errors.password" class="alert alert-danger">
-          <ul class="mb-0">
-            <li v-if="form.errors.email">{{ form.errors.email }}</li>
-            <li v-if="form.errors.password">{{ form.errors.password }}</li>
-          </ul>
-        </div>
-
         <form @submit.prevent="submit">
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input
-              v-model="form.email"
-              type="email"
-              class="form-control"
-              :class="{ 'is-invalid': form.errors.email }"
-              id="email"
-              placeholder="Enter your email"
-              autofocus
-            />
-            <div v-if="form.errors.email" class="invalid-feedback">
-              {{ form.errors.email }}
-            </div>
-          </div>
+          <FormInput
+            id="email"
+            label="Email"
+            v-model="form.email"
+            type="text"
+            placeholder="Enter your email"
+            :error="form.errors.email"
+            :autofocus="true"
+          />
 
-          <div class="mb-3 position-relative">
-            <label for="password" class="form-label">Password</label>
-            <div class="input-group">
-              <input
-                :type="showPassword ? 'text' : 'password'"
-                v-model="form.password"
-                class="form-control"
-                :class="{ 'is-invalid': form.errors.password }"
-                id="password"
-                placeholder="Enter your password"
-              />
-              <button
-                type="button"
-                class="btn btn-outline-secondary"
-                @click="togglePassword"
-                tabindex="-1"
-              >
-                <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
-              </button>
-            </div>
-            <div v-if="form.errors.password" class="invalid-feedback d-block">
-              {{ form.errors.password }}
-            </div>
-          </div>
+          <FormInput
+            id="password"
+            label="Password"
+            v-model="form.password"
+            type="password"
+            placeholder="Enter your password"
+            :error="form.errors.password"
+            :toggle="true"
+          />
 
           <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="form-check">
@@ -98,19 +69,13 @@
 
 <script setup>
   import { useForm } from '@inertiajs/vue3'
-  import { ref } from 'vue'
-
-  const showPassword = ref(false)
+  import FormInput from '../../Components/FormInput.vue'
 
   const form = useForm({
     email: '',
     password: '',
     remember: false,
   })
-
-  function togglePassword() {
-    showPassword.value = !showPassword.value
-  }
 
   function submit() {
     form.post('/login')
