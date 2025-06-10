@@ -19,7 +19,7 @@
                 </div>
                 <div>
                   <h6 class="mb-0"> Total Projects</h6>
-                  <h4 class="fw-bold">20</h4>
+                  <h4 class="fw-bold">{{ projectCount }}</h4>
                 </div>
               </div>
             </div>
@@ -34,7 +34,7 @@
                 </div>
                 <div>
                   <h6 class="mb-0">Upcoming Projects</h6>
-                  <h4 class="fw-bold">3</h4>
+                  <h4 class="fw-bold">{{ notstartedCount }}</h4>
                 </div>
               </div>
             </div>
@@ -49,7 +49,7 @@
                 </div>
                 <div>
                   <h6 class="mb-0">Active Projects</h6>
-                  <h4 class="fw-bold">7</h4>
+                  <h4 class="fw-bold">{{ activeCount }}</h4>
                 </div>
               </div>
             </div>
@@ -64,7 +64,7 @@
                 </div>
                 <div>
                   <h6 class="mb-0">Completed Projects</h6>
-                  <h4 class="fw-bold">10</h4>
+                  <h4 class="fw-bold">{{ completedCount }}</h4>
                 </div>
               </div>
             </div>
@@ -87,58 +87,52 @@
               <th scope="col">#</th>
               <th scope="col">Project Name</th>
             <th scope="col">Created Date</th>
-            <th scope="col">Final Cost</th>
+            <th scope="col">Total Scenarios</th>
             <th scope="col">Status</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <!-- Example row -->
-          <tr>
-            <td>2</td>
-            <td>Website Redesign</td>
-            <td>2025-06-09</td>
-            <td>RM 5000</td>
-            <td><span class="badge bg-success">Active</span></td>
+  <tr v-for="project in projects" :key="project.id">
+    <td>{{ project.id }}</td>
+    <td>{{ project.name }}</td>
+    <td>{{ formatDate(project.created_at) }}</td>
+    <td>{{ project.scenarios_count }}</td>
+    <td>
+      <span
+        class="badge"
+    :style="{
+      backgroundColor:
+        project.status === 'Active' ? '#48C7741A' :
+        project.status === 'Completed' ? '#209CEE1A' :
+        '#FFB8001A',
+      color: 
+      project.status === 'Active' ? '#48C774' :
+      project.status === 'Completed' ? '#209CEE' :
+        '#FFB800',
+    }"
+      >
+        {{ project.status }}
+      </span>
+    </td>
+    <td class="d-flex gap-3">
+      <a href="#" class="">
+        <i class="bi bi-eye"></i>
+      </a>
+      <a href="#" class="text-primary">
+        <i class="bi bi-pencil"></i>
+      </a>
+      <a href="#" class="text-danger">
+        <i class="bi bi-trash"></i>
+      </a>
+    </td>
+  </tr>
 
-            <td class="d-flex gap-3">
-              <a href="#" class=" btn-primary">
-                <i class="bi bi-eye"></i>
-              </a>
-              <a href="#" class=" btn-secondary">
-                <i class="bi bi-pencil"></i>
-              </a>
-              <a href="#" class= "btn-danger">
-                <i class="bi bi-trash"></i>
-              </a>
-            </td>
-          </tr>
+  <tr v-if="projects.length === 0">
+    <td colspan="6" class="text-center text-muted">No recent projects found</td>
+  </tr>
+</tbody>
 
-          <tr>
-            <td>1</td>
-            <td>Project Costing Management System</td>
-            <td>2025-06-09</td>
-            <td>RM 100 000</td>
-            <td><span class="badge bg-secondary">Not Started</span></td>
-
-
-            <td class="d-flex gap-3">
-              <a href="#" class=" btn-primary">
-                <i class="bi bi-eye"></i>
-              </a>
-              <a href="#" class=" btn-secondary">
-                <i class="bi bi-pencil"></i>
-              </a>
-              <a href="#" class= "btn-danger">
-                <i class="bi bi-trash"></i>
-              </a>
-            </td>
-          </tr>
-          <!-- Placeholder row if no data -->
-          <tr>
-            <td colspan="5" class="text-center text-muted">No recent projects found</td>
-          </tr>
-        </tbody>
       </table>
     </div>
   </div>
@@ -153,4 +147,21 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 defineOptions({
   layout: SidebarLayout
 })
+
+defineProps({
+  projects: Array,
+  projectCount: Number,
+  activeCount: Number,
+  completedCount: Number,
+  notstartedCount: Number
+});
+
+function formatDate(date) {
+  return new Date(date).toISOString().split('T')[0];}
 </script>
+
+<style scoped>
+  bg-success {
+    background-color: #FFB800;
+  }
+</style>
