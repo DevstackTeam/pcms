@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->string('client');
-            $table->enum('status', ['completed', 'active', 'not_started'])->default('not_started');
+            $table->enum('status', ['Completed', 'Active', 'Not Started'])->default('Not Started');
             $table->timestamps();
         });
     }
