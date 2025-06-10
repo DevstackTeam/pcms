@@ -3,26 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Services\DashboardService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
+    protected $dashboardService;
+    
+    public function __construct(
+        DashboardService $dashboardService
+    )
+    {
+        $this->dashboardService = $dashboardService;
+    }
+
     public function index()
     {
-        $projects = Project::withCount('scenarios')->get();
-
-        $projectCount = $projects->count(); // Count all projects
-        $activeCount = $projects->where('status', 'Active')->count();
-        $completedCount = $projects->where('status', 'Completed')->count();
-        $notstartedCount = $projects->where('status', 'Not Started')->count();
-
+        $data = $this->dashboardService->getProjectStatistics();
         return Inertia::render('Dashboard', [
-            'projects' => $projects,
-            'projectCount' => $projectCount,
-            'activeCount' => $activeCount,
-            'completedCount' => $completedCount,
-            'notstartedCount' => $notstartedCount,
+            'projects' => $data['projects'],
+            'projectCount' => $data['projectCount'],
+            'activeCount' => $data['activeCount'],
+            'completedCount' => $data['completedCount'],
+            'notstartedCount' => $data['notstartedCount'],
         ]);
     }
 }
