@@ -12,7 +12,7 @@ class DashboardController extends Controller
     {
         $projects = Project::withCount('scenarios')->get();
 
-        dd($projects); // Debugging line to check the projects
+        // dd($projects); // Debugging line to check the projects
 
         $projectCount = $projects->count(); // Count all projects
         $activeCount = $projects->where('status', 'Active')->count();
