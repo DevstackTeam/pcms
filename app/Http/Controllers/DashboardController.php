@@ -23,12 +23,14 @@ class DashboardController extends Controller
     public function index()
     {
         $data = $this->dashboardService->getProjectStatistics();
+        // dd($data['projects']);
         return Inertia::render('Dashboard', [
             'projects' => $data['projects'],
             'projectCount' => $data['projectCount'],
             'activeCount' => $data['activeCount'],
             'completedCount' => $data['completedCount'],
             'notstartedCount' => $data['notstartedCount'],
+            'latestProjects' => $data['latestProjects'],
             'user' => Auth::user(),
         ]);
     }

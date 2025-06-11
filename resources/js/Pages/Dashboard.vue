@@ -14,7 +14,7 @@
         <!-- Outer Card Box -->
         <div class="card border shadow-sm mb-4">
           <div class="card-body">
-            <h5 class="mb-4 fw-semibold">Summary</h5>
+            <h5 class="fw-semibold border-bottom pb-2 mb-4">Summary</h5>
 
             <!-- Cards Grid -->
             <div class="row g-4">
@@ -85,7 +85,7 @@
         <!-- Recent Projects Card -->
         <div class="card border shadow-sm">
           <div class="card-body">
-            <h5 class="mb-4 fw-semibold">Recent Projects</h5>
+            <h5 class="fw-semibold border-bottom pb-2 mb-4">Recent Projects</h5>
 
             <div class="table-responsive">
               <table class="table table-hover align-middle text-center">
@@ -100,7 +100,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="project in projects.data" :key="project.id">
+                  <tr v-for="project in latestProjects" :key="project.id">
                     <td>{{ project.id }}</td>
                     <td>{{ project.name }}</td>
                     <td>{{ formatDate(project.created_at) }}</td>
@@ -129,32 +129,13 @@
                     </td>
                   </tr>
 
-                  <tr v-if="projects.data.length === 0">
+                  <tr v-if="latestProjects.length === 0">
                     <td colspan="6" class="text-center text-muted">No recent projects found</td>
                   </tr>
+
                 </tbody>
               </table>
             </div>
-
-            <div v-if="projects.links" class="d-flex justify-content-center mt-4">
-  <nav>
-    <ul class="pagination">
-      <li
-        v-for="(link, index) in projects.links"
-        :key="index"
-        class="page-item"
-        :class="{ active: link.active, disabled: !link.url }"
-      >
-        <Link
-          class="page-link"
-          :href="link.url || '#'"
-          v-html="link.label"
-        />
-      </li>
-    </ul>
-  </nav>
-</div>
-
           </div>
         </div>
         <!-- End Recent Projects Card -->
@@ -166,7 +147,6 @@
 
 
 <script setup>
-import { Link } from '@inertiajs/vue3'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 
 defineOptions({
@@ -176,7 +156,8 @@ defineOptions({
 defineProps({
 
 user: Object,
-  projects: Object,
+  projects: Array,
+  latestProjects: Array,
   projectCount: Number,
   activeCount: Number,
   completedCount: Number,
