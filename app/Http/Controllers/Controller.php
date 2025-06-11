@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
+use Inertia\Inertia;
 
 class Controller extends BaseController
 {
@@ -18,7 +17,7 @@ class Controller extends BaseController
         Inertia::share([
             'auth' => function () {
                 return [
-                    'user' => Auth::user(),
+                    'user' => auth()->user(),
                 ];
             },
             'errors' => function () {
