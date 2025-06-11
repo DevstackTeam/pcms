@@ -93,7 +93,7 @@
           </tr>
         </thead>
         <tbody>
-  <tr v-for="project in projects" :key="project.id">
+  <tr v-for="project in latestProjects" :key="project.id">
     <td>{{ project.id }}</td>
     <td>{{ project.name }}</td>
     <td>{{ formatDate(project.created_at) }}</td>
@@ -150,6 +150,7 @@ defineOptions({
 
 defineProps({
   projects: Array,
+  latestProjects: Array,
   projectCount: Number,
   activeCount: Number,
   completedCount: Number,

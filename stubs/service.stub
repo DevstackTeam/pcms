@@ -5,13 +5,8 @@ namespace {{namespace}};
 class {{ class }}
 {
     /**
-     * Get Project statistics.
      *
      *@return array
      */
 
 }
-
-
-
-

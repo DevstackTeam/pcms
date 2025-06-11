@@ -27,6 +27,7 @@ class DashboardController extends Controller
             'activeCount' => $data['activeCount'],
             'completedCount' => $data['completedCount'],
             'notstartedCount' => $data['notstartedCount'],
+            'latestProjects' => $data['latestProjects'],
         ]);
     }
 }

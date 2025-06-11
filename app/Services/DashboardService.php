@@ -15,6 +15,10 @@ class DashboardService
     public function getProjectStatistics()
     {
         $projects = Project::withCount('scenarios')->get();
+        $latestProjects = Project::withCount('scenarios')
+            ->orderBy('created_at')
+            ->take(3)
+            ->get();
 
         $projectCount = $projects->count();
         $activeCount = $projects->where('status', 'Active')->count();
@@ -27,6 +31,7 @@ class DashboardService
             'activeCount' => $activeCount,
             'completedCount' => $completedCount,
             'notstartedCount' => $notstartedCount,
+            'latestProjects' => $latestProjects,
         ];
     }
 }
