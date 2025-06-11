@@ -10,7 +10,7 @@ use Inertia\Inertia;
 class DashboardController extends Controller
 {
     protected $dashboardService;
-    
+
     public function __construct(
         DashboardService $dashboardService
     )
@@ -22,11 +22,13 @@ class DashboardController extends Controller
     {
         $data = $this->dashboardService->getProjectStatistics();
         return Inertia::render('Dashboard', [
+
             'projects' => $data['projects'],
             'projectCount' => $data['projectCount'],
             'activeCount' => $data['activeCount'],
             'completedCount' => $data['completedCount'],
             'notstartedCount' => $data['notstartedCount'],
+            'user' => auth()->user(),
         ]);
     }
 }

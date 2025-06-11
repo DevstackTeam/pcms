@@ -21,6 +21,10 @@ class DashboardService
         $completedCount = $projects->where('status', 'Completed')->count();
         $notstartedCount = $projects->where('status', 'Not Started')->count();
 
+         $projects = Project::withCount('scenarios')
+                       ->latest()
+                       ->paginate(3);
+
         return [
             'projects' => $projects,
             'projectCount' => $projectCount,

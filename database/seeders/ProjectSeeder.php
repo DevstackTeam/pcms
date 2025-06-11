@@ -18,7 +18,7 @@ class ProjectSeeder extends Seeder
             'name' => 'Website Redesign',
             'description' => 'Redesign the client website for better UX.',
             'client' => 'Acme Inc.',
-            'status' => 'Completed',
+            'status' => 'Active',
         ]);
 
         Project::create([
@@ -26,7 +26,7 @@ class ProjectSeeder extends Seeder
             'name' => 'Mobile App Development',
             'description' => 'Develop a mobile app for order tracking.',
             'client' => 'Beta Corp.',
-            'status' => 'Completed',
+            'status' => 'Not Started',
         ]);
 
         Project::create([
@@ -34,7 +34,7 @@ class ProjectSeeder extends Seeder
             'name' => 'Data Migration',
             'description' => 'Migrate data from legacy system.',
             'client' => 'Gamma LLC',
-            'status' => 'Completed',
+            'status' => 'Not Started',
         ]);
     }
 }

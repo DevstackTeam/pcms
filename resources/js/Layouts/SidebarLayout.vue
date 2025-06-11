@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex">
     <!-- Sidebar -->
-    <nav class="d-flex flex-column bg-light border-end vh-100 p-3" style="width: 220px; position: fixed;">
+    <nav class="d-flex flex-column bg-light border-end vh-100 p-3" style="width: 260px; position: fixed;">
       <img src="/images/pcms-logo.png" alt="Login Image" style="max-width: 80px;" />
 
       <hr class="my-1" />
@@ -74,3 +74,13 @@ function isActive(path) {
     : 'text-dark'
 }
 </script>
+
+<style scoped>
+
+  @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
+
+  * {
+    font-family: 'Nunito Sans', sans-serif;
+  }
+
+</style>
