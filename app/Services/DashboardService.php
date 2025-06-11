@@ -16,7 +16,7 @@ class DashboardService
     {
         $projects = Project::withCount('scenarios')->get();
         $latestProjects = Project::withCount('scenarios')
-            ->orderBy('created_at')
+            ->orderBy('created_at', 'desc')
             ->take(3)
             ->get();
 
