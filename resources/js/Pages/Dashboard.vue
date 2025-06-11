@@ -1,12 +1,7 @@
 <template>
   <div class="container-fluid">
     <!-- Header Bar -->
-    <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded shadow-sm mb-4">
-      <h2 class="mb-0"><i class="bi bi-house-door me-2"></i>Dashboard</h2>
-      <div class="d-flex align-items-center gap-3">
-        <span class="fw-semibold">{{ user.name }}</span>
-      </div>
-    </div>
+    <Header iconClass="bi-house-door">Dashboard</Header>
 
     <div class="row">
       <div class="col-12">
@@ -147,14 +142,13 @@
 
 <script setup>
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
+import Header from '../Components/Header.vue'
 
 defineOptions({
   layout: SidebarLayout
 })
 
 defineProps({
-
-user: Object,
   projects: Array,
   latestProjects: Array,
   projectCount: Number,

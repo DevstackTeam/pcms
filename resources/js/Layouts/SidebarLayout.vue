@@ -22,8 +22,8 @@
         </li>
 
         <li class="nav-item mb-2">
-          <Link :href="'/roles'" class="nav-link" :class="isActive('/roles')">
-            <i class="bi bi-people me-2"></i> Roles
+          <Link :href="'/designations'" class="nav-link" :class="isActive('/designations')">
+            <i class="bi bi-people me-2"></i> Designations
           </Link>
         </li>
 
