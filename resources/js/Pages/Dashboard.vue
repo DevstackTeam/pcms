@@ -5,7 +5,6 @@
       <h2 class="mb-0"><i class="bi bi-house-door me-2"></i>Dashboard</h2>
       <div class="d-flex align-items-center gap-3">
         <span class="fw-semibold">{{ user.name }}</span>
-        <span class="badge bg-secondary text-capitalize">{{ user.role }}</span>
       </div>
     </div>
 
@@ -20,10 +19,10 @@
             <div class="row g-4">
               <!-- Card 1 -->
               <div class="col-md-6 col-xl-3">
-                <div class="card shadow-sm border-0 h-100">
+                <div class="card shadow-sm border-0 h-100 bg-primary text-white">
                   <div class="card-body d-flex align-items-center">
                     <div class="me-3">
-                      <i class="bi bi-kanban fs-2 text-primary"></i>
+                      <i class="bi bi-kanban fs-2 text-white"></i>
                     </div>
                     <div>
                       <h6 class="mb-0">Total Projects</h6>
@@ -35,10 +34,10 @@
 
               <!-- Card 2 -->
               <div class="col-md-6 col-xl-3">
-                <div class="card shadow-sm border-0 h-100">
+                <div class="card shadow-sm border-0 h-100 bg-primary text-white">
                   <div class="card-body d-flex align-items-center">
                     <div class="me-3">
-                      <i class="bi bi-clock-history fs-2 text-primary"></i>
+                      <i class="bi bi-clock-history fs-2 text-white"></i>
                     </div>
                     <div>
                       <h6 class="mb-0">Upcoming Projects</h6>
@@ -50,10 +49,10 @@
 
               <!-- Card 3 -->
               <div class="col-md-6 col-xl-3">
-                <div class="card shadow-sm border-0 h-100">
+                <div class="card shadow-sm border-0 h-100 bg-primary text-white">
                   <div class="card-body d-flex align-items-center">
                     <div class="me-3">
-                      <i class="bi bi-bar-chart-line fs-2 text-primary"></i>
+                      <i class="bi bi-bar-chart-line fs-2 text-white"></i>
                     </div>
                     <div>
                       <h6 class="mb-0">Active Projects</h6>
@@ -65,10 +64,10 @@
 
               <!-- Card 4 -->
               <div class="col-md-6 col-xl-3">
-                <div class="card shadow-sm border-0 h-100">
+                <div class="card shadow-sm border-0 h-100 bg-primary text-white">
                   <div class="card-body d-flex align-items-center">
                     <div class="me-3">
-                      <i class="bi bi-clipboard-check fs-2 text-primary"></i>
+                      <i class="bi bi-clipboard-check fs-2 text-white"></i>
                     </div>
                     <div>
                       <h6 class="mb-0">Completed Projects</h6>
@@ -88,13 +87,13 @@
             <h5 class="fw-semibold border-bottom pb-2 mb-4">Recent Projects</h5>
 
             <div class="table-responsive">
-              <table class="table table-hover align-middle text-center">
+              <table class="table table-hover table-bordered table-striped align-middle text-center" style=" table-layout: fixed; width: 100%;">
                 <thead class="table-light">
                   <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Project Name</th>
+                    <th scope="col" style="width: 5%;">No</th>
+                    <th scope="col" style="width: 30%;">Project Name</th>
                     <th scope="col">Created Date</th>
-                    <th scope="col">Total Scenarios</th>
+                    <th scope="col" style="width: 15%;">Total Scenarios</th>
                     <th scope="col">Status</th>
                     <th scope="col">Actions</th>
                   </tr>
@@ -102,13 +101,13 @@
                 <tbody>
                   <tr v-for="project in latestProjects" :key="project.id">
                     <td>{{ project.id }}</td>
-                    <td>{{ project.name }}</td>
+                    <td style="padding: 8px 10px; text-align: left;">{{ project.name }}</td>
                     <td>{{ formatDate(project.created_at) }}</td>
                     <td>{{ project.scenarios_count }}</td>
                     <td>
                       <span
                         class="badge"
-                        :style="{
+                        :style="{ width: '100px',
                           backgroundColor:
                             project.status === 'Active' ? '#48C7741A' :
                             project.status === 'Completed' ? '#209CEE1A' :
@@ -122,10 +121,10 @@
                         {{ project.status }}
                       </span>
                     </td>
-                    <td class="d-flex justify-content-center gap-3">
-                      <a href="#"><i class="bi bi-eye"></i></a>
-                      <a href="#" class="text-primary"><i class="bi bi-pencil"></i></a>
-                      <a href="#" class="text-danger"><i class="bi bi-trash"></i></a>
+                    <td class=" justify-content-center">
+                      <a href="#"><i class="bi bi-eye me-2"></i></a>
+                      <a href="#" class="text-primary me-2"><i class="bi bi-pencil"></i></a>
+                      <a href="#" class="text-danger me-2"><i class="bi bi-trash"></i></a>
                     </td>
                   </tr>
 

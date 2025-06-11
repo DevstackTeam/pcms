@@ -18,12 +18,12 @@ class ProjectSeeder extends Seeder
             'name' => 'Website Redesign',
             'description' => 'Redesign the client website for better UX.',
             'client' => 'Acme Inc.',
-            'status' => 'Active',
+            'status' => 'Completed',
         ]);
 
         Project::create([
             'user_id' => 2,
-            'name' => 'Mobile App Development',
+            'name' => 'Mobile App Development Mobile App Development Mobile App Development',
             'description' => 'Develop a mobile app for order tracking.',
             'client' => 'Beta Corp.',
             'status' => 'Not Started',
@@ -31,10 +31,10 @@ class ProjectSeeder extends Seeder
 
         Project::create([
             'user_id' => 2,
-            'name' => 'Data Migration',
+            'name' => 'Data Migration Data Migration Data Migration Data Migration Data Migration',
             'description' => 'Migrate data from legacy system.',
             'client' => 'Gamma LLC',
-            'status' => 'Not Started',
+            'status' => 'Active',
         ]);
     }
 }
