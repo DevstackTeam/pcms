@@ -11,31 +11,25 @@
 
         <li class="nav-item mb-2">
           <Link :href="'/dashboard'" class="nav-link" :class="isActive('/dashboard')">
-            <i class="bi bi-house-door"></i> Dashboard
+            <i class="bi bi-house-door me-2"></i> Dashboard
           </Link>
         </li>
 
         <li class="nav-item mb-2">
           <Link :href="'/projects'" class="nav-link" :class="isActive('/projects')">
-            <i class="bi bi-kanban"></i> Projects
+            <i class="bi bi-kanban me-2"></i> Projects
           </Link>
         </li>
 
         <li class="nav-item mb-2">
           <Link :href="'/roles'" class="nav-link" :class="isActive('/roles')">
-            <i class="bi bi-people"></i> Roles
+            <i class="bi bi-people me-2"></i> Roles
           </Link>
         </li>
 
         <li class="nav-item mb-2">
           <Link :href="'/settings'" class="nav-link" :class="isActive('/settings')">
-            <i class="bi bi-gear"></i> Settings
-          </Link>
-        </li>
-
-        <li class="nav-item mb-4">
-          <Link :href="'/tools'" class="nav-link" :class="isActive('/tools')">
-            <i class="bi bi-tools"></i> Tools
+            <i class="bi bi-gear me-2"></i> Settings
           </Link>
         </li>
 
@@ -65,11 +59,10 @@ function logout() {
 }
 
 const page = usePage()
-const currentUrl = page.url
 
 // Helper to check if current path is active
 function isActive(path) {
-  return currentUrl.startsWith(path)
+  return page.url.startsWith(path)
     ? 'bg-primary-subtle text-primary rounded fw-semibold'
     : 'text-dark'
 }
