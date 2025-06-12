@@ -19,7 +19,7 @@
               <td style="padding: 8px 10px; text-align: left;">{{ d.name }}</td>
               <td>RM {{ d.rate_per_day }}</td>
               <td class="space-x-2">
-                <a href="#" class="text-primary me-2"><i class="bi bi-pencil"></i></a>
+                <a href="#" class="text-primary me-2" @click.prevent="openEditModal(d)"><i class="bi bi-pencil"></i></a>
                 <a href="#" @click="confirmDelete(d.id)" class="text-danger"><i class="bi bi-trash"></i></a>
               </td>
             </tr>
@@ -33,28 +33,45 @@
       </div>
     </CardBox>
 
-    <Modal v-if="showModal" @close="showModal = false">
+    <Modal v-if="showModal" @close="closeModal">
       <template #title>
-        Create Designation
+        {{ isEditMode ? 'Edit Designation' : 'Create Designation' }}
       </template>
 
       <template #body>
         <form @submit.prevent="submitForm">
           <div class="mb-3">
             <label class="form-label">Designation Name</label>
-            <input v-model="form.name" type="text" class="form-control" required />
+            <input v-model="form.name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.name }" />
+            <div class="invalid-feedback" v-if="form.errors.name">{{ form.errors.name }}</div>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Rate/Day</label>
-            <input v-model="form.rate_per_day" type="number" class="form-control" required min="0" />
+            <input v-model="form.rate_per_day" type="number" class="form-control" :class="{ 'is-invalid': form.errors.rate_per_day }" min="0" />
+            <div class="invalid-feedback" v-if="form.errors.rate_per_day">{{ form.errors.rate_per_day }}</div>
           </div>
           <!-- Add more fields as needed -->
           <div class="d-flex justify-content-end gap-2">
-            <button type="button" class="btn btn-secondary" @click="showModal = false">Cancel</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-secondary" @click="closeModal">Cancel</button>
+            <button type="submit" class="btn btn-primary">
+              {{ isEditMode ? 'Save' : 'Submit' }}
+            </button>
           </div>
         </form>
+      </template>
+    </Modal>
+
+    <Modal v-if="showConfirmModal" @close="showConfirmModal = false">
+      <template #title>
+        Confirm Deletion
+      </template>
+      <template #body>
+        <p>Are you sure you want to delete this designation?</p>
+        <div class="d-flex justify-content-end gap-2">
+          <button class="btn btn-secondary" @click="showConfirmModal = false">Cancel</button>
+          <button class="btn btn-danger" @click="performDelete">Yes, Delete</button>
+        </div>
       </template>
     </Modal>
   </div>
@@ -70,6 +87,10 @@ import { useForm, router } from '@inertiajs/vue3'
 import { defineProps } from 'vue'
 
 const showModal = ref(false)
+const isEditMode = ref(false)
+const editId = ref(null)
+const showConfirmModal = ref(false)
+const confirmDeleteId = ref(null)
 
 const form = useForm({
   name: '',
@@ -80,18 +101,51 @@ const props = defineProps({
   designations: Array,
 })
 
+function openEditModal(designation) {
+  isEditMode.value = true
+  editId.value = designation.id
+  form.name = designation.name
+  form.rate_per_day = designation.rate_per_day
+  showModal.value = true
+}
+
+function performDelete() {
+  if (!confirmDeleteId.value) return
+
+  router.delete(`/designations/${confirmDeleteId.value}`, {
+    onSuccess: () => {
+      showConfirmModal.value = false
+      confirmDeleteId.value = null
+    }
+  })
+}
+
 function confirmDelete(id) {
-  if (confirm('Are you sure you want to delete this designation?')) {
-    router.delete(`/designations/${id}`)
-  }
+  confirmDeleteId.value = id
+  showConfirmModal.value = true
+}
+
+function closeModal() {
+  showModal.value = false
+  isEditMode.value = false
+  form.reset() // Reset form values to initial state
+  form.clearErrors()
 }
 
 function submitForm() {
+  if (isEditMode.value) {
+    form.patch(`/designations/${editId.value}`, {
+      onSuccess: () => {
+        closeModal()
+        isEditMode.value = false 
+      }
+    })
+  } else {
   form.post('/designations', {
     onSuccess: () => {
-      showModal.value = false
+      closeModal()
     }
-  })
+  })}
 }
 
 defineOptions({
