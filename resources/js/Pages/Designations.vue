@@ -14,17 +14,17 @@
             </tr>
           </thead>
           <tbody>
-            <tr >
-              <td>1</td>
-              <td style="padding: 8px 10px; text-align: left;">Developer</td>
-              <td>100</td>
+            <tr v-for="(d, index) in designations" :key="d.id">
+              <td>{{ index + 1 }}</td>
+              <td style="padding: 8px 10px; text-align: left;">{{ d.name }}</td>
+              <td>RM {{ d.rate_per_day }}</td>
               <td class="space-x-2">
                 <a href="#" class="text-primary me-2"><i class="bi bi-pencil"></i></a>
-                <a href="#" class="text-danger"><i class="bi bi-trash"></i></a>
+                <a href="#" @click="confirmDelete(d.id)" class="text-danger"><i class="bi bi-trash"></i></a>
               </td>
             </tr>
 
-            <tr >
+            <tr v-if="designations.length === 0" >
               <td colspan="6" class="text-center text-muted">No designations found</td>
             </tr>
 
@@ -47,7 +47,7 @@
 
           <div class="mb-3">
             <label class="form-label">Rate/Day</label>
-            <input v-model="form.rate" type="number" class="form-control" required min="0" />
+            <input v-model="form.rate_per_day" type="number" class="form-control" required min="0" />
           </div>
           <!-- Add more fields as needed -->
           <div class="d-flex justify-content-end gap-2">
@@ -66,19 +66,35 @@ import Header from '../Components/Header.vue'
 import CardBox from '../Components/CardBox.vue'
 import Modal from '../Components/Modal.vue'
 import { ref } from 'vue'
+import { useForm, router } from '@inertiajs/vue3'
+import { defineProps } from 'vue'
 
 const showModal = ref(false)
-const form = ref({
-  name: ''
+
+const form = useForm({
+  name: '',
+  rate_per_day: ''
 })
 
+const props = defineProps({
+  designations: Array,
+})
+
+function confirmDelete(id) {
+  if (confirm('Are you sure you want to delete this designation?')) {
+    router.delete(`/designations/${id}`)
+  }
+}
+
 function submitForm() {
-  console.log('Form submitted:', form.value)
-  showModal.value = false
+  form.post('/designations', {
+    onSuccess: () => {
+      showModal.value = false
+    }
+  })
 }
 
 defineOptions({
   layout: SidebarLayout
 })
-
 </script>

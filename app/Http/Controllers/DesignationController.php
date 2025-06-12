@@ -17,7 +17,7 @@ class DesignationController extends Controller
 
     public function index()
     {
-        return Inertia::render('Designations/Index', [
+        return Inertia::render('Designations', [
             'designations' => Designation::all()
         ]);
     }
@@ -36,9 +36,9 @@ class DesignationController extends Controller
 
     $designation = $this->designationService->create($request->only('name', 'rate_per_day'));
 
-    // dd($designation); 
+    // dd($designation);
 
-    return redirect()->route('designations.index')->with('success', 'Designation created.');
+    return redirect()->route('designations.index', ['designation' => $designation])->with('success', 'Designation created.');
 }
 
     public function edit(Designation $designation)
@@ -57,7 +57,7 @@ class DesignationController extends Controller
 
         $this->designationService->update($designation, $request->only('name', 'rate_per_day'));
 
-        return redirect()->route('designations.index')->with('success', 'Designation updated.');
+        return redirect()->route('designations')->with('success', 'Designation updated.');
     }
 
     public function destroy(Designation $designation)
