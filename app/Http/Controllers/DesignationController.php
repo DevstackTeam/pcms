@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DesignationRequest;
 use App\Models\Designation;
 use App\Services\DesignationService;
 use Illuminate\Http\Request;
@@ -27,12 +28,8 @@ class DesignationController extends Controller
         return Inertia::render('Designations/Create');
     }
 
-    public function store(Request $request)
+    public function store(DesignationRequest $request)
 {
-    $request->validate([
-        'name' => 'required|unique:designations,name',
-        'rate_per_day' => 'required|numeric|min:0',
-    ]);
 
     $designation = $this->designationService->create($request->only('name', 'rate_per_day'));
 
@@ -48,12 +45,9 @@ class DesignationController extends Controller
         ]);
     }
 
-    public function update(Request $request, Designation $designation)
+    public function update(DesignationRequest $request, Designation $designation)
     {
-        $request->validate([
-            'name' => 'required|unique:designations,name,' . $designation->id,
-            'rate_per_day' => 'required|numeric|min:0',
-        ]);
+
 
         $this->designationService->update($designation, $request->only('name', 'rate_per_day'));
 
