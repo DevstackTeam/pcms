@@ -2,7 +2,22 @@
   <div class="container-fluid">
     <Header iconClass="bi-people">Designation</Header>
 
+    <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ successMessage }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <CardBox title="Designation's List" :showButton="true" @button-click="showModal = true">
+
+      <div class="mb-3 d-flex justify-content-start" v-if="props.designations.length > 0">
+        <input
+          type="search"
+          class="form-control"
+          style="max-width: 300px;"
+          placeholder="Search designation name..."
+        />
+      </div>
+
       <div class="table-responsive">
         <table class="table table-hover table-bordered table-striped align-middle text-center" style=" table-layout: fixed; width: 100%;">
           <thead class="table-light">
@@ -24,7 +39,7 @@
               </td>
             </tr>
 
-            <tr v-if="designations.length === 0" >
+            <tr v-if="designations.length === 0">
               <td colspan="6" class="text-center text-muted">No designations found</td>
             </tr>
 
@@ -85,6 +100,8 @@ import Modal from '../Components/Modal.vue'
 import { useForm, router } from '@inertiajs/vue3'
 import { defineProps } from 'vue'
 import { ref, watch } from 'vue'
+import { ref, defineProps, watchEffect } from 'vue'
+import { useForm, router } from '@inertiajs/vue3'
 
 const search = ref('')
 const showModal = ref(false)
@@ -92,6 +109,7 @@ const isEditMode = ref(false)
 const editId = ref(null)
 const showConfirmModal = ref(false)
 const confirmDeleteId = ref(null)
+const successMessage = ref(null)
 
 const form = useForm({
   name: '',
@@ -100,6 +118,16 @@ const form = useForm({
 
 const props = defineProps({
   designations: Array,
+  flash: Object
+})
+
+watchEffect(() => {
+  if (props.flash?.success) {
+    successMessage.value = props.flash.success
+    setTimeout(() => {
+      successMessage.value = null
+    }, 4000)
+  }
 })
 
 function openEditModal(designation) {
@@ -129,7 +157,7 @@ function confirmDelete(id) {
 function closeModal() {
   showModal.value = false
   isEditMode.value = false
-  form.reset() // Reset form values to initial state
+  form.reset()
   form.clearErrors()
 }
 
