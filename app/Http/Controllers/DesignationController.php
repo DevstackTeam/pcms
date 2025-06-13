@@ -18,10 +18,23 @@ class DesignationController extends Controller
 
     public function index()
     {
+        // $designations = Designation::paginate(10)->withQueryString();
+
         return Inertia::render('Designations', [
             'designations' => Designation::all()
         ]);
+
     }
+
+//     public function index(DesignationRequest $request)
+// {
+//    $designations = $this->designationService->getFilteredDesignations($request->only('search'));
+
+//    return Inertia::render('Designations/Index', [
+//        'designations' => $designations,
+//        'filters' => $request->only('search'),
+//    ]);
+// }
 
     public function create()
     {
@@ -29,14 +42,13 @@ class DesignationController extends Controller
     }
 
     public function store(DesignationRequest $request)
-{
-
+    {
     $designation = $this->designationService->create($request->only('name', 'rate_per_day'));
 
     // dd($designation);
 
     return redirect()->route('designations.index', ['designation' => $designation])->with('success', 'Designation created.');
-}
+   }
 
     public function edit(Designation $designation)
     {
@@ -47,11 +59,9 @@ class DesignationController extends Controller
 
     public function update(DesignationRequest $request, Designation $designation)
     {
-
-
         $this->designationService->update($designation, $request->only('name', 'rate_per_day'));
 
-        return redirect()->route('designations')->with('success', 'Designation updated.');
+        return redirect()->route('designations.index')->with('success', 'Designation updated.');
     }
 
     public function destroy(Designation $designation)

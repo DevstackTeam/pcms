@@ -82,10 +82,11 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import Header from '../Components/Header.vue'
 import CardBox from '../Components/CardBox.vue'
 import Modal from '../Components/Modal.vue'
-import { ref } from 'vue'
 import { useForm, router } from '@inertiajs/vue3'
 import { defineProps } from 'vue'
+import { ref, watch } from 'vue'
 
+const search = ref('')
 const showModal = ref(false)
 const isEditMode = ref(false)
 const editId = ref(null)
@@ -137,7 +138,7 @@ function submitForm() {
     form.patch(`/designations/${editId.value}`, {
       onSuccess: () => {
         closeModal()
-        isEditMode.value = false 
+        isEditMode.value = false
       }
     })
   } else {
@@ -150,5 +151,12 @@ function submitForm() {
 
 defineOptions({
   layout: SidebarLayout
+})
+
+watch(search, (newValue) => {
+  router.get('/designations', { search: newValue }, {
+    preserveState: true,
+    replace: true
+  })
 })
 </script>

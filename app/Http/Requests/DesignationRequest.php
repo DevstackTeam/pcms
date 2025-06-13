@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DesignationRequest extends FormRequest
@@ -21,10 +22,14 @@ class DesignationRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+         return [
+            'name' => [
+                'required',
+                Rule::unique('designations', 'name')->ignore($this->designation)
+            ],
+            'rate_per_day' => ['required', 'numeric', 'min:0'],
 
-            'name' => 'required|unique:designations,name,', /*$designation->id,*/
-            'rate_per_day' => 'required|numeric|min:0',
+            'search' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

@@ -4,9 +4,21 @@ namespace App\Services;
 
 use App\Models\Designation;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 
 class DesignationService
 {
+public function getFilteredDesignations(array $filters): LengthAwarePaginator
+{
+    return Designation::query()
+        ->when($filters['search'] ?? null, function ($query, $search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        })
+        ->paginate(10)
+        ->withQueryString();
+}
     public function create(array $data): Designation
     {
         return DB::transaction(function () use ($data) {
