@@ -16,25 +16,18 @@ class DesignationController extends Controller
         $this->designationService = $designationService;
     }
 
-    public function index()
+public function index(Request $request)
     {
-        // $designations = Designation::paginate(10)->withQueryString();
+        $search = $request->input('search');
+
+        $designations = $this->designationService->getFilteredDesignations($search);
 
         return Inertia::render('Designations', [
-            'designations' => Designation::all()
+            'designations' => $designations, // This is paginated (with .data and .links)
+            'filters' => ['search' => $search],
+            'flash' => ['success' => session('success')],
         ]);
-
     }
-
-//     public function index(DesignationRequest $request)
-// {
-//    $designations = $this->designationService->getFilteredDesignations($request->only('search'));
-
-//    return Inertia::render('Designations/Index', [
-//        'designations' => $designations,
-//        'filters' => $request->only('search'),
-//    ]);
-// }
 
     public function create()
     {

@@ -9,13 +9,15 @@
 
     <CardBox title="Designation's List" :showButton="true" @button-click="showModal = true">
 
-      <div class="mb-3 d-flex justify-content-start" v-if="props.designations.length > 0">
-        <input
-          type="search"
-          class="form-control"
-          style="max-width: 300px;"
-          placeholder="Search designation name..."
-        />
+      <div class="mb-3 d-flex justify-content-start" v-if="props.designations.data.length > 0">
+         <input
+       v-model="search"
+       type="search"
+       class="form-control"
+       style="max-width: 300px;"
+       placeholder="Search designation name..."
+/>
+
       </div>
 
       <div class="table-responsive">
@@ -29,7 +31,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(d, index) in designations" :key="d.id">
+            <tr v-for="(d, index) in props.designations.data" :key="d.id">
               <td>{{ index + 1 }}</td>
               <td style="padding: 8px 10px; text-align: left;">{{ d.name }}</td>
               <td>RM {{ d.rate_per_day }}</td>
@@ -47,6 +49,19 @@
         </table>
       </div>
     </CardBox>
+
+    <nav>
+  <ul class="pagination">
+    <li
+      v-for="link in props.designations.links"
+      :key="link.label"
+      :class="{ active: link.active, disabled: !link.url }"
+      class="page-item"
+    >
+      <Link class="page-link" :href="link.url" v-html="link.label" preserve-scroll />
+    </li>
+  </ul>
+</nav>
 
     <Modal v-if="showModal" @close="closeModal">
       <template #title>
@@ -98,10 +113,10 @@ import Header from '../Components/Header.vue'
 import CardBox from '../Components/CardBox.vue'
 import Modal from '../Components/Modal.vue'
 import { useForm, router } from '@inertiajs/vue3'
-import { defineProps } from 'vue'
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 import { ref, defineProps, watchEffect } from 'vue'
-import { useForm, router } from '@inertiajs/vue3'
+import { Link } from '@inertiajs/vue3'
+
 
 const search = ref('')
 const showModal = ref(false)
@@ -117,7 +132,7 @@ const form = useForm({
 })
 
 const props = defineProps({
-  designations: Array,
+  designations: [Object, Array],
   flash: Object
 })
 

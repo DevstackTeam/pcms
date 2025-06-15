@@ -29,7 +29,6 @@ class DesignationRequest extends FormRequest
             ],
             'rate_per_day' => ['required', 'numeric', 'min:0'],
 
-            'search' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

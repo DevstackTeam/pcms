@@ -8,16 +8,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DesignationController;
 
-Route::get('/', function (Request $request) {
-    return Inertia::render('Home', [
-        'users' => User::when($request->search, function ($query) use ($request) {
-            return $query
-                ->where('name', 'like', '%' . $request->search . '%')
-                ->orWhere('email', 'like', '%' . $request->search . '%');
-        })->paginate(10)->withQueryString(),
-
-        'searchTerm' => $request->search,
-    ]);
+Route::get('/', function () {
+    return Inertia::render('Home');
 });
 
 Route::middleware('guest')->group(function () {

@@ -10,15 +10,17 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class DesignationService
 {
-public function getFilteredDesignations(array $filters): LengthAwarePaginator
+public function getFilteredDesignations(?string $search)
 {
     return Designation::query()
-        ->when($filters['search'] ?? null, function ($query, $search) {
-            $query->where('name', 'like', '%' . $search . '%');
-        })
-        ->paginate(10)
-        ->withQueryString();
+        ->when($search, fn ($query) =>
+            $query->where('name', 'like', '%' . $search . '%')
+        )
+        ->orderBy('name')
+        ->paginate(5)
+        ->appends(request()->query());
 }
+
     public function create(array $data): Designation
     {
         return DB::transaction(function () use ($data) {
