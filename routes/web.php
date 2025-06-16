@@ -1,11 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Models\User;
 use Inertia\Inertia;
-use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DesignationController;
 
-// Public routes
 Route::get('/', function () {
     return Inertia::render('Home');
 });
@@ -19,8 +21,10 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::resource('designations', DesignationController::class);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
     // Protected API routes
+
 });

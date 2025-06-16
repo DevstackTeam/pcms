@@ -11,6 +11,7 @@ class Designation extends Model
     protected $fillable = [
         'name',
         'rate_per_day',
+        'user_id',
     ];
 
     public function user(): BelongsTo
