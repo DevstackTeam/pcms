@@ -9,7 +9,7 @@
 
     <CardBox title="Designation's List" :showButton="true" @button-click="showModal = true">
 
-      <div class="mb-3 d-flex justify-content-start" v-if="props.designations.data.length > 0">
+      <div class="mb-3 d-flex justify-content-start">
          <input
        v-model="search"
        type="search"
@@ -32,7 +32,7 @@
           </thead>
           <tbody>
             <tr v-for="(d, index) in props.designations.data" :key="d.id">
-              <td>{{ index + 1 }}</td>
+              <td>{{ (props.designations.total - ((props.designations.current_page - 1) * props.designations.per_page) - index) }}</td>
               <td style="padding: 8px 10px; text-align: left;">{{ d.name }}</td>
               <td>RM {{ d.rate_per_day }}</td>
               <td class="space-x-2">
@@ -58,7 +58,13 @@
       :class="{ active: link.active, disabled: !link.url }"
       class="page-item"
     >
-      <Link class="page-link" :href="link.url" v-html="link.label" preserve-scroll />
+      <Link
+        class="page-link"
+        :href="link.url"
+        v-html="link.label"
+        preserve-scroll
+        preserve-state
+      />
     </li>
   </ul>
 </nav>
@@ -78,7 +84,7 @@
 
           <div class="mb-3">
             <label class="form-label">Rate/Day</label>
-            <input v-model="form.rate_per_day" type="number" class="form-control" :class="{ 'is-invalid': form.errors.rate_per_day }" min="0" />
+            <input v-model="form.rate_per_day" type="number" class="form-control" :class="{ 'is-invalid': form.errors.rate_per_day }" />
             <div class="invalid-feedback" v-if="form.errors.rate_per_day">{{ form.errors.rate_per_day }}</div>
           </div>
           <!-- Add more fields as needed -->

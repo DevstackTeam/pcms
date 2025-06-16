@@ -16,7 +16,7 @@ public function getFilteredDesignations(?string $search)
         ->when($search, fn ($query) =>
             $query->where('name', 'like', '%' . $search . '%')
         )
-        ->orderBy('name')
+        ->orderBy('created_at', 'desc')
         ->paginate(5)
         ->appends(request()->query());
 }
