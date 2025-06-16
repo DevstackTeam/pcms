@@ -10,14 +10,13 @@
     <CardBox title="Designation's List" :showButton="true" @button-click="showModal = true">
 
       <div class="mb-3 d-flex justify-content-start">
-         <input
-       v-model="search"
-       type="search"
-       class="form-control"
-       style="max-width: 300px;"
-       placeholder="Search designation name..."
-/>
-
+        <input
+          v-model="search"
+          type="search"
+          class="form-control"
+          style="max-width: 300px;"
+          placeholder="Search designation name..."
+        />
       </div>
 
       <div class="table-responsive">
@@ -50,24 +49,7 @@
       </div>
     </CardBox>
 
-    <nav>
-  <ul class="pagination">
-    <li
-      v-for="link in props.designations.links"
-      :key="link.label"
-      :class="{ active: link.active, disabled: !link.url }"
-      class="page-item"
-    >
-      <Link
-        class="page-link"
-        :href="link.url"
-        v-html="link.label"
-        preserve-scroll
-        preserve-state
-      />
-    </li>
-  </ul>
-</nav>
+    <PaginationLink :links="props.designations.links" />
 
     <Modal v-if="showModal" @close="closeModal">
       <template #title>
@@ -118,11 +100,9 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import Header from '../Components/Header.vue'
 import CardBox from '../Components/CardBox.vue'
 import Modal from '../Components/Modal.vue'
+import PaginationLink from '../Components/PaginationLink.vue'
 import { useForm, router } from '@inertiajs/vue3'
-import { watch } from 'vue'
-import { ref, defineProps, watchEffect } from 'vue'
-import { Link } from '@inertiajs/vue3'
-
+import { ref, defineProps, watchEffect, watch } from 'vue'
 
 const search = ref('')
 const showModal = ref(false)
@@ -140,15 +120,6 @@ const form = useForm({
 const props = defineProps({
   designations: [Object, Array],
   flash: Object
-})
-
-watchEffect(() => {
-  if (props.flash?.success) {
-    successMessage.value = props.flash.success
-    setTimeout(() => {
-      successMessage.value = null
-    }, 4000)
-  }
 })
 
 function openEditModal(designation) {
@@ -207,5 +178,14 @@ watch(search, (newValue) => {
     preserveState: true,
     replace: true
   })
+})
+
+watchEffect(() => {
+  if (props.flash?.success) {
+    successMessage.value = props.flash.success
+    setTimeout(() => {
+      successMessage.value = null
+    }, 4000)
+  }
 })
 </script>
