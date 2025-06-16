@@ -9,15 +9,17 @@
 
     <CardBox title="Designation's List" :showButton="true" @button-click="showModal = true">
 
-      <div class="mb-3 d-flex justify-content-start" v-if="props.designations.length > 0">
-        <input
-          type="search"
-          class="form-control"
-          style="max-width: 300px;"
-          placeholder="Search designation name..."
-        />
+      <div class="mb-3 d-flex justify-content-start">
+         <input
+       v-model="search"
+       type="search"
+       class="form-control"
+       style="max-width: 300px;"
+       placeholder="Search designation name..."
+/>
+
       </div>
-      
+
       <div class="table-responsive">
         <table class="table table-hover table-bordered table-striped align-middle text-center" style=" table-layout: fixed; width: 100%;">
           <thead class="table-light">
@@ -29,8 +31,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(d, index) in designations" :key="d.id">
-              <td>{{ index + 1 }}</td>
+            <tr v-for="(d, index) in props.designations.data" :key="d.id">
+              <td>{{ (props.designations.total - ((props.designations.current_page - 1) * props.designations.per_page) - index) }}</td>
               <td style="padding: 8px 10px; text-align: left;">{{ d.name }}</td>
               <td>RM {{ d.rate_per_day }}</td>
               <td class="space-x-2">
@@ -48,6 +50,25 @@
       </div>
     </CardBox>
 
+    <nav>
+  <ul class="pagination">
+    <li
+      v-for="link in props.designations.links"
+      :key="link.label"
+      :class="{ active: link.active, disabled: !link.url }"
+      class="page-item"
+    >
+      <Link
+        class="page-link"
+        :href="link.url"
+        v-html="link.label"
+        preserve-scroll
+        preserve-state
+      />
+    </li>
+  </ul>
+</nav>
+
     <Modal v-if="showModal" @close="closeModal">
       <template #title>
         {{ isEditMode ? 'Edit Designation' : 'Create Designation' }}
@@ -63,7 +84,7 @@
 
           <div class="mb-3">
             <label class="form-label">Rate/Day</label>
-            <input v-model="form.rate_per_day" type="number" class="form-control" :class="{ 'is-invalid': form.errors.rate_per_day }" min="0" />
+            <input v-model="form.rate_per_day" type="number" class="form-control" :class="{ 'is-invalid': form.errors.rate_per_day }" />
             <div class="invalid-feedback" v-if="form.errors.rate_per_day">{{ form.errors.rate_per_day }}</div>
           </div>
           <!-- Add more fields as needed -->
@@ -97,9 +118,13 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import Header from '../Components/Header.vue'
 import CardBox from '../Components/CardBox.vue'
 import Modal from '../Components/Modal.vue'
-import { ref, defineProps, watchEffect } from 'vue'
 import { useForm, router } from '@inertiajs/vue3'
+import { watch } from 'vue'
+import { ref, defineProps, watchEffect } from 'vue'
+import { Link } from '@inertiajs/vue3'
 
+
+const search = ref('')
 const showModal = ref(false)
 const isEditMode = ref(false)
 const editId = ref(null)
@@ -113,7 +138,7 @@ const form = useForm({
 })
 
 const props = defineProps({
-  designations: Array,
+  designations: [Object, Array],
   flash: Object
 })
 
@@ -162,7 +187,7 @@ function submitForm() {
     form.patch(`/designations/${editId.value}`, {
       onSuccess: () => {
         closeModal()
-        isEditMode.value = false 
+        isEditMode.value = false
       }
     })
   } else {
@@ -175,5 +200,12 @@ function submitForm() {
 
 defineOptions({
   layout: SidebarLayout
+})
+
+watch(search, (newValue) => {
+  router.get('/designations', { search: newValue }, {
+    preserveState: true,
+    replace: true
+  })
 })
 </script>

@@ -1,12 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Models\User;
 use Inertia\Inertia;
-use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DesignationController;
 
-// Public routes
 Route::get('/', function () {
     return Inertia::render('Home');
 });
