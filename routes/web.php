@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::resource('designations', DesignationController::class);
-    Route::resource('projects', ProjectController::class)->except(['show']);
+    Route::resource('projects', ProjectController::class);
 });
 
 Route::middleware('auth:sanctum')->group(function () {

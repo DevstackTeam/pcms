@@ -4,8 +4,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
 use Inertia\Inertia;
+use App\Models\Project;
+use App\Enums\ProjectStatusEnum;
 
 class ProjectController extends Controller
 {
@@ -18,7 +19,9 @@ class ProjectController extends Controller
 
     public function create()
     {
-        return Inertia::render('Project/Create');
+        return Inertia::render('Project/Create', [
+            'statusOptions' => ProjectStatusEnum::toLabels()
+        ]);
     }
 
     public function edit(Project $project)
@@ -27,4 +30,10 @@ class ProjectController extends Controller
             'project' => $project
         ]);
     }
+    public function show(Project $project)
+{
+    return Inertia::render('Project/View', [
+        'project' => $project,
+    ]);
+}
 }

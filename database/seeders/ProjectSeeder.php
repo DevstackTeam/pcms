@@ -13,6 +13,8 @@ class ProjectSeeder extends Seeder
      */
     public function run(): void
     {
+        Project::truncate();
+
         Project::create([
             'user_id' => 2,
             'name' => 'Website Redesign',

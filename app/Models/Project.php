@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\ProjectStatusEnum;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Project extends Model
 {
@@ -24,4 +25,8 @@ class Project extends Model
     {
         return $this->hasMany(Scenario::class);
     }
+
+    protected $enumCasts = [
+        'status' => ProjectStatusEnum::class,
+    ];
 }
