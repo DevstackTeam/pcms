@@ -19,13 +19,12 @@
       </div>
 
      <div class="table-responsive">
-  <table class="table table-hover align-middle">
+  <table class="table table-hover table-bordered table-striped align-middle text-center" style=" table-layout: fixed; width: 100%;">
     <thead class="table-light">
       <tr>
         <th scope="col" style="width: 5%;">No</th>
         <th scope="col" style="width: 30%;">Project Name</th>
-        <th scope="col">Created Date</th>
-        <th scope="col" style="width: 15%;">Total Scenarios</th>
+        <th scope="col">Total Scenarios</th>
         <th scope="col">Status</th>
         <th scope="col">Actions</th>
       </tr>
@@ -34,7 +33,6 @@
       <tr v-for="(project, index) in projects.data" :key="project.id">
         <td>{{ projects.from + index }}</td>
         <td style="padding: 8px 10px; text-align: left;">{{ project.name }}</td>
-        <td>{{ formatDate(project.created_at) }}</td>
         <td>{{ project.scenarios_count }}</td>
         <td>
           <span
@@ -55,6 +53,7 @@
           </span>
         </td>
         <td class="justify-content-center">
+          <Link :href="`/projects/${project.id}`" class="text-primary me-2"><i class="bi bi-eye me-2"></i></Link>
           <Link :href="`/projects/${project.id}/edit`" class="text-primary me-2">
             <i class="bi bi-pencil"></i>
           </Link>
