@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\ProjectStatusEnum;
+use App\Enums\ProjectStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,10 +10,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Project extends Model
 {
     protected $fillable = [
+        'user_id',
         'name',
         'description',
         'client',
         'status',
+    ];
+
+    protected $casts = [
+        'status' => ProjectStatus::class,
     ];
 
     public function user(): BelongsTo
@@ -25,8 +30,4 @@ class Project extends Model
     {
         return $this->hasMany(Scenario::class);
     }
-
-    protected $enumCasts = [
-        'status' => ProjectStatusEnum::class,
-    ];
 }
