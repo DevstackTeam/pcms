@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class);
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('client');
             $table->enum('status', ['Completed', 'Active', 'Not Started'])->default('Not Started');
             $table->timestamps();
