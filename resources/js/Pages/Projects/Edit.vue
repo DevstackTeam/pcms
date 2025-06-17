@@ -1,49 +1,41 @@
 <template>
   <div class="container-fluid">
-    <Header iconClass="bi-kanban">Project</Header>
+    <Header
+      iconClass="bi-pencil-square">Project
+        <p class="text-muted ms-5 mt-2" style="font-size: 0.9rem;">{{ project.name }}</p>
+    </Header>
 
-    <CardBox title="Create New Project">
+    <CardBox title="Edit Project">
       <form @submit.prevent="submit">
         <div class="row">
-          <!-- Left side: Project Name & Description -->
           <div class="col-md-6">
             <div class="mb-3">
-              <label for="name" class="form-label">Project Name</label>
+              <label class="form-label">Project Name</label>
               <input
-                v-model="form.name"
                 type="text"
-                id="name"
                 class="form-control"
-                :class="{ 'is-invalid': form.errors.name }"
+                v-model="form.name"
               />
-              <div class="invalid-feedback">{{ form.errors.name }}</div>
             </div>
 
             <div class="mb-3">
-              <label for="description" class="form-label">Description</label>
+              <label class="form-label">Description</label>
               <textarea
-                v-model="form.description"
-                id="description"
                 class="form-control"
                 rows="4"
-                :class="{ 'is-invalid': form.errors.description }"
+                v-model="form.description"
               ></textarea>
-              <div class="invalid-feedback">{{ form.errors.description }}</div>
             </div>
           </div>
 
-          <!-- Right side: Client & Status -->
           <div class="col-md-6">
             <div class="mb-3">
-              <label for="client" class="form-label">Client</label>
+              <label class="form-label">Client</label>
               <input
-                v-model="form.client"
                 type="text"
-                id="client"
                 class="form-control"
-                :class="{ 'is-invalid': form.errors.client }"
+                v-model="form.client"
               />
-              <div class="invalid-feedback">{{ form.errors.client }}</div>
             </div>
 
             <div class="mb-3">
@@ -61,7 +53,7 @@
                   style="position: absolute; z-index: 1000; width: 100%"
                 >
                   <li
-                    v-for="option in props.statusOptions"
+                    v-for="option in props.status"
                     :key="option"
                     @click="selectOption(option)"
                     class="list-group-item list-group-item-action"
@@ -80,36 +72,32 @@
           </div>
         </div>
 
-        <div class="d-flex justify-content-end">
-          <button type="submit" class="btn btn-primary">Create</button>
-        </div>
+        <div class="d-flex justify-content-end gap-2">
+       <Link :href="`/projects/${project.id}`" class="btn btn-outline-secondary">Cancel
+       </Link><button type="submit" class="btn btn-primary">Save</button>
+      </div>
+
       </form>
     </CardBox>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useForm, router } from '@inertiajs/vue3'
+import { useForm } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
+import { Link } from '@inertiajs/vue3'
+import { ref } from 'vue'
 
 const hover = ref(null)
-
-const props = defineProps({
-  statusOptions: Object
-})
+const isOpen = ref(false)
 
 defineOptions({ layout: SidebarLayout })
 
-const isOpen = ref(false)
-
-const form = useForm({
-  name: '',
-  description: '',
-  client: '',
-  status: ''
+const props = defineProps({
+  project: Object,
+  status: Array,
 })
 
 const selectOption = (option) => {
@@ -117,21 +105,14 @@ const selectOption = (option) => {
   isOpen.value = false
 }
 
+const form = useForm({
+  name: props.project.name,
+  description: props.project.description,
+  client: props.project.client,
+  status: props.project.status,
+})
+
 const submit = () => {
-  form.post('/projects', {
-    onSuccess: (page) => {
-      // Redirect to view page with the newly created project ID
-      const newProjectId = page.props.project?.id
-      if (newProjectId) {
-        router.visit(`/projects/${newProjectId}`)
-      }
-    },
-  })
+  form.patch(`/projects/${props.project.id}`)
 }
 </script>
-
-<style scoped>
-.dropdown {
-  position: relative;
-}
-</style>

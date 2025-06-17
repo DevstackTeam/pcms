@@ -1,56 +1,106 @@
 <?php
 
-// app/Http/Controllers/ProjectController.php
-
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
+use App\Enums\ProjectStatus;
+use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
-use App\Enums\ProjectStatusEnum;
+use App\Services\ProjectService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ProjectController extends Controller
 {
+    protected $projectService;
 
-public function index(Request $request)
-{
-
-    $query = Project::query();
-
-    if ($request->filled('status')) {
-        $query->where('status', $request->status);
+    public function __construct(ProjectService $projectService)
+    {
+        $this->projectService = $projectService;
     }
 
-    if ($request->filled('search')) {
-        $query->where('name', 'like', '%' . $request->search . '%');
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $search = $request->input('search');
+        $status = $request->input('status');
+
+        $projects = $this->projectService->search($search, $status);
+
+        return Inertia::render('Projects/Index', [
+            'projects' => $projects,
+            'filters' => [
+                'status' => $status,
+            ],
+            'status' => ProjectStatus::cases(),
+        ]);
     }
 
-    return Inertia::render('Project/Index', [
-        'projects' => $query->paginate(10)->withQueryString(),
-        'statusOptions' => ProjectStatusEnum::toValues(),
-        'statusLabels' => ProjectStatusEnum::toLabels(),
-        'filters' => $request->only(['search', 'status']), // so Vue can track state
-    ]);
-}
-
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        return Inertia::render('Project/Create', [
-            'statusOptions' => ProjectStatusEnum::toLabels()
+        return Inertia::render('Projects/Create', [
+            'status' => ProjectStatus::cases(),
         ]);
     }
 
-    public function edit(Project $project)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(ProjectRequest $request)
     {
-        return Inertia::render('Project/Edit', [
-            'project' => $project,
-            'statusOptions' => ProjectStatusEnum::toLabels(),
+        $project = $this->projectService->store($request->validated());
+
+        return redirect()
+            ->route('projects.show', $project->id)
+            ->with('success', 'Project created successfully.');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Project $project)
+    {
+        return Inertia::render('Projects/Show', [
+            'project' => $project
         ]);
     }
-    public function show(Project $project)
-{
-    return Inertia::render('Project/View', [
-        'project' => $project,
-    ]);
-}
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Project $project)
+    {
+        return Inertia::render('Projects/Edit', [
+            'project' => $project,
+            'status' => ProjectStatus::cases(),
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(ProjectRequest $request, Project $project)
+    {
+        $project = $this->projectService->update($project, $request->validated());
+
+        return redirect()
+            ->route('projects.show', $project->id)
+            ->with('success', 'Project updated successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Project $project)
+    {
+        $project->delete();
+
+        return redirect()
+            ->route('projects.index')
+            ->with('success', 'Project deleted successfully.');
+    }
 }

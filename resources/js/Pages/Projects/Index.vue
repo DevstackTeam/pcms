@@ -21,34 +21,34 @@
 
           <div class="dropdown" style="max-width: 200px; position: relative;">
             <button class="form-select text-start" @click.prevent="isOpen = !isOpen">
-  {{ statusLabels[status] || 'All Status' }}
-</button>
+              {{ props.filters.status || 'All Status' }}
+            </button>
 
-<ul
-  v-if="isOpen"
-  class="list-group border shadow-sm mt-1"
-  style="position: absolute; z-index: 1000; width: 100%"
->
-  <li
-    @click="selectStatus('')"
-    class="list-group-item list-group-item-action"
-    style="cursor: pointer"
-  >
-    All Status
-  </li>
-  <li
-    v-for="(value, key) in statusOptions"
-    :key="key"
-    @click="selectStatus(value)"
-    class="list-group-item list-group-item-action"
-    style="cursor: pointer"
-    @mouseover="hover = key"
-    @mouseleave="hover = null"
-    :class="{ 'bg-primary text-white': hover === key }"
-  >
-    {{ value }}
-  </li>
-</ul>
+            <ul
+              v-if="isOpen"
+              class="list-group border shadow-sm mt-1"
+              style="position: absolute; z-index: 1000; width: 100%"
+            >
+              <li
+                @click="selectStatus('')"
+                class="list-group-item list-group-item-action"
+                style="cursor: pointer"
+              >
+                All Status
+              </li>
+              <li
+                v-for="(value, key) in props.status"
+                :key="key"
+                @click="selectStatus(value)"
+                class="list-group-item list-group-item-action"
+                style="cursor: pointer"
+                @mouseover="hover = key"
+                @mouseleave="hover = null"
+                :class="{ 'bg-primary text-white': hover === key }"
+              >
+                {{ value }}
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -99,24 +99,27 @@
         </table>
       </div>
     </CardBox>
+    <PaginationLink :links="projects.links" class="mt-3" />
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, watchEffect } from 'vue'
 import { router, Link } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
+import PaginationLink from '@/Components/PaginationLink.vue'
 
 defineOptions({ layout: SidebarLayout })
 
+const successMessage = ref(null)
+
 const props = defineProps({
   projects: Object,
-  successMessage: String,
+  flash: Object,
   filters: Object,
-  statusOptions: Object,
-  statusLabels: Object
+  status: Array,
 })
 
 const goToCreate = () => {
@@ -148,5 +151,14 @@ watch([search, status], () => {
     preserveState: true,
     preserveScroll: true,
   })
+})
+
+watchEffect(() => {
+  if (props.flash?.success) {
+    successMessage.value = props.flash.success
+    setTimeout(() => {
+      successMessage.value = null
+    }, 4000)
+  }
 })
 </script>

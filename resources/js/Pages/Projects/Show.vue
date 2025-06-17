@@ -19,6 +19,11 @@
       </Link>
     </div>
 
+    <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ successMessage }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <CardBox title="Project's Details">
       <div class="row">
         <div class="col-md-6">
@@ -80,11 +85,15 @@ import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import { Link } from '@inertiajs/vue3'
 import { usePage } from '@inertiajs/vue3'
+import { ref, watchEffect } from 'vue'
 
 defineOptions({ layout: SidebarLayout })
 
+const successMessage = ref(null)
+
 const props = defineProps({
-  project: Object
+  project: Object,
+  flash: Object
 })
 
 const page = usePage()
@@ -102,4 +111,13 @@ const isActive = (tab) => {
 
   return false
 }
+
+watchEffect(() => {
+  if (props.flash?.success) {
+    successMessage.value = props.flash.success
+    setTimeout(() => {
+      successMessage.value = null
+    }, 4000)
+  }
+})
 </script>
