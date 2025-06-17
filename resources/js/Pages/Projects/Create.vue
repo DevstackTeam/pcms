@@ -99,7 +99,7 @@ const hover = ref(null)
 
 const props = defineProps({
   status: Array
-  statusOptions: Object
+  // statusOptions: Object
 })
 
 defineOptions({ layout: SidebarLayout })
