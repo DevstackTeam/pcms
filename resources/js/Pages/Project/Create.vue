@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid">
-    <Header iconClass="bi-kanban">Create Project</Header>
+    <Header iconClass="bi-kanban">Project</Header>
 
-    <CardBox title="New Project">
+    <CardBox title="Create New Project">
       <form @submit.prevent="submit">
         <div class="row">
           <!-- Left side: Project Name & Description -->
@@ -98,7 +98,7 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 const hover = ref(null)
 
 const props = defineProps({
-  statusOptions: Array
+  statusOptions: Object
 })
 
 defineOptions({ layout: SidebarLayout })
@@ -133,9 +133,5 @@ const submit = () => {
 <style scoped>
 .dropdown {
   position: relative;
-}
-
-.hover-primary:hover {
-  background-color: #0d6efd;
 }
 </style>

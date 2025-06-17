@@ -8,15 +8,16 @@ use Spatie\Enum\Enum;
  * @method static self Active()
  * @method static self Completed()
  * @method static self NotStarted()
+ *
  */
 final class ProjectStatusEnum extends Enum
 {
-    protected static function values(): array
+   protected static function values(): array
     {
         return [
-            'Active' => 'active',
-            'Completed' => 'completed',
-            'NotStarted' => 'not started',
+            'Active' => 'Active',
+            'Completed' => 'Completed',
+            'NotStarted' => 'Not Started', // Match exactly with DB
         ];
     }
 

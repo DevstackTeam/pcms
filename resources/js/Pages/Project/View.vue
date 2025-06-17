@@ -1,10 +1,26 @@
 <template>
   <div class="container-fluid">
-    <Header iconClass="bi-eye">Project Details</Header>
+    <Header
+      iconClass="bi-file-earmark-text">Project Details
+        <p class="text-muted ms-5 mt-2" style="font-size: 0.9rem;">{{ project.name }}</p>
+    </Header>
 
-    <CardBox title="View Project">
+    <div class="mb-3 d-flex gap-2">
+      <Link
+        :href="`/projects/${project.id}`"
+        class="btn"
+        :class="isActive('details') ? 'btn-primary' : 'btn-outline-primary'">Details
+      </Link>
+
+      <Link
+        :href="`/projects/${project.id}/scenarios`"
+        class="btn"
+        :class="isActive('scenarios') ? 'btn-secondary' : 'btn-outline-secondary'">Scenario
+      </Link>
+    </div>
+
+    <CardBox title="Project's Details">
       <div class="row">
-        <!-- Left side: Project Name & Description -->
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">Project Name</label>
@@ -27,7 +43,6 @@
           </div>
         </div>
 
-        <!-- Right side: Client & Status -->
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">Client</label>
@@ -50,6 +65,11 @@
           </div>
         </div>
       </div>
+      <div class="d-flex justify-content-end">
+      <Link :href="`/projects/${project.id}/edit`" class="btn btn-primary">
+      Edit
+    </Link>
+    </div>
     </CardBox>
   </div>
 </template>
@@ -58,10 +78,28 @@
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
+import { Link } from '@inertiajs/vue3'
+import { usePage } from '@inertiajs/vue3'
 
 defineOptions({ layout: SidebarLayout })
 
 const props = defineProps({
   project: Object
 })
+
+const page = usePage()
+
+const isActive = (tab) => {
+  const currentPath = page.url
+
+  if (tab === 'details') {
+    return currentPath === `/projects/${props.project.id}`
+  }
+
+  if (tab === 'scenarios') {
+    return currentPath.startsWith(`/projects/${props.project.id}/scenarios`)
+  }
+
+  return false
+}
 </script>

@@ -7,15 +7,31 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Project;
 use App\Enums\ProjectStatusEnum;
+use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    public function index()
-    {
-        return Inertia::render('Project/Index', [
-            'projects' => Project::paginate(10)
-        ]);
+
+public function index(Request $request)
+{
+
+    $query = Project::query();
+
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
     }
+
+    if ($request->filled('search')) {
+        $query->where('name', 'like', '%' . $request->search . '%');
+    }
+
+    return Inertia::render('Project/Index', [
+        'projects' => $query->paginate(10)->withQueryString(),
+        'statusOptions' => ProjectStatusEnum::toValues(),
+        'statusLabels' => ProjectStatusEnum::toLabels(),
+        'filters' => $request->only(['search', 'status']), // so Vue can track state
+    ]);
+}
 
     public function create()
     {
@@ -27,7 +43,8 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         return Inertia::render('Project/Edit', [
-            'project' => $project
+            'project' => $project,
+            'statusOptions' => ProjectStatusEnum::toLabels(),
         ]);
     }
     public function show(Project $project)

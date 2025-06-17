@@ -25,7 +25,6 @@ class Project extends Model
     {
         return $this->hasMany(Scenario::class);
     }
-
     protected $enumCasts = [
         'status' => ProjectStatusEnum::class,
     ];
