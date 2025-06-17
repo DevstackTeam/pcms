@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Project;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProjectService
@@ -30,5 +31,14 @@ class ProjectService
         ]);
 
         return $project;
+    }
+
+    public function search($search)
+    {
+        return Project::withCount('scenarios')
+            ->where('name', 'like', "%$search%")
+            ->latest()
+            ->paginate(5)
+            ->withQueryString();
     }
 }

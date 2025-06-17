@@ -21,9 +21,11 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::withCount('scenarios')->latest()->paginate(5);
+        $search = $request->input('search');
+
+        $projects = $this->projectService->search($search);
 
         return Inertia::render('Projects/Index', [
             'projects' => $projects,
