@@ -97,7 +97,7 @@ defineOptions({ layout: SidebarLayout })
 
 const props = defineProps({
   project: Object,
-  statusOptions: Array,
+  statusOptions: Object,
 })
 
 const selectOption = (option) => {

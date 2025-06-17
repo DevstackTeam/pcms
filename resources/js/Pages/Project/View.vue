@@ -5,8 +5,7 @@
         <p class="text-muted ms-5 mt-2" style="font-size: 0.9rem;">{{ project.name }}</p>
     </Header>
 
-
-       <div class="mb-3 d-flex gap-2">
+    <div class="mb-3 d-flex gap-2">
       <Link
         :href="`/projects/${project.id}`"
         class="btn"
@@ -22,7 +21,6 @@
 
     <CardBox title="Project's Details">
       <div class="row">
-
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">Project Name</label>

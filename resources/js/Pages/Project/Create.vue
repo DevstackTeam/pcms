@@ -98,7 +98,7 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 const hover = ref(null)
 
 const props = defineProps({
-  statusOptions: Array
+  statusOptions: Object
 })
 
 defineOptions({ layout: SidebarLayout })

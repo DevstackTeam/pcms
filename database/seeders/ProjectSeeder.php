@@ -13,7 +13,7 @@ class ProjectSeeder extends Seeder
      */
     public function run(): void
     {
-        Project::truncate();
+        // Project::truncate();
 
         Project::create([
             'user_id' => 2,
@@ -25,7 +25,7 @@ class ProjectSeeder extends Seeder
 
         Project::create([
             'user_id' => 2,
-            'name' => 'Mobile App Development Mobile App Development Mobile App Development',
+            'name' => 'Mobile App Development ',
             'description' => 'Develop a mobile app for order tracking.',
             'client' => 'Beta Corp.',
             'status' => 'Not Started',
@@ -33,7 +33,7 @@ class ProjectSeeder extends Seeder
 
         Project::create([
             'user_id' => 2,
-            'name' => 'Data Migration Data Migration Data Migration Data Migration Data Migration',
+            'name' => 'Data Migration Project',
             'description' => 'Migrate data from legacy system.',
             'client' => 'Gamma LLC',
             'status' => 'Active',

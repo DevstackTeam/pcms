@@ -24,7 +24,6 @@
         <table class="table table-hover table-bordered table-striped align-middle text-center" style=" table-layout: fixed; width: 100%;">
           <thead class="table-light">
             <tr>
-              <th scope="col" style="width: 10%;">No</th>
               <th scope="col" style="width: 30%;">Designation Name</th>
               <th scope="col" style="width: 30%;">Rate/Day</th>
               <th scope="col" style="width: 30%;">Actions</th>
@@ -32,7 +31,6 @@
           </thead>
           <tbody>
             <tr v-for="(d, index) in props.designations.data" :key="d.id">
-              <td>{{ (props.designations.total - ((props.designations.current_page - 1) * props.designations.per_page) - index) }}</td>
               <td style="padding: 8px 10px; text-align: left;">{{ d.name }}</td>
               <td>RM {{ d.rate_per_day }}</td>
               <td class="space-x-2">

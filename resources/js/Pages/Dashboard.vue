@@ -85,7 +85,6 @@
               <table class="table table-hover table-bordered table-striped align-middle text-center" style=" table-layout: fixed; width: 100%;">
                 <thead class="table-light">
                   <tr>
-                    <th scope="col" style="width: 5%;">No</th>
                     <th scope="col" style="width: 40%;">Project Name</th>
                     <th scope="col" style="width: 15%;">Created Date</th>
                     <th scope="col" style="width: 20%;">Total Scenarios</th>
@@ -94,7 +93,6 @@
                 </thead>
                 <tbody>
                   <tr v-for="project in latestProjects" :key="project.id">
-                    <td>{{ project.id }}</td>
                     <td style="padding: 8px 10px; text-align: left;">{{ project.name }}</td>
                     <td>{{ formatDate(project.created_at) }}</td>
                     <td>{{ project.scenarios_count }}</td>
