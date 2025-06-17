@@ -86,11 +86,10 @@
                 <thead class="table-light">
                   <tr>
                     <th scope="col" style="width: 5%;">No</th>
-                    <th scope="col" style="width: 30%;">Project Name</th>
-                    <th scope="col">Created Date</th>
-                    <th scope="col" style="width: 15%;">Total Scenarios</th>
+                    <th scope="col" style="width: 40%;">Project Name</th>
+                    <th scope="col" style="width: 15%;">Created Date</th>
+                    <th scope="col" style="width: 20%;">Total Scenarios</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -116,11 +115,6 @@
                         {{ project.status }}
                       </span>
                     </td>
-                    <td class=" justify-content-center">
-                      <a href="#"><i class="bi bi-eye me-2"></i></a>
-                      <a href="#" class="text-primary me-2"><i class="bi bi-pencil"></i></a>
-                      <a href="#" class="text-danger me-2"><i class="bi bi-trash"></i></a>
-                    </td>
                   </tr>
 
                   <tr v-if="latestProjects.length === 0">
@@ -143,6 +137,7 @@
 <script setup>
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import Header from '../Components/Header.vue'
+import { router, Link } from '@inertiajs/vue3'
 
 defineOptions({
   layout: SidebarLayout

@@ -54,12 +54,8 @@
         </td>
         <td class="justify-content-center">
           <Link :href="`/projects/${project.id}`" class="text-primary me-2"><i class="bi bi-eye me-2"></i></Link>
-          <Link :href="`/projects/${project.id}/edit`" class="text-primary me-2">
-            <i class="bi bi-pencil"></i>
-          </Link>
-          <a href="#" @click.prevent="confirmDelete(project.id)" class="text-danger me-2">
-            <i class="bi bi-trash"></i>
-          </a>
+          <Link :href="`/projects/${project.id}/edit`" class="text-primary me-3"><i class="bi bi-pencil"></i></Link>
+          <a href="#" @click.prevent="confirmDelete(project.id)" class="text-danger me-2"><i class="bi bi-trash"></i></a>
         </td>
       </tr>
 

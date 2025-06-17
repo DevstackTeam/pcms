@@ -27,7 +27,8 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         return Inertia::render('Project/Edit', [
-            'project' => $project
+            'project' => $project,
+            'statusOptions' => ProjectStatusEnum::toLabels(),
         ]);
     }
     public function show(Project $project)
