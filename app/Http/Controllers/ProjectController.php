@@ -24,11 +24,16 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $status = $request->input('status');
 
-        $projects = $this->projectService->search($search);
+        $projects = $this->projectService->search($search, $status);
 
         return Inertia::render('Projects/Index', [
             'projects' => $projects,
+            'filters' => [
+                'status' => $status,
+            ],
+            'status' => ProjectStatus::cases(),
         ]);
     }
 

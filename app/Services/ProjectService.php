@@ -33,10 +33,13 @@ class ProjectService
         return $project;
     }
 
-    public function search($search)
+    public function search($search, $status)
     {
         return Project::withCount('scenarios')
             ->where('name', 'like', "%$search%")
+            ->when($status, function ($query) use ($status) {
+                return $query->where('status', $status);
+            })
             ->latest()
             ->paginate(5)
             ->withQueryString();
