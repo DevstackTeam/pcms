@@ -20,38 +20,39 @@
           />
 
           <div class="dropdown" style="max-width: 200px; position: relative;">
-            <button class="form-select text-start" @click.prevent="isOpen = !isOpen">
-  {{ statusLabels[status] || 'All Status' }}
-</button>
+            <button   class="form-select text-start"
+                      style="min-width: 200px; max-width: 100%;"
+                     @click.prevent="isOpen = !isOpen">
+                      {{ props.filters.status|| 'All Status' }}
+            </button>
 
-<ul
-  v-if="isOpen"
-  class="list-group border shadow-sm mt-1"
-  style="position: absolute; z-index: 1000; width: 100%"
->
-  <li
-    @click="selectStatus('')"
-    class="list-group-item list-group-item-action"
-    style="cursor: pointer"
-  >
-    All Status
-  </li>
-  <li
-    v-for="(value, key) in statusOptions"
-    :key="key"
-    @click="selectStatus(value)"
-    class="list-group-item list-group-item-action"
-    style="cursor: pointer"
-    @mouseover="hover = key"
-    @mouseleave="hover = null"
-    :class="{ 'bg-primary text-white': hover === key }"
-  >
-    {{ value }}
-  </li>
-</ul>
-          </div>
-        </div>
+            <ul
+            v-if="isOpen"
+            class="list-group border shadow-sm mt-1"
+            style="position: absolute; z-index: 1000; width: 100%">
+
+            <li
+             @click="selectStatus('')"
+             class="list-group-item list-group-item-action"
+            style="cursor: pointer">All Status
+            </li>
+
+            <li
+            v-for="(value, key) in statusOptions"
+            :key="key"
+            @click="selectStatus(value)"
+            class="list-group-item list-group-item-action"
+            style="cursor: pointer"
+            @mouseover="hover = key"
+            @mouseleave="hover = null"
+            :class="{ 'bg-primary text-white': hover === key }">
+            {{ value }}
+          </li>
+
+        </ul>
       </div>
+    </div>
+  </div>
 
       <div class="table-responsive">
         <table class="table table-hover table-bordered table-striped align-middle text-center" style="table-layout: fixed; width: 100%;">
@@ -137,7 +138,6 @@ const hover = ref(null)
 const selectStatus = (selected) => {
   status.value = selected
   isOpen.value = false
-  console.log('Status selected:', selected)
 }
 
 watch([search, status], () => {
