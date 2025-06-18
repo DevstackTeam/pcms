@@ -105,7 +105,8 @@ import Modal from '../Components/Modal.vue'
 import PaginationLink from '../Components/PaginationLink.vue'
 import FormInput from '../Components/FormInput.vue'
 import { useForm, router } from '@inertiajs/vue3'
-import { ref, defineProps, watchEffect, watch } from 'vue'
+import { ref, defineProps, watch } from 'vue'
+import { useFlash } from '../Composables/Flash'
 
 const search = ref('')
 const showModal = ref(false)
@@ -113,7 +114,6 @@ const isEditMode = ref(false)
 const editId = ref(null)
 const showConfirmModal = ref(false)
 const confirmDeleteId = ref(null)
-const successMessage = ref(null)
 
 const form = useForm({
   name: '',
@@ -124,6 +124,8 @@ const props = defineProps({
   designations: Object,
   flash: Object
 })
+
+const { successMessage } = useFlash(props)
 
 function openEditModal(designation) {
   isEditMode.value = true
@@ -183,12 +185,4 @@ watch(search, (newValue) => {
   })
 })
 
-watchEffect(() => {
-  if (props.flash?.success) {
-    successMessage.value = props.flash.success
-    setTimeout(() => {
-      successMessage.value = null
-    }, 4000)
-  }
-})
 </script>
