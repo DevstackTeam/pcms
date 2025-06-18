@@ -5,6 +5,7 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ScenarioController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DesignationController;
@@ -24,6 +25,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::resource('designations', DesignationController::class);
     Route::resource('projects', ProjectController::class);
+    Route::resource('scenarios', ScenarioController::class);
+    Route::get('/projects/{project}/scenarios', [ScenarioController::class, 'projectScenarios'])
+    ->name('projects.scenarios');
 });
 
 Route::middleware('auth:sanctum')->group(function () {
