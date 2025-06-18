@@ -70,7 +70,11 @@
           </div>
         </div>
       </div>
-      <div class="d-flex justify-content-end">
+
+
+      <div class="d-flex justify-content-end gap-2">
+        <Link :href="`/projects`" class="btn btn-outline-secondary">Back
+       </Link>
       <Link :href="`/projects/${project.id}/edit`" class="btn btn-primary">
       Edit
     </Link>
