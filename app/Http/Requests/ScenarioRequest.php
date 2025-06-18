@@ -2,17 +2,16 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class DesignationRequest extends FormRequest
+class ScenarioRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,13 +21,8 @@ class DesignationRequest extends FormRequest
      */
     public function rules(): array
     {
-         return [
-            'name' => [
-                'required',
-                Rule::unique('designations', 'name')->ignore($this->designation)
-            ],
-            'rate_per_day' => ['required', 'numeric', 'min:0', 'regex:/^\d+(\.\d{1,2})?$/'],
-
+        return [
+            //
         ];
     }
 }

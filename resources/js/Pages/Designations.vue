@@ -71,7 +71,7 @@
             v-model="form.rate_per_day"
             :error="form.errors.rate_per_day"
           />
-          
+
           <div class="d-flex justify-content-end gap-2">
             <button type="button" class="btn btn-secondary" @click="closeModal">Cancel</button>
             <button type="submit" class="btn btn-primary">
