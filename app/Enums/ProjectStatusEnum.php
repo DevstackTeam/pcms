@@ -17,7 +17,7 @@ final class ProjectStatusEnum extends Enum
         return [
             'Active' => 'Active',
             'Completed' => 'Completed',
-            'NotStarted' => 'Not Started', // Match exactly with DB
+            'NotStarted' => 'Not Started',
         ];
     }
 
