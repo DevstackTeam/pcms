@@ -64,7 +64,7 @@
 
           <div class="mb-3">
             <label class="form-label">Rate/Day</label>
-            <input v-model="form.rate_per_day" type="number" class="form-control" :class="{ 'is-invalid': form.errors.rate_per_day }" />
+            <input v-model="form.rate_per_day" step="0.01" type="'number'" class="form-control" :class="{ 'is-invalid': form.errors.rate_per_day }" />
             <div class="invalid-feedback" v-if="form.errors.rate_per_day">{{ form.errors.rate_per_day }}</div>
           </div>
           <!-- Add more fields as needed -->

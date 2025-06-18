@@ -23,7 +23,7 @@ public function index(Request $request)
         $designations = $this->designationService->getFilteredDesignations($search);
 
         return Inertia::render('Designations', [
-            'designations' => $designations, 
+            'designations' => $designations,
             'filters' => ['search' => $search],
             'flash' => ['success' => session('success')],
         ]);
