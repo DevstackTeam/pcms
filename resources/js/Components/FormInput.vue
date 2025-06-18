@@ -38,7 +38,7 @@ const model = defineModel()
 const props = defineProps({
   id: {
     type: String,
-    required: true
+    default: ''
   },
   label: {
     type: String,

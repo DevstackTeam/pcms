@@ -23,31 +23,34 @@
         <table class="table table-hover table-bordered table-striped align-middle text-center" style=" table-layout: fixed; width: 100%;">
           <thead class="table-light">
             <tr>
-              <th scope="col" style="width: 30%;">Designation Name</th>
+              <th scope="col" style="width: 40%;">Designation Name</th>
               <th scope="col" style="width: 30%;">Rate/Day</th>
               <th scope="col" style="width: 30%;">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(d, index) in props.designations.data" :key="d.id">
+            <tr v-for="d in props.designations.data" :key="d.id">
               <td style="padding: 8px 10px; text-align: left;">{{ d.name }}</td>
               <td>RM {{ d.rate_per_day }}</td>
               <td class="space-x-2">
-                <a href="#" class="text-primary me-2" @click.prevent="openEditModal(d)"><i class="bi bi-pencil"></i></a>
-                <a href="#" @click="confirmDelete(d.id)" class="text-danger"><i class="bi bi-trash"></i></a>
+                <button class="btn p-0 text-primary me-2" @click.prevent="openEditModal(d)" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn p-0 text-danger" @click="confirmDelete(d.id)" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
               </td>
             </tr>
 
-            <tr v-if="designations.length === 0">
+            <tr v-if="designations.data.length === 0">
               <td colspan="6" class="text-center text-muted">No designations found</td>
             </tr>
-
           </tbody>
         </table>
       </div>
     </CardBox>
 
-    <PaginationLink :links="props.designations.links" />
+    <PaginationLink v-if="designations.data.length >= 1" :links="props.designations.links" />
 
     <Modal v-if="showModal" @close="closeModal">
       <template #title>
@@ -56,18 +59,19 @@
 
       <template #body>
         <form @submit.prevent="submitForm">
-          <div class="mb-3">
-            <label class="form-label">Designation Name</label>
-            <input v-model="form.name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.name }" />
-            <div class="invalid-feedback" v-if="form.errors.name">{{ form.errors.name }}</div>
-          </div>
+          <FormInput
+            label="Designation Name"
+            v-model="form.name"
+            type="text"
+            :error="form.errors.name"
+          />
 
-          <div class="mb-3">
-            <label class="form-label">Rate/Day</label>
-            <input v-model="form.rate_per_day" type="number" class="form-control" :class="{ 'is-invalid': form.errors.rate_per_day }" />
-            <div class="invalid-feedback" v-if="form.errors.rate_per_day">{{ form.errors.rate_per_day }}</div>
-          </div>
-          <!-- Add more fields as needed -->
+          <FormInput
+            label="Rate/Day"
+            v-model="form.rate_per_day"
+            :error="form.errors.rate_per_day"
+          />
+          
           <div class="d-flex justify-content-end gap-2">
             <button type="button" class="btn btn-secondary" @click="closeModal">Cancel</button>
             <button type="submit" class="btn btn-primary">
@@ -99,6 +103,7 @@ import Header from '../Components/Header.vue'
 import CardBox from '../Components/CardBox.vue'
 import Modal from '../Components/Modal.vue'
 import PaginationLink from '../Components/PaginationLink.vue'
+import FormInput from '../Components/FormInput.vue'
 import { useForm, router } from '@inertiajs/vue3'
 import { ref, defineProps, watchEffect, watch } from 'vue'
 
@@ -116,7 +121,7 @@ const form = useForm({
 })
 
 const props = defineProps({
-  designations: [Object, Array],
+  designations: Object,
   flash: Object
 })
 
