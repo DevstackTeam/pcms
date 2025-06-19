@@ -86,9 +86,9 @@
                 <thead class="table-light">
                   <tr>
                     <th scope="col" style="width: 40%;">Project Name</th>
-                    <th scope="col" style="width: 15%;">Created Date</th>
+                    <th scope="col" style="width: 25%;">Created Date</th>
                     <th scope="col" style="width: 20%;">Total Scenarios</th>
-                    <th scope="col">Status</th>
+                    <th scope="col" style="width: 15%;">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -135,7 +135,6 @@
 <script setup>
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import Header from '../Components/Header.vue'
-import { router, Link } from '@inertiajs/vue3'
 
 defineOptions({
   layout: SidebarLayout
