@@ -36,6 +36,20 @@
   --bs-btn-disabled-border-color: #80d6da;
 }
 
+.btn-outline-primary {
+  --bs-btn-color: #00ADB5;
+  --bs-btn-border-color: #00ADB5;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #00ADB5;
+  --bs-btn-hover-border-color: #00ADB5;
+  --bs-btn-focus-shadow-rgb: 0, 173, 181;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #009ba3;
+  --bs-btn-active-border-color: #009ba3;
+  --bs-btn-disabled-color: #80d6da;
+  --bs-btn-disabled-border-color: #80d6da;
+}
+
 /* Override other primary components */
 .bg-primary {
   background-color: #00ADB5 !important;

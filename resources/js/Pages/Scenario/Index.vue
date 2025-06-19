@@ -3,19 +3,7 @@
     <Header iconClass="bi-file-earmark-text">Project<p class="text-muted ms-5 mt-2" style="font-size: 0.9rem;">test</p>
     </Header>
 
-    <div class="mb-3 d-flex gap-2">
-      <Link
-        :href="`/projects/${project.id}`"
-        class="btn"
-        :class="isActive('details') ? 'btn-primary' : 'btn-outline-primary'">Details
-      </Link>
-
-      <Link
-        :href="`/projects/${project.id}/scenarios`"
-        class="btn"
-        :class="isActive('scenarios') ? 'btn-secondary' : 'btn-outline-secondary'">Scenario
-      </Link>
-    </div>
+    <TabLink :projectId="project.id" />
 
     <CardBox title="Project's Scenario" :showButton="true">
       <div class="table-responsive">
@@ -63,7 +51,8 @@
 import SidebarLayout from '@/Layouts/SideBarLayout.vue';
 import Header from '@/Components/Header.vue';
 import CardBox from '@/Components/CardBox.vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import TabLink from '../../Components/TabLink.vue';
+import { Link } from '@inertiajs/vue3';
 
 defineOptions({
   layout: SidebarLayout
@@ -73,21 +62,5 @@ const props = defineProps({
   project: Object,
   scenarios: Array,
 })
-
-const page = usePage()
-
-const isActive = (tab) => {
-  const currentPath = page.url
-
-  if (tab === 'details') {
-    return currentPath === `/projects/${props.project.id}`
-  }
-
-  if (tab === 'scenarios') {
-    return currentPath.startsWith(`/projects/${props.project.id}/scenarios`)
-  }
-
-  return false
-}
 
 </script>
