@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <Header iconClass="bi-kanban">Project</Header>
+    <Header iconClass="bi-kanban" title="Project"></Header>
 
     <CardBox title="Create New Project">
       <form @submit.prevent="submit">

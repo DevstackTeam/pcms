@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <Header iconClass="bi-kanban">Create Scenario</Header>
+    <Header iconClass="bi-kanban" title="Project" :subtitle="projects[0].name"></Header>
 
     <CardBox title="Create Scenario">
       <form @submit.prevent="submit">
@@ -75,6 +75,10 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 
 defineOptions({
   layout: SidebarLayout,
+})
+
+defineProps({
+  projects: Object,
 })
 
 const form = reactive({

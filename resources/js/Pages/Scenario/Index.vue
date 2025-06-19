@@ -1,11 +1,10 @@
 <template>
   <div class="container-fluid">
-    <Header iconClass="bi-file-earmark-text">Project<p class="text-muted ms-5 mt-2" style="font-size: 0.9rem;">test</p>
-    </Header>
+    <Header iconClass="bi-file-earmark-text" title="Project" :subtitle="project.name"></Header>
 
     <TabLink :projectId="project.id" />
 
-    <CardBox title="Project's Scenario" :showButton="true">
+    <CardBox title="Project's Scenario" :showButton="true" buttonText="Add Scenario" @button-click="goToCreate">
       <div class="table-responsive">
         <table 
           class="table table-hover table-bordered table-striped align-middle text-center"
@@ -44,6 +43,10 @@
         </table>
       </div>
     </CardBox>
+
+    <CardBox title="Compare Scenarios">
+
+    </CardBox>
   </div>
 </template>
 
@@ -52,11 +55,15 @@ import SidebarLayout from '@/Layouts/SideBarLayout.vue';
 import Header from '@/Components/Header.vue';
 import CardBox from '@/Components/CardBox.vue';
 import TabLink from '../../Components/TabLink.vue';
-import { Link } from '@inertiajs/vue3';
+import { router, Link } from '@inertiajs/vue3';
 
 defineOptions({
   layout: SidebarLayout
 });
+
+const goToCreate = () => {
+  router.visit('/scenarios/create')
+}
 
 const props = defineProps({
   project: Object,

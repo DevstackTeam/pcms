@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <Header iconClass="bi-kanban">Project</Header>
+    <Header iconClass="bi-kanban" title="Projects"></Header>
 
     <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
       {{ successMessage }}

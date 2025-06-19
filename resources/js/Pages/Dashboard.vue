@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <!-- Header Bar -->
-    <Header iconClass="bi-house-door">Dashboard</Header>
+    <Header iconClass="bi-house-door" title="Dashboard"></Header>
 
     <div class="row">
       <div class="col-12">

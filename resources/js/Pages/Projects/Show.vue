@@ -1,9 +1,6 @@
 <template>
   <div class="container-fluid">
-    <Header
-      iconClass="bi-file-earmark-text">Project Details
-        <p class="text-muted ms-5 mt-2" style="font-size: 0.9rem;">{{ project.name }}</p>
-    </Header>
+    <Header iconClass="bi-file-earmark-text" title="Project" :subtitle="project.name"></Header>
 
     <TabLink :projectId="project.id" />
 
