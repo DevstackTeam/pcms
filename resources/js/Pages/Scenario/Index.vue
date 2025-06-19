@@ -5,13 +5,13 @@
 
     <div class="mb-3 d-flex gap-2">
       <Link
-        href="/projects/7"
+        :href="`/projects/${project.id}`"
         class="btn"
         :class="isActive('details') ? 'btn-primary' : 'btn-outline-primary'">Details
       </Link>
 
       <Link
-        href="`/projects/7/scenarios`"
+        :href="`/projects/${project.id}/scenarios`"
         class="btn"
         :class="isActive('scenarios') ? 'btn-secondary' : 'btn-outline-secondary'">Scenario
       </Link>
@@ -65,23 +65,29 @@ import Header from '@/Components/Header.vue';
 import CardBox from '@/Components/CardBox.vue';
 import { Link, usePage } from '@inertiajs/vue3';
 
+defineOptions({
+  layout: SidebarLayout
+});
+
+const props = defineProps({
+  project: Object,
+  scenarios: Array,
+})
+
 const page = usePage()
 
 const isActive = (tab) => {
   const currentPath = page.url
 
   if (tab === 'details') {
-    return currentPath === `/projects/7`
+    return currentPath === `/projects/${props.project.id}`
   }
 
   if (tab === 'scenarios') {
-    return currentPath.startsWith(`/projects/7/scenarios`)
+    return currentPath.startsWith(`/projects/${props.project.id}/scenarios`)
   }
 
   return false
 }
 
-defineOptions({
-  layout: SidebarLayout
-});
 </script>
