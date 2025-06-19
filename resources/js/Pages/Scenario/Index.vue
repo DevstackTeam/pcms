@@ -12,17 +12,19 @@
         >
           <thead class="table-light">
             <tr>
+              <th scope="col" style="width: 10%;">No</th>
               <th scope="col" style="width: 25%;">Duration</th>
-              <th scope="col" style="width: 25%;">Markup</th>
+              <th scope="col" style="width: 15%;">Markup</th>
               <th scope="col" style="width: 25%;">Final Cost</th>
               <th scope="col" style="width: 25%;">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td style="padding: 8px 10px; text-align: left;"></td>
-              <td></td>
-              <td></td>
+            <tr v-for="(scenario, index) in scenarios" :key="scenario.id">
+              <td>{{ index + 1 }}</td>
+              <td>{{ scenario.duration }}</td>
+              <td>{{ scenario.markup }}</td>
+              <td>RM {{ scenario.final_cost }}</td>
               <td class="space-x-2">
                 <Link href="#" class="text-primary me-2">
                   <i class="bi bi-eye me-2"></i>
@@ -36,8 +38,8 @@
               </td>
             </tr>
 
-            <tr>
-              <td colspan="6" class="text-center text-muted">No designations found</td>
+            <tr v-if="scenarios.length === 0">
+              <td colspan="6" class="text-center text-muted">No scenarios found</td>
             </tr>
           </tbody>
         </table>
