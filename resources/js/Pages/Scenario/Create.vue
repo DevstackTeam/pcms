@@ -41,7 +41,7 @@
               placeholder="Enter Markup (%)"
             />
           </div>
-          
+
           <div class="col">
             <FormInput
               v-model="form.finalCost"
@@ -53,7 +53,7 @@
 
         <div class="d-flex justify-content-end">
           <Link :href="`/projects/${project.id}/scenarios`" class="btn btn-outline-secondary">Cancel</Link>
-          <button type="submit" class="btn btn-primary ms-2">Save Scenario</button>
+          <button type="submit" class="btn btn-primary ms-2">Submit</button>
         </div>
       </form>
     </CardBox>
