@@ -11,6 +11,7 @@
         :class="{ 'is-invalid': error }"
         :placeholder="placeholder"
         :autofocus="autofocus"
+        :disabled="disabled"
       />
 
       <button
@@ -61,6 +62,10 @@ const props = defineProps({
     default: false
   },
   toggle: {
+    type: Boolean,
+    default: false
+  },
+  disabled: {
     type: Boolean,
     default: false
   }
