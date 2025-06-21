@@ -21,6 +21,7 @@
               label="Remark"
               id="remark"
               placeholder="Enter Remark"
+              :error="form.errors.remark"
             />
           </div>
         </div>
@@ -28,9 +29,9 @@
         <div class="row mb-3">
           <div class="col">
             <FormInput
-              v-model="form.totalCost"
+              v-model="form.total_cost"
               label="Total Cost"
-              id="total"
+              id="total_cost"
             />
           </div>
 
@@ -38,14 +39,17 @@
             <FormInput
               v-model="form.markup"
               label="Markup"
+              id="markup"
               placeholder="Enter Markup (%)"
+              :error="form.errors.markup"
             />
           </div>
 
           <div class="col">
             <FormInput
-              v-model="form.finalCost"
+              v-model="form.final_cost"
               label="Final Cost"
+              id="final_cost"
               :disabled="true"
             />
           </div>
@@ -61,12 +65,12 @@
 </template>
 
 <script setup>
-import { router, Link, useForm } from '@inertiajs/vue3'
-import { watch } from 'vue'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormInput from '../../Components/FormInput.vue'
+import { Link, useForm } from '@inertiajs/vue3'
+import { watch } from 'vue'
 
 defineOptions({
   layout: SidebarLayout,
@@ -80,24 +84,24 @@ const form = useForm({
   duration: '',
   remark: '',
   markup: null,
-  totalCost: null,
-  finalCost: null,
+  total_cost: null,
+  final_cost: null,
 })
 
 const submit = () => {
-  router.post(`/projects/${props.project.id}/scenarios`)
+  form.post(`/projects/${props.project.id}/scenarios`)
 }
 
 watch(
-  () => [form.totalCost, form.markup],
-  ([totalCost, markup]) => {
-    const cost = parseFloat(totalCost)
+  () => [form.total_cost, form.markup],
+  ([total_cost, markup]) => {
+    const cost = parseFloat(total_cost)
     const percent = parseFloat(markup)
 
     if (!isNaN(cost) && !isNaN(percent)) {
-      form.finalCost = ((100 + percent) / 100 * cost).toFixed(2)
+      form.final_cost = ((100 + percent) / 100 * cost).toFixed(2)
     } else {
-      form.finalCost = null
+      form.final_cost = null
     }
   }
 )
