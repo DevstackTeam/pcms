@@ -29,8 +29,9 @@
         <div class="row mb-3">
           <div class="col">
             <FormInput
-              v-model="form.totalCost"
+              v-model="form.total_cost"
               label="Total Cost"
+              id="total_cost"
             />
           </div>
 
@@ -46,8 +47,9 @@
 
           <div class="col">
             <FormInput
-              v-model="form.finalCost"
+              v-model="form.final_cost"
               label="Final Cost"
+              id="final_cost"
               :disabled="true"
             />
           </div>
@@ -83,24 +85,24 @@ const form = useForm({
   duration: props.scenario.duration,
   remark: props.scenario.remark,
   markup: props.scenario.markup,
-  totalCost: props.scenario.total_cost,
-  finalCost: props.scenario.final_cost,
+  total_cost: props.scenario.total_cost,
+  final_cost: props.scenario.final_cost,
 })
 
 const submit = () => {
-  router.patch(`/projects/${props.project.id}/scenarios/${props.scenario.id}`)
+  form.patch(`/projects/${props.project.id}/scenarios/${props.scenario.id}`)
 }
 
 watch(
-  () => [form.totalCost, form.markup],
-  ([totalCost, markup]) => {
-    const cost = parseFloat(totalCost)
+  () => [form.total_cost, form.markup],
+  ([total_cost, markup]) => {
+    const cost = parseFloat(total_cost)
     const percent = parseFloat(markup)
 
     if (!isNaN(cost) && !isNaN(percent)) {
-      form.finalCost = ((100 + percent) / 100 * cost).toFixed(2)
+      form.final_cost = ((100 + percent) / 100 * cost).toFixed(2)
     } else {
-      form.finalCost = null
+      form.final_cost = null
     }
   }
 )
