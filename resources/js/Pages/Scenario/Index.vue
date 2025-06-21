@@ -26,15 +26,15 @@
               <td>{{ scenario.markup }}%</td>
               <td>RM {{ scenario.final_cost }}</td>
               <td class="space-x-2">
-                <Link href="#" class="text-primary me-2">
+                <Link :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-primary me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
-                <Link href="#" class="text-primary me-3">
+                <Link :href='`/projects/${project.id}/scenarios/${scenario.id}/edit`' class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
-                <a href="#"class="text-danger me-2">
+                <button type="button" class="btn btn-link text-danger p-0" @click="confirmDelete(scenario.id)">
                   <i class="bi bi-trash"></i>
-                </a>
+                </button>
               </td>
             </tr>
 
@@ -119,6 +119,19 @@
         </div>
       </template>
     </CardBox>
+
+    <Modal v-if="showConfirmModal" @close="showConfirmModal = false">
+      <template #title>
+        Confirm Deletion
+      </template>
+      <template #body>
+        <p>Are you sure you want to delete this scenario?</p>
+        <div class="d-flex justify-content-end gap-2">
+          <button class="btn btn-secondary" @click="showConfirmModal = false">Cancel</button>
+          <button class="btn btn-danger" @click="performDelete">Yes, Delete</button>
+        </div>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -127,6 +140,7 @@ import SidebarLayout from '@/Layouts/SideBarLayout.vue';
 import Header from '@/Components/Header.vue';
 import CardBox from '@/Components/CardBox.vue';
 import TabLink from '../../Components/TabLink.vue';
+import Modal from '../../Components/Modal.vue';
 import { router, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
@@ -134,21 +148,39 @@ defineOptions({
   layout: SidebarLayout
 });
 
-const selectedScenario1 = ref(null);
-const selectedScenario2 = ref(null);
-
-const goToCreate = () => {
-  router.visit('/scenarios/create')
-}
+const selectedScenario1 = ref(null)
+const selectedScenario2 = ref(null)
+const confirmDeleteId = ref(null)
+const showConfirmModal = ref(false)
 
 const props = defineProps({
   project: Object,
   scenarios: Array,
 })
 
+const goToCreate = () => {
+  router.get(`/projects/${props.project.id}/scenarios/create`)
+}
+
 const finalCostClass = (costA, costB) => {
   if (costA < costB) return 'text-success fw-bold';
   if (costA > costB) return 'text-danger fw-bold';
   return '';
 };
+
+function confirmDelete(id) {
+  confirmDeleteId.value = id
+  showConfirmModal.value = true
+}
+
+function performDelete() {
+  if (!confirmDeleteId.value) return
+
+  router.delete(`/projects/${props.project.id}/scenarios/${confirmDeleteId.value}`, {
+    onSuccess: () => {
+      showConfirmModal.value = false
+      confirmDeleteId.value = null
+    }
+  })
+}
 </script>
