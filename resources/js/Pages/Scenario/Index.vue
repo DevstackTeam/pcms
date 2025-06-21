@@ -2,6 +2,11 @@
   <div class="container-fluid">
     <Header iconClass="bi-file-earmark-text" title="Project" :subtitle="project.name"></Header>
 
+    <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ successMessage }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <TabLink :projectId="project.id" />
 
     <CardBox title="Project's Scenario" :showButton="true" buttonText="Add Scenario" @button-click="goToCreate">
@@ -141,6 +146,7 @@ import Header from '@/Components/Header.vue';
 import CardBox from '@/Components/CardBox.vue';
 import TabLink from '../../Components/TabLink.vue';
 import Modal from '../../Components/Modal.vue';
+import { useFlash } from '../../Composables/Flash';
 import { router, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
@@ -156,7 +162,10 @@ const showConfirmModal = ref(false)
 const props = defineProps({
   project: Object,
   scenarios: Array,
+  flash: Object,
 })
+
+const { successMessage } = useFlash(props)
 
 const goToCreate = () => {
   router.get(`/projects/${props.project.id}/scenarios/create`)
