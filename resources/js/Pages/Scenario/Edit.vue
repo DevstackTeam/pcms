@@ -65,7 +65,7 @@
 </template>
 
 <script setup>
-import { router, Link, useForm } from '@inertiajs/vue3'
+import { Link, useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
