@@ -103,7 +103,7 @@
 </template>
 
 <script setup>
-import { ref, watch, watchEffect } from 'vue'
+import { ref, watch } from 'vue'
 import { router, Link } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
@@ -142,10 +142,13 @@ const selectStatus = (selected) => {
 
 const { successMessage } = useFlash(props)
 
-watch(search, (newValue) => {
-  router.get('/designations', { search: newValue }, {
+watch([search, status], () => {
+  router.get('/projects', {
+    search: search.value,
+    status: status.value,
+  }, {
     preserveState: true,
-    replace: true
+    preserveScroll: true,
   })
 })
 
