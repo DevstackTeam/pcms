@@ -14,7 +14,7 @@ class ScenarioController extends Controller
     {
        $scenarios = $project->scenarios()->latest()->get();
 
-        return Inertia::render('Scenario/Index', [
+        return Inertia::render('Scenarios/Index', [
             'project' => $project,
             'scenarios' => $scenarios,
         ]);
@@ -24,7 +24,7 @@ class ScenarioController extends Controller
     {
         $designations = Designation::all();
 
-        return Inertia::render('Scenario/Create', [
+        return Inertia::render('Scenarios/Create', [
             'project' => $project,
             'designations' => $designations,
         ]);
@@ -74,7 +74,7 @@ class ScenarioController extends Controller
     {
         $manpowers = $scenario->manpowers()->with('designation')->get();
 
-        return Inertia::render('Scenario/Show', [
+        return Inertia::render('Scenarios/Show', [
             'project' => $project,
             'scenario' => $scenario,
             'manpowers' => $manpowers,
@@ -86,7 +86,7 @@ class ScenarioController extends Controller
         $designations = Designation::all();
         $manpowers = $scenario->manpowers()->get();
 
-        return Inertia::render('Scenario/Edit', [
+        return Inertia::render('Scenarios/Edit', [
             'scenario' => $scenario,
             'project' => $project,
             'manpowers' => $manpowers,
