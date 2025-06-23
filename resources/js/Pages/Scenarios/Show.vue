@@ -18,6 +18,29 @@
           </div>
         </div>
 
+        <h6>Manpower</h6>
+        <table class="table table-bordered text-center">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 30%;">Designation</th>
+              <th scope="col" style="width: 15%;">Rate/Day</th>
+              <th scope="col" style="width: 15%;">No. of People</th>
+              <th scope="col" style="width: 15%;">Total Day</th>
+              <th scope="col" style="width: 25%;">Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(manpower, index) in manpowers" :key="index">
+              <td>{{ manpower.designation.name }}</td>
+              <td>
+                {{ parseFloat(manpower.rate_per_day).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
+              <td>{{ manpower.no_of_people }}</td>
+              <td>{{ manpower.total_day }}</td>
+              <td>{{ parseFloat(manpower.total_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
+            </tr>
+          </tbody>
+        </table>
+
         <div class="row mb-3">
           <div class="col">
             <FormDetail label="Total Cost" id="total-cost">
@@ -61,5 +84,6 @@ defineOptions({
 const props = defineProps({
   project: Object,
   scenario: Object,
+  manpowers: Object,
 })
 </script>
