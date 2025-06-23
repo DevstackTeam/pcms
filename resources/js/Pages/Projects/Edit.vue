@@ -1,9 +1,7 @@
 <template>
   <div class="container-fluid">
     <Header
-      iconClass="bi-pencil-square">Project
-        <p class="text-muted ms-5 mt-2" style="font-size: 0.9rem;">{{ project.name }}</p>
-    </Header>
+      iconClass="bi-pencil-square" title="Project" :subtitle="project.name"></Header>
 
     <CardBox title="Edit Project">
       <form @submit.prevent="submit">

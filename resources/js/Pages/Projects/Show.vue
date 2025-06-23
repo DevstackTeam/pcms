@@ -1,23 +1,8 @@
 <template>
   <div class="container-fluid">
-    <Header
-      iconClass="bi-file-earmark-text">Project Details
-        <p class="text-muted ms-5 mt-2" style="font-size: 0.9rem;">{{ project.name }}</p>
-    </Header>
+    <Header iconClass="bi-file-earmark-text" title="Project" :subtitle="project.name"></Header>
 
-    <div class="mb-3 d-flex gap-2">
-      <Link
-        :href="`/projects/${project.id}`"
-        class="btn"
-        :class="isActive('details') ? 'btn-primary' : 'btn-outline-primary'">Details
-      </Link>
-
-      <Link
-        :href="`/projects/${project.id}/scenarios`"
-        class="btn"
-        :class="isActive('scenarios') ? 'btn-secondary' : 'btn-outline-secondary'">Scenario
-      </Link>
-    </div>
+    <TabLink :projectId="project.id" />
 
     <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
       {{ successMessage }}
@@ -87,6 +72,7 @@
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
+import TabLink from '../../Components/TabLink.vue'
 import { Link } from '@inertiajs/vue3'
 import { usePage } from '@inertiajs/vue3'
 import { ref, watchEffect } from 'vue'
@@ -99,22 +85,6 @@ const props = defineProps({
   project: Object,
   flash: Object
 })
-
-const page = usePage()
-
-const isActive = (tab) => {
-  const currentPath = page.url
-
-  if (tab === 'details') {
-    return currentPath === `/projects/${props.project.id}`
-  }
-
-  if (tab === 'scenarios') {
-    return currentPath.startsWith(`/projects/${props.project.id}/scenarios`)
-  }
-
-  return false
-}
 
 watchEffect(() => {
   if (props.flash?.success) {
