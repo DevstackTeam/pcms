@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Designation;
 use App\Models\Scenario;
 use App\Models\Project;
 use Illuminate\Http\Request;
@@ -9,92 +10,138 @@ use Inertia\Inertia;
 
 class ScenarioController extends Controller
 {
-    public function index()
+    public function index(Project $project)
     {
-        $scenarios = Scenario::with('project')->get(); 
+        $scenarios = $project->scenarios()->latest()->get();
 
         return Inertia::render('Scenario/Index', [
+            'project' => $project,
             'scenarios' => $scenarios,
         ]);
     }
 
-   public function projectScenarios(Project $project)
-{
-    $scenarios = $project->scenarios()->with('project')->latest()->get(); // No 'manpowers'
-
-    return Inertia::render('Scenario/Index', [
-        'project' => $project,
-        'scenarios' => $scenarios,
-    ]);
-}
-
-
-    public function create()
+    public function create(Project $project)
     {
-        $projects = Project::select('id', 'name')->get();
+        $designations = Designation::all();
 
         return Inertia::render('Scenario/Create', [
-            'projects' => $projects,
+            'project' => $project,
+            'designations' => $designations,
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Project $project, Request $request)
     {
-        // You'll likely expand this later with manpower saving
-        $request->validate([
-            'project_id' => 'required|exists:projects,id',
-            'markup' => 'required|numeric',
-            'duration' => 'required|string',
+        $validated = $request->validate([
+            'duration' => 'required|numeric',
             'remark' => 'nullable|string',
+            'markup' => 'required|numeric',
+            'total_cost' => 'required|numeric',
+            'final_cost' => 'required|numeric',
+
+            'manpower' => 'required|array',
+            'manpower.*.designation_id' => 'required|exists:designations,id',
+            'manpower.*.rate_per_day' => 'required|numeric',
+            'manpower.*.no_of_people' => 'required|integer',
+            'manpower.*.total_day' => 'required|integer',
+            'manpower.*.total_cost' => 'required|numeric',
         ]);
 
-        $scenario = Scenario::create([
-            'project_id' => $request->project_id,
-            'markup' => $request->markup,
-            'duration' => $request->duration,
-            'remark' => $request->remark,
-            'total_cost' => 0, // will update after adding manpower
-            'final_cost' => 0,
+        $scenario = $project->scenarios()->create([
+            'duration' => $validated['duration'],
+            'remark' => $validated['remark'],
+            'markup' => $validated['markup'],
+            'total_cost' => $validated['total_cost'],
+            'final_cost' => $validated['final_cost'],
         ]);
 
-        return redirect()->route('scenarios.index')->with('success', 'Scenario created successfully.');
+        foreach ($validated['manpower'] as $mp) {
+            $scenario->manpowers()->create([
+                'designation_id' => $mp['designation_id'],
+                'rate_per_day' => $mp['rate_per_day'],
+                'no_of_people' => $mp['no_of_people'],
+                'total_day' => $mp['total_day'],
+                'total_cost' => $mp['total_cost'],
+            ]);
+        }
+
+        return redirect()
+            ->route('projects.scenarios.index', $project)
+            ->with('success', 'Scenario created successfully.');
     }
 
-    public function show(Scenario $scenario)
+    public function show(Project $project, Scenario $scenario)
     {
+        $manpowers = $scenario->manpowers()->with('designation')->get();
+
         return Inertia::render('Scenario/Show', [
-            'scenario' => $scenario->load('project',),
+            'project' => $project,
+            'scenario' => $scenario,
+            'manpowers' => $manpowers,
         ]);
     }
 
-    public function edit(Scenario $scenario)
+    public function edit(Project $project, Scenario $scenario)
     {
-        $projects = Project::select('id', 'name')->get();
+        $designations = Designation::all();
+        $manpowers = $scenario->manpowers()->get();
 
         return Inertia::render('Scenario/Edit', [
             'scenario' => $scenario,
-            'projects' => $projects,
+            'project' => $project,
+            'manpowers' => $manpowers,
+            'designations' => $designations,
         ]);
     }
 
-    public function update(Request $request, Scenario $scenario)
+    public function update(Project $project, Request $request, Scenario $scenario)
     {
-        $request->validate([
-            'project_id' => 'required|exists:projects,id',
+        $validated = $request->validate([
             'markup' => 'required|numeric',
             'duration' => 'required|string',
             'remark' => 'nullable|string',
+            'total_cost' => 'required',
+            'final_cost' => 'required',
+
+            'manpower' => 'required|array',
+            'manpower.*.designation_id' => 'required|exists:designations,id',
+            'manpower.*.rate_per_day' => 'required|numeric',
+            'manpower.*.no_of_people' => 'required|integer',
+            'manpower.*.total_day' => 'required|integer',
+            'manpower.*.total_cost' => 'required|numeric',
         ]);
 
-        $scenario->update($request->only('project_id', 'markup', 'duration', 'remark'));
+        $scenario->update([
+            'duration' => $validated['duration'],
+            'remark' => $validated['remark'],
+            'markup' => $validated['markup'],
+            'total_cost' => $validated['total_cost'],
+            'final_cost' => $validated['final_cost'],
+        ]);
 
-        return redirect()->route('scenarios.index')->with('success', 'Scenario updated.');
+        $scenario->manpowers()->delete();
+
+        foreach ($validated['manpower'] as $mp) {
+            $scenario->manpowers()->create([
+                'designation_id' => $mp['designation_id'],
+                'rate_per_day' => $mp['rate_per_day'],
+                'no_of_people' => $mp['no_of_people'],
+                'total_day' => $mp['total_day'],
+                'total_cost' => $mp['total_cost'],
+            ]);
+        }
+
+        return redirect()
+            ->route('projects.scenarios.index', $project)
+            ->with('success', 'Scenario updated.');
     }
 
-    public function destroy(Scenario $scenario)
+    public function destroy(Project $project, Scenario $scenario)
     {
         $scenario->delete();
-
-        return redirect()->route('scenarios.index')->with('success', 'Scenario deleted.');
+    
+        return redirect()
+            ->route('projects.scenarios.index', $project)
+            ->with('success', 'Scenario deleted successfully');
     }
 }
