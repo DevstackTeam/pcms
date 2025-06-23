@@ -29,6 +29,4 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    // Protected API routes
-
 });

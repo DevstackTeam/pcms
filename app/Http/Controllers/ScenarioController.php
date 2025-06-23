@@ -12,7 +12,7 @@ class ScenarioController extends Controller
 {
     public function index(Project $project)
     {
-        $scenarios = $project->scenarios()->latest()->get();
+       $scenarios = $project->scenarios()->latest()->get();
 
         return Inertia::render('Scenario/Index', [
             'project' => $project,
@@ -145,3 +145,5 @@ class ScenarioController extends Controller
             ->with('success', 'Scenario deleted successfully');
     }
 }
+
+
