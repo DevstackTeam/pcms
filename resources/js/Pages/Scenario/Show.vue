@@ -6,13 +6,13 @@
       <form>
         <div class="row mb-4">
           <div class="col">
-            <FormDetail label="Duration">
+            <FormDetail label="Duration" id="duration">
               {{ scenario.duration }}
             </FormDetail>
           </div>
 
           <div class="col">
-            <FormDetail label="Remark">
+            <FormDetail label="Remark" id="remark">
               {{ scenario.remark }}
             </FormDetail>
           </div>
@@ -20,20 +20,20 @@
 
         <div class="row mb-3">
           <div class="col">
-            <FormDetail label="Total Cost">
-              {{ scenario.total_cost }}
+            <FormDetail label="Total Cost" id="total-cost">
+              {{ parseFloat(scenario.total_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}
             </FormDetail>
           </div>
 
           <div class="col">
-            <FormDetail label="Markup">
+            <FormDetail label="Markup" id="markup">
               {{ scenario.markup }}
             </FormDetail>
           </div>
           
           <div class="col">
-            <FormDetail label="Final Cost">
-              {{ scenario.final_cost }}
+            <FormDetail label="Final Cost" id="final-cost">
+              {{ parseFloat(scenario.final_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}
             </FormDetail>
           </div>
         </div>
