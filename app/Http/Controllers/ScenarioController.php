@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
 use App\Models\Project;
 use App\Models\Scenario;
 use App\Models\Designation;
 use App\Services\ScenarioService;
 use App\Http\Requests\ScenarioRequest;
+use Inertia\Inertia;
 
 class ScenarioController extends Controller
 {
@@ -18,18 +18,9 @@ class ScenarioController extends Controller
         $this->scenarioService = $scenarioService;
     }
 
-    public function index()
+    public function index(Project $project)
     {
         $scenarios = Scenario::with('project')->latest()->get();
-
-        return Inertia::render('Scenarios/Index', [
-            'scenarios' => $scenarios,
-        ]);
-    }
-
-    public function projectScenarios(Project $project)
-    {
-        $scenarios = $project->scenarios()->with('project')->latest()->get();
 
         return Inertia::render('Scenarios/Index', [
             'project' => $project,
@@ -37,57 +28,59 @@ class ScenarioController extends Controller
         ]);
     }
 
+    public function show( Project $project, Scenario $scenario)
+    {
+        return Inertia::render('Scenarios/Show', [
+            'scenario' => $scenario,
+            'project' => $project,
+        ]);
+    }
+
+    public function destroy(Project $project, Scenario $scenario)
+{
+    $scenario->delete();
+
+    return redirect()
+        ->route('projects.scenarios.index', $project->id)
+        ->with('success', 'Scenario deleted.');
+}
+
     public function create(Project $project)
     {
         return Inertia::render('Scenarios/Create', [
+            'project' => $project,
             'projectId' => $project->id,
             'designations' => Designation::select('id', 'name', 'rate_per_day')->get(),
         ]);
     }
 
-    public function store(ScenarioRequest $request)
+    public function store(ScenarioRequest $request, Project $project)
     {
-        $scenario = $this->scenarioService->store($request->validated());
+        $data = $request->validated();
+        $data['project_id'] = $project->id;
 
-        return redirect()
-            ->route('scenarios.index')
-            ->with('success', 'Scenario created successfully.');
+        $scenario = $this->scenarioService->store($data);
+
+        return redirect()->route('projects.scenarios.index', $project->id)
+                        ->with('success', 'Scenario created successfully.');
     }
 
-    public function show(Scenario $scenario)
+    public function edit(Project $project, Scenario $scenario)
     {
-        $scenario->load('project', 'manpowers');
-
-        return Inertia::render('Scenarios/Show', [
-            'scenario' => $scenario,
-        ]);
-    }
-
-    public function edit(Scenario $scenario)
-    {
-        $projects = Project::select('id', 'name')->get();
-
         return Inertia::render('Scenarios/Edit', [
+            'project' => $project,
             'scenario' => $scenario,
-            'projects' => $projects,
+            'projects' => Project::select('id', 'name')->get(),
+            'designations' => Designation::select('id', 'name', 'rate_per_day')->get(),
         ]);
     }
 
-    public function update(ScenarioRequest $request, Scenario $scenario)
+    public function update(ScenarioRequest $request, Project $project, Scenario $scenario)
     {
         $scenario->update($request->validated());
 
         return redirect()
-            ->route('scenarios.index')
+            ->route('projects.scenarios.index', $project->id)
             ->with('success', 'Scenario updated successfully.');
-    }
-
-    public function destroy(Scenario $scenario)
-    {
-        $scenario->delete();
-
-        return redirect()
-            ->route('scenarios.index')
-            ->with('success', 'Scenario deleted.');
     }
 }

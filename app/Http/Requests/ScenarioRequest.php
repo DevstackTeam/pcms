@@ -22,11 +22,11 @@ class ScenarioRequest extends FormRequest
     public function rules(): array
 {
     return [
-        'project_id' => 'required|exists:projects,id',
-        'duration' => 'required|string|max:255',
+        'duration' => 'required|int|max:255',
         'remark' => 'nullable|string',
         'total_cost' => 'required|numeric|min:0',
         'markup' => 'required|numeric|min:0',
+        'final_cost' => 'required|numeric|min:0',
     ];
 }
 }

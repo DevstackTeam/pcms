@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Project::class);
             $table->decimal('markup', 5, 1);
-            $table->string('duration');
-            $table->string('remark');
+            $table->integer('duration');
+            $table->string('remark')-> nullable();
             $table->decimal('total_cost', 10, 2);
             $table->decimal('final_cost', 10, 2);
             $table->timestamps();

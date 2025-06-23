@@ -30,9 +30,7 @@ class ProjectController extends Controller
 
         return Inertia::render('Projects/Index', [
             'projects' => $projects,
-            'filters' => [
-                'status' => $status,
-            ],
+            'filters' => ['status' => $status,],
             'status' => ProjectStatus::cases(),
         ]);
     }
