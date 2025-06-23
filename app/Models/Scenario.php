@@ -17,6 +17,11 @@ class Scenario extends Model
         'final_cost',
     ];
 
+    protected $casts = [
+        'total_cost' => 'float',
+        'final_cost' => 'float',
+    ];
+
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);

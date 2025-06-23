@@ -13,6 +13,8 @@ class Manpower extends Model
         'no_of_people',
     ];
 
+    protected $table = 'manpower';
+
     public function designation(): BelongsTo
     {
         return $this->belongsTo(Designation::class);
