@@ -6,45 +6,35 @@
       <form>
         <div class="row mb-4">
           <div class="col">
-            <FormInput 
-              v-model="scenario.duration"
-              label="Duration"
-              :disabled="true"
-              />
+            <FormDetail label="Duration">
+              {{ scenario.duration }}
+            </FormDetail>
           </div>
 
           <div class="col">
-            <FormInput 
-              v-model="scenario.remark"
-              label="Remark"
-              :disabled="true"
-            />
+            <FormDetail label="Remark">
+              {{ scenario.remark }}
+            </FormDetail>
           </div>
         </div>
 
         <div class="row mb-3">
           <div class="col">
-            <FormInput
-              v-model="scenario.total_cost"
-              label="Total Cost"
-              :disabled="true"
-            />
+            <FormDetail label="Total Cost">
+              {{ scenario.total_cost }}
+            </FormDetail>
           </div>
 
           <div class="col">
-            <FormInput
-              v-model="scenario.markup"
-              label="Markup"
-              :disabled="true"
-            />
+            <FormDetail label="Markup">
+              {{ scenario.markup }}
+            </FormDetail>
           </div>
           
           <div class="col">
-            <FormInput
-              v-model="scenario.final_cost"
-              label="Final Cost"
-              :disabled="true"
-            />
+            <FormDetail label="Final Cost">
+              {{ scenario.final_cost }}
+            </FormDetail>
           </div>
         </div>
 
@@ -62,7 +52,7 @@ import { Link } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
-import FormInput from '../../Components/FormInput.vue'
+import FormDetail from '../../Components/FormDetail.vue'
 
 defineOptions({
   layout: SidebarLayout,

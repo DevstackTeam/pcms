@@ -28,14 +28,13 @@
 
         <div class="row mb-3">
           <div class="col">
-            <label class="form-label">Total Cost</label>
-            <div class="form-control bg-secondary-subtle">
+            <FormDetail label="Total Cost">
               {{
                 form.total_cost
                   ? parseFloat(form.total_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' })
                   : '-'
               }}
-            </div>
+            </FormDetail>
           </div>
 
           <div class="col">
@@ -49,14 +48,13 @@
           </div>
 
           <div class="col">
-            <label class="form-label">Final Cost</label>
-            <div class="form-control bg-secondary-subtle">
+            <FormDetail label="Final Cost">
               {{
                 form.final_cost
                   ? parseFloat(form.final_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' })
                   : '-'
               }}
-            </div>
+            </FormDetail>
           </div>
         </div>
 
@@ -74,6 +72,7 @@ import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormInput from '../../Components/FormInput.vue'
+import FormDetail from '../../Components/FormDetail.vue'
 import { Link, useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
 
