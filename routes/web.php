@@ -25,9 +25,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::resource('designations', DesignationController::class);
     Route::resource('projects', ProjectController::class);
+
     Route::resource('scenarios', ScenarioController::class);
     Route::get('/projects/{project}/scenarios', [ScenarioController::class, 'projectScenarios'])
     ->name('projects.scenarios');
+    Route::get('/projects/{project}/scenarios/create', [ScenarioController::class, 'create'])->name('scenarios.create');
+    Route::post('/projects/{project}/scenarios/create', [ScenarioController::class, 'store'])->name('scenario.store');
+
 });
 
 Route::middleware('auth:sanctum')->group(function () {

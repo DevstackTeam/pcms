@@ -11,7 +11,7 @@ class ScenarioRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -20,9 +20,13 @@ class ScenarioRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    {
-        return [
-            //
-        ];
-    }
+{
+    return [
+        'project_id' => 'required|exists:projects,id',
+        'duration' => 'required|string|max:255',
+        'remark' => 'nullable|string',
+        'total_cost' => 'required|numeric|min:0',
+        'markup' => 'required|numeric|min:0',
+    ];
+}
 }

@@ -9,9 +9,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Scenario extends Model
 {
     protected $fillable = [
+        'project_id',
         'markup',
         'duration',
         'remark',
+        'total_cost',
+        'final_cost',
+    ];
+
+    protected $casts = [
+        'total_cost' => 'float',
+        'final_cost' => 'float',
     ];
 
     public function project(): BelongsTo

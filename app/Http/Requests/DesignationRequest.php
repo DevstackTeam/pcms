@@ -27,7 +27,7 @@ class DesignationRequest extends FormRequest
                 'required',
                 Rule::unique('designations', 'name')->ignore($this->designation)
             ],
-            'rate_per_day' => ['required', 'numeric', 'min:0', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'rate_per_day' => ['required', 'numeric', 'min:0'],
 
         ];
     }

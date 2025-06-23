@@ -109,10 +109,9 @@ import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import PaginationLink from '@/Components/PaginationLink.vue'
+import { useFlash } from '@/Composables/Flash'
 
 defineOptions({ layout: SidebarLayout })
-
-const successMessage = ref(null)
 
 const props = defineProps({
   projects: Object,
@@ -141,22 +140,13 @@ const selectStatus = (selected) => {
   isOpen.value = false
 }
 
-watch([search, status], () => {
-  router.get('/projects', {
-    search: search.value,
-    status: status.value,
-  }, {
+const { successMessage } = useFlash(props)
+
+watch(search, (newValue) => {
+  router.get('/designations', { search: newValue }, {
     preserveState: true,
-    preserveScroll: true,
+    replace: true
   })
 })
 
-watchEffect(() => {
-  if (props.flash?.success) {
-    successMessage.value = props.flash.success
-    setTimeout(() => {
-      successMessage.value = null
-    }, 4000)
-  }
-})
 </script>
