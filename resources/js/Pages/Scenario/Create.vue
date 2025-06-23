@@ -28,11 +28,14 @@
 
         <div class="row mb-3">
           <div class="col">
-            <FormInput
-              v-model="form.total_cost"
-              label="Total Cost"
-              id="total_cost"
-            />
+            <label class="form-label">Total Cost</label>
+            <div class="form-control bg-secondary-subtle">
+              {{
+                form.total_cost
+                  ? parseFloat(form.total_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' })
+                  : '-'
+              }}
+            </div>
           </div>
 
           <div class="col">
@@ -46,12 +49,14 @@
           </div>
 
           <div class="col">
-            <FormInput
-              v-model="form.final_cost"
-              label="Final Cost"
-              id="final_cost"
-              :disabled="true"
-            />
+            <label class="form-label">Final Cost</label>
+            <div class="form-control bg-secondary-subtle">
+              {{
+                form.final_cost
+                  ? parseFloat(form.final_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' })
+                  : '-'
+              }}
+            </div>
           </div>
         </div>
 
