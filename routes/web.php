@@ -38,3 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Protected API routes
 
 });
+
+Route::get('/projects/7/scenarios', function () {
+    return Inertia::render('Scenarios/Index');
+});

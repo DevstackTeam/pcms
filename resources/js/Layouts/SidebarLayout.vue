@@ -62,7 +62,8 @@ const page = usePage()
 
 // Helper to check if current path is active
 function isActive(path) {
-  return page.url.startsWith(path)
+  const currentPath = page.url.split('?')[0]
+  return currentPath === path
     ? 'bg-primary-subtle text-primary rounded fw-semibold'
     : 'text-dark'
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <Header iconClass="bi-people">Designation</Header>
+    <Header iconClass="bi-people" title="Designations"></Header>
 
     <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
       {{ successMessage }}
