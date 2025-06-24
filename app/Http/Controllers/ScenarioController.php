@@ -42,13 +42,7 @@ class ScenarioController extends Controller
 
     public function store(Project $project, ScenarioRequest $scenario_request, ManpowerRequest $mp_request)
     {
-        $scenario = $project->scenarios()->create([
-            'duration' => $scenario_request['duration'],
-            'remark' => $scenario_request['remark'],
-            'markup' => $scenario_request['markup'],
-            'total_cost' => $scenario_request['total_cost'],
-            'final_cost' => $scenario_request['final_cost'],
-        ]);
+        $scenario = $this->scenarioService->store($scenario_request->validated(), $project);
 
         foreach ($mp_request['manpower'] as $mp) {
             $scenario->manpowers()->create([
