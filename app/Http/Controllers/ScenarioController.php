@@ -106,7 +106,7 @@ class ScenarioController extends Controller
     {
         $validated = $request->validate([
             'markup' => 'required|numeric',
-            'duration' => 'required|string',
+            'duration' => 'required|int',
             'remark' => 'nullable|string',
             'total_cost' => 'required',
             'final_cost' => 'required',
