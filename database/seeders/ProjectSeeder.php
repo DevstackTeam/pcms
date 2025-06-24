@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ProjectStatus;
 use App\Models\Project;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,30 +14,36 @@ class ProjectSeeder extends Seeder
      */
     public function run(): void
     {
-        // Project::truncate();
+        $now = now();
 
         Project::create([
-            'user_id' => 2,
+            'user_id' => 1,
             'name' => 'Website Redesign',
             'description' => 'Redesign the client website for better UX.',
             'client' => 'Acme Inc.',
-            'status' => 'Completed',
+            'status' => ProjectStatus::COMPLETED->value,
+            'created_at' => $now->copy()->addSeconds(1),
+            'updated_at' => $now->copy()->addSeconds(1),
         ]);
 
         Project::create([
-            'user_id' => 2,
+            'user_id' => 1,
             'name' => 'Mobile App Development ',
             'description' => 'Develop a mobile app for order tracking.',
             'client' => 'Beta Corp.',
-            'status' => 'Not Started',
+            'status' => ProjectStatus::ACTIVE->value,
+            'created_at' => $now->copy()->addSeconds(2),
+            'updated_at' => $now->copy()->addSeconds(2),
         ]);
 
         Project::create([
-            'user_id' => 2,
-            'name' => 'Data Migration Project',
-            'description' => 'Migrate data from legacy system.',
+            'user_id' => 1,
+            'name' => 'Web App Development',
+            'description' => 'Develop Web App.',
             'client' => 'Gamma LLC',
-            'status' => 'Active',
+            'status' => ProjectStatus::NOT_STARTED->value,
+            'created_at' => $now->copy()->addSeconds(3),
+            'updated_at' => $now->copy()->addSeconds(3),
         ]);
     }
 }
