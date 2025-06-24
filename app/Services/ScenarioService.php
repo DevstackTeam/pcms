@@ -17,4 +17,17 @@ class ScenarioService
             'final_cost' => $data['final_cost'],
         ]);
     }
+
+    public function update(array $data, Scenario $scenario): Scenario
+    {
+        $scenario->update([
+            'duration' => $data['duration'],
+            'remark' => $data['remark'],
+            'markup' => $data['markup'],
+            'total_cost' => $data['total_cost'],
+            'final_cost' => $data['final_cost'],
+        ]);
+
+        return $scenario;
+    }
 }

@@ -90,13 +90,7 @@ class ScenarioController extends Controller
         ManpowerRequest $mp_request,
     )
     {
-        $scenario->update([
-            'duration' => $scenario_request['duration'],
-            'remark' => $scenario_request['remark'],
-            'markup' => $scenario_request['markup'],
-            'total_cost' => $scenario_request['total_cost'],
-            'final_cost' => $scenario_request['final_cost'],
-        ]);
+        $scenario = $this->scenarioService->update($scenario_request->validated(), $scenario);
 
         $scenario->manpowers()->delete();
 
