@@ -16,8 +16,6 @@ class Manpower extends Model
         'total_cost',
     ];
 
-    protected $table = 'manpower';
-
     public function designation(): BelongsTo
     {
         return $this->belongsTo(Designation::class);
