@@ -11,7 +11,7 @@
 
     <CardBox title="Project's Scenario" :showButton="true" buttonText="Add Scenario" @button-click="goToCreate">
       <div class="table-responsive">
-        <table
+        <table 
           class="table table-hover table-bordered table-striped align-middle text-center"
           style="table-layout: fixed; width: 100%;"
         >
@@ -29,15 +29,33 @@
               <td>{{ scenario.id }}</td>
               <td>{{ scenario.duration }} Month</td>
               <td>{{ scenario.markup }}%</td>
-              <td>RM {{ scenario.final_cost }}</td>
+
+              <td class="text-center">
+                <div class="d-inline-block text-start" style="width: 150px;">
+                  {{
+                    parseFloat(scenario.final_cost).toLocaleString('ms-MY', {
+                      style: 'currency',
+                      currency: 'MYR'
+                    })
+                  }}
+                </div>
+              </td>
+
               <td class="space-x-2">
-                <Link :href="`/projects/${project.id}/scenarios/${scenario.id}`" class="text-primary me-2">
-                <i class="bi bi-eye me-2"></i>
+                <Link :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-primary me-2">
+                  <i class="bi bi-eye me-2"></i>
                 </Link>
-                <Link :href="`/projects/${project.id}/scenarios/${scenario.id}/edit`" class="text-primary me-3">
-                <i class="bi bi-pencil"></i>
+
+                <Link :href='`/projects/${project.id}/scenarios/${scenario.id}/edit`' class="text-primary me-3">
+                  <i class="bi bi-pencil"></i>
                 </Link>
-                <button type="button" class="btn btn-link text-danger p-0" @click="confirmDelete(scenario.id)">
+
+                <button 
+                  type="button" 
+                  class="btn btn-link text-danger p-0" 
+                  title="Delete" 
+                  @click="confirmDelete(scenario.id)"
+                >
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
@@ -91,8 +109,20 @@
                 </tr>
                 <tr>
                   <td>Total Cost</td>
-                  <td>RM {{ selectedScenario1.total_cost }}</td>
-                  <td>RM {{ selectedScenario2.total_cost }}</td>
+                  <td>
+                    {{ 
+                      parseFloat(selectedScenario1.total_cost).toLocaleString('ms-MY', { 
+                        style: 'currency', 
+                        currency: 'MYR' 
+                      }) 
+                    }}</td>
+                  <td>
+                    {{ 
+                      parseFloat(selectedScenario2.total_cost).toLocaleString('ms-MY', { 
+                        style: 'currency', 
+                        currency: 'MYR' }) 
+                    }}
+                  </td>
                 </tr>
                 <tr>
                   <td>Mark Up</td>
@@ -101,11 +131,23 @@
                 </tr>
                 <tr>
                   <td>Final Cost</td>
+
                   <td :class="finalCostClass(selectedScenario1.final_cost, selectedScenario2.final_cost)">
-                    RM {{ selectedScenario1.final_cost }}
+                    {{ 
+                      parseFloat(selectedScenario1.final_cost).toLocaleString('ms-MY', { 
+                        style: 'currency', 
+                        currency: 'MYR' 
+                      }) 
+                    }}
                   </td>
+                  
                   <td :class="finalCostClass(selectedScenario2.final_cost, selectedScenario1.final_cost)">
-                    RM {{ selectedScenario2.final_cost }}
+                    {{ 
+                      parseFloat(selectedScenario2.final_cost).toLocaleString('ms-MY', { 
+                        style: 'currency', 
+                        currency: 'MYR' 
+                      }) 
+                    }}
                   </td>
                 </tr>
               </tbody>
@@ -186,10 +228,10 @@ function performDelete() {
   if (!confirmDeleteId.value) return
 
   router.delete(`/projects/${props.project.id}/scenarios/${confirmDeleteId.value}`, {
-  onSuccess: () => {
-    showConfirmModal.value = false
-    confirmDeleteId.value = null
-  }
-})
+    onSuccess: () => {
+      showConfirmModal.value = false
+      confirmDeleteId.value = null
+    }
+  })
 }
 </script>

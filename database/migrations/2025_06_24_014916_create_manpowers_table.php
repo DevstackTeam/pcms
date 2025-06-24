@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('manpower', function (Blueprint $table) {
+        Schema::create('manpowers', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Designation::class);
             $table->foreignIdFor(Scenario::class);
-            $table->decimal('rate_per_day', 8, 2);
+            $table->decimal('rate_per_day', 10, 2);
             $table->integer('no_of_people');
             $table->integer('total_day');
-            $table->decimal('total_cost', 8, 2);
+            $table->decimal('total_cost', 10, 2);
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('manpower');
+        Schema::dropIfExists('manpowers');
     }
 };

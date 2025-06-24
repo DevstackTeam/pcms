@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Manpower extends Model
 {
     protected $fillable = [
+        'designation_id',
+        'scenario_id',
         'total_day',
         'rate_per_day',
         'no_of_people',
+        'total_cost',
     ];
-
-    protected $table = 'manpower';
 
     public function designation(): BelongsTo
     {

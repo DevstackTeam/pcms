@@ -6,45 +6,58 @@
       <form>
         <div class="row mb-4">
           <div class="col">
-            <FormInput 
-              v-model="scenario.duration"
-              label="Duration"
-              :disabled="true"
-              />
+            <FormDetail label="Duration" id="duration">
+              {{ scenario.duration }}
+            </FormDetail>
           </div>
 
           <div class="col">
-            <FormInput 
-              v-model="scenario.remark"
-              label="Remark"
-              :disabled="true"
-            />
+            <FormDetail label="Remark" id="remark">
+              {{ scenario.remark }}
+            </FormDetail>
           </div>
         </div>
 
+        <h6>Manpower</h6>
+        <table class="table table-bordered text-center">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 30%;">Designation</th>
+              <th scope="col" style="width: 15%;">Rate/Day</th>
+              <th scope="col" style="width: 15%;">No. of People</th>
+              <th scope="col" style="width: 15%;">Total Day</th>
+              <th scope="col" style="width: 25%;">Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(manpower, index) in manpowers" :key="index">
+              <td>{{ manpower.designation.name }}</td>
+              <td>
+                {{ parseFloat(manpower.rate_per_day).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
+              <td>{{ manpower.no_of_people }}</td>
+              <td>{{ manpower.total_day }}</td>
+              <td>{{ parseFloat(manpower.total_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
+            </tr>
+          </tbody>
+        </table>
+
         <div class="row mb-3">
           <div class="col">
-            <FormInput
-              v-model="scenario.total_cost"
-              label="Total Cost"
-              :disabled="true"
-            />
+            <FormDetail label="Total Cost" id="total-cost">
+              {{ parseFloat(scenario.total_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}
+            </FormDetail>
           </div>
 
           <div class="col">
-            <FormInput
-              v-model="scenario.markup"
-              label="Markup"
-              :disabled="true"
-            />
+            <FormDetail label="Markup" id="markup">
+              {{ scenario.markup }}
+            </FormDetail>
           </div>
           
           <div class="col">
-            <FormInput
-              v-model="scenario.final_cost"
-              label="Final Cost"
-              :disabled="true"
-            />
+            <FormDetail label="Final Cost" id="final-cost">
+              {{ parseFloat(scenario.final_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}
+            </FormDetail>
           </div>
         </div>
 
@@ -62,7 +75,7 @@ import { Link } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
-import FormInput from '../../Components/FormInput.vue'
+import FormDetail from '../../Components/FormDetail.vue'
 
 defineOptions({
   layout: SidebarLayout,
@@ -71,5 +84,6 @@ defineOptions({
 const props = defineProps({
   project: Object,
   scenario: Object,
+  manpowers: Object,
 })
 </script>
