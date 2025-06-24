@@ -5,11 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Designation;
 use App\Models\Scenario;
 use App\Models\Project;
+use App\Services\ScenarioService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ScenarioController extends Controller
 {
+    protected $scenarioService;
+
+    public function __construct(ScenarioService $scenarioService)
+    {
+        $this->scenarioService = $scenarioService;
+    }
+
     public function index(Project $project)
     {
        $scenarios = $project->scenarios()->latest()->get();
