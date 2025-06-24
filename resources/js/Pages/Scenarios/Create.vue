@@ -204,11 +204,10 @@ watch(
 
     form.manpower.forEach((mp) => {
       const cost = calculateCost(mp)
-      mp.total_cost = parseFloat(cost.toFixed(2))
       total += cost
     })
 
-    form.total_cost = total.toFixed(2)
+    form.total_cost = total
   },
   { deep: true }
 )

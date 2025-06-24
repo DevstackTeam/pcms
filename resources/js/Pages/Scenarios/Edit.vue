@@ -70,11 +70,13 @@
 
         <div class="row mb-3">
           <div class="col">
-            <FormInput
-              v-model="form.total_cost"
-              label="Total Cost"
-              id="total_cost"
-            />
+            <FormDetail label="Total Cost" id="total-cost">
+              {{ parseFloat(form.total_cost).toLocaleString('ms-MY', { 
+                  style: 'currency', 
+                  currency: 'MYR' 
+                })
+              }}
+            </FormDetail>
           </div>
 
           <div class="col">
@@ -88,12 +90,13 @@
           </div>
 
           <div class="col">
-            <FormInput
-              v-model="form.final_cost"
-              label="Final Cost"
-              id="final_cost"
-              :disabled="true"
-            />
+            <FormDetail label="Final Cost" id="final-cost">
+              {{ parseFloat(form.final_cost).toLocaleString('ms-MY', { 
+                  style: 'currency', 
+                  currency: 'MYR' 
+                })  
+              }}
+            </FormDetail>
           </div>
         </div>
 
@@ -113,6 +116,7 @@ import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormInput from '../../Components/FormInput.vue'
+import FormDetail from '../../Components/FormDetail.vue'
 
 defineOptions({
   layout: SidebarLayout,
