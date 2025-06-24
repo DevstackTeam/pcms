@@ -204,6 +204,7 @@ watch(
 
     form.manpower.forEach((mp) => {
       const cost = calculateCost(mp)
+      mp.total_cost = cost
       total += cost
     })
 
