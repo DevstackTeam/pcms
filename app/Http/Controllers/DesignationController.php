@@ -16,7 +16,7 @@ class DesignationController extends Controller
         $this->designationService = $designationService;
     }
 
-public function index(Request $request)
+    public function index(Request $request)
     {
         $search = $request->input('search');
 
@@ -29,25 +29,13 @@ public function index(Request $request)
         ]);
     }
 
-    public function create()
-    {
-        return Inertia::render('Designations/Create');
-    }
-
     public function store(DesignationRequest $request)
     {
-    $designation = $this->designationService->create($request->only('name', 'rate_per_day'));
+        $designation = $this->designationService->create($request->only('name', 'rate_per_day'));
 
-    // dd($designation);
-
-    return redirect()->route('designations.index', ['designation' => $designation])->with('success', 'Designation created.');
-   }
-
-    public function edit(Designation $designation)
-    {
-        return Inertia::render('Designations/Edit', [
-            'designation' => $designation
-        ]);
+        return redirect()
+            ->route('designations.index', ['designation' => $designation])
+            ->with('success', 'Designation created.');
     }
 
     public function update(DesignationRequest $request, Designation $designation)
