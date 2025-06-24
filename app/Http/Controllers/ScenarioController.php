@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ManpowerRequest;
 use App\Http\Requests\ScenarioRequest;
 use App\Models\Designation;
 use App\Models\Scenario;
@@ -39,17 +40,8 @@ class ScenarioController extends Controller
         ]);
     }
 
-    public function store(Project $project, Request $request, ScenarioRequest $scenario_request)
+    public function store(Project $project, ScenarioRequest $scenario_request, ManpowerRequest $mp_request)
     {
-        $validated = $request->validate([
-            'manpower' => 'required|array',
-            'manpower.*.designation_id' => 'required|exists:designations,id',
-            'manpower.*.rate_per_day' => 'required|numeric',
-            'manpower.*.no_of_people' => 'required|integer',
-            'manpower.*.total_day' => 'required|integer',
-            'manpower.*.total_cost' => 'required|numeric',
-        ]);
-
         $scenario = $project->scenarios()->create([
             'duration' => $scenario_request['duration'],
             'remark' => $scenario_request['remark'],
@@ -58,7 +50,7 @@ class ScenarioController extends Controller
             'final_cost' => $scenario_request['final_cost'],
         ]);
 
-        foreach ($validated['manpower'] as $mp) {
+        foreach ($mp_request['manpower'] as $mp) {
             $scenario->manpowers()->create([
                 'designation_id' => $mp['designation_id'],
                 'rate_per_day' => $mp['rate_per_day'],
@@ -99,20 +91,11 @@ class ScenarioController extends Controller
 
     public function update(
         Project $project, 
-        Request $request, 
         Scenario $scenario, 
-        ScenarioRequest $scenario_request
+        ScenarioRequest $scenario_request,
+        ManpowerRequest $mp_request,
     )
     {
-        $validated = $request->validate([
-            'manpower' => 'required|array',
-            'manpower.*.designation_id' => 'required|exists:designations,id',
-            'manpower.*.rate_per_day' => 'required|numeric',
-            'manpower.*.no_of_people' => 'required|integer',
-            'manpower.*.total_day' => 'required|integer',
-            'manpower.*.total_cost' => 'required|numeric',
-        ]);
-
         $scenario->update([
             'duration' => $scenario_request['duration'],
             'remark' => $scenario_request['remark'],
@@ -123,7 +106,7 @@ class ScenarioController extends Controller
 
         $scenario->manpowers()->delete();
 
-        foreach ($validated['manpower'] as $mp) {
+        foreach ($mp_request['manpower'] as $mp) {
             $scenario->manpowers()->create([
                 'designation_id' => $mp['designation_id'],
                 'rate_per_day' => $mp['rate_per_day'],
