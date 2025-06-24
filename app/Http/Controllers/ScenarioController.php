@@ -7,6 +7,7 @@ use App\Http\Requests\ScenarioRequest;
 use App\Models\Designation;
 use App\Models\Scenario;
 use App\Models\Project;
+use App\Services\ManpowerService;
 use App\Services\ScenarioService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -14,10 +15,12 @@ use Inertia\Inertia;
 class ScenarioController extends Controller
 {
     protected $scenarioService;
+    protected $manpowerService;
 
-    public function __construct(ScenarioService $scenarioService)
+    public function __construct(ScenarioService $scenarioService, ManpowerService $manpowerService)
     {
         $this->scenarioService = $scenarioService;
+        $this->manpowerService = $manpowerService;
     }
 
     public function index(Project $project)
@@ -44,15 +47,7 @@ class ScenarioController extends Controller
     {
         $scenario = $this->scenarioService->store($scenario_request->validated(), $project);
 
-        foreach ($mp_request['manpower'] as $mp) {
-            $scenario->manpowers()->create([
-                'designation_id' => $mp['designation_id'],
-                'rate_per_day' => $mp['rate_per_day'],
-                'no_of_people' => $mp['no_of_people'],
-                'total_day' => $mp['total_day'],
-                'total_cost' => $mp['total_cost'],
-            ]);
-        }
+        $this->manpowerService->storeMany($mp_request->validated()['manpower'], $scenario);
 
         return redirect()
             ->route('projects.scenarios.index', $project)
@@ -94,15 +89,7 @@ class ScenarioController extends Controller
 
         $scenario->manpowers()->delete();
 
-        foreach ($mp_request['manpower'] as $mp) {
-            $scenario->manpowers()->create([
-                'designation_id' => $mp['designation_id'],
-                'rate_per_day' => $mp['rate_per_day'],
-                'no_of_people' => $mp['no_of_people'],
-                'total_day' => $mp['total_day'],
-                'total_cost' => $mp['total_cost'],
-            ]);
-        }
+        $this->manpowerService->storeMany($mp_request->validated()['manpower'], $scenario);
 
         return redirect()
             ->route('projects.scenarios.index', $project)
