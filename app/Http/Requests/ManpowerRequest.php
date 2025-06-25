@@ -27,6 +27,7 @@ class ManpowerRequest extends FormRequest
             'manpower.*.rate_per_day' => 'required|numeric|min:0',
             'manpower.*.no_of_people' => 'required|integer|min:0',
             'manpower.*.total_day' => 'required|integer|min:0',
+            'manpower.*.remark' => 'nullable|string',
             'manpower.*.total_cost' => 'required|numeric|min:0',
         ];
     }

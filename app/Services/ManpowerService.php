@@ -14,6 +14,7 @@ class ManpowerService
                 'rate_per_day' => $mp['rate_per_day'],
                 'no_of_people' => $mp['no_of_people'],
                 'total_day' => $mp['total_day'],
+                'remark' => $mp['remark'],
                 'total_cost' => $mp['total_cost'],
             ]);
         }
