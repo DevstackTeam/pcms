@@ -2,6 +2,16 @@
   <div class="container-fluid">
     <Header iconClass="bi-kanban" title="Project" :subtitle="`${project.name} | Scenario ${scenario.id}`"></Header>
 
+    <div v-if="form.errors.total_cost" class="alert alert-danger d-flex align-items-center gap-2 p-2 small mb-3">
+      <i class="bi bi-exclamation-circle-fill"></i>
+      <div>{{ form.errors.total_cost }}</div>
+    </div>
+
+    <div v-if="form.errors.manpower" class="alert alert-danger d-flex align-items-center gap-2 p-2 small mb-3">
+      <i class="bi bi-exclamation-circle-fill"></i>
+      <div>{{ form.errors.manpower }}</div>
+    </div>
+
     <CardBox title="Edit Scenario">
       <form @submit.prevent="submit">
         <div class="row mb-4">
@@ -56,10 +66,48 @@
                 ></v-autocomplete>
               </td>
 
-              <td><input v-model="manpower.rate_per_day" class="form-control" @input="() => manpower.rate_locked = true"></td>
-              <td><input v-model.number="manpower.no_of_people" type="number" class="form-control" /></td>
-              <td><input v-model.number="manpower.total_day" type="number" class="form-control" /></td>
+              <td>
+                <input
+                  v-model.number="manpower.rate_per_day"
+                  type="number"
+                  class="form-control"
+                  :class="{ 'is-invalid': form.errors?.[`manpower.${index}.rate_per_day`] }"
+                  @input="() => manpower.rate_locked = true"
+                />
+
+                <div class="invalid-feedback" v-if="form.errors?.[`manpower.${index}.rate_per_day`]">
+                  {{ form.errors[`manpower.${index}.rate_per_day`] }}
+                </div>
+              </td>
+
+              <td>
+                <input
+                  v-model.number="manpower.no_of_people"
+                  type="number"
+                  class="form-control"
+                  :class="{ 'is-invalid': form.errors?.[`manpower.${index}.no_of_people`] }"
+                />
+
+                <div class="invalid-feedback" v-if="form.errors?.[`manpower.${index}.no_of_people`]">
+                  {{ form.errors[`manpower.${index}.no_of_people`] }}
+                </div>
+              </td>
+
+              <td>
+                <input
+                  v-model.number="manpower.total_day"
+                  type="number"
+                  class="form-control"
+                  :class="{ 'is-invalid': form.errors?.[`manpower.${index}.total_day`] }"
+                />
+
+                <div class="invalid-feedback" v-if="form.errors?.[`manpower.${index}.total_day`]">
+                  {{ form.errors[`manpower.${index}.total_day`] }}
+                </div>
+              </td>
+
               <td>RM {{ calculateCost(manpower).toLocaleString() }}</td>
+              
               <td>
                 <button type="button" class="btn btn-sm btn-danger" @click="removeManpower(index)">
                   <i class="bi bi-trash"></i>

@@ -73,9 +73,11 @@
                   :class="{ 'is-invalid': form.errors?.[`manpower.${index}.rate_per_day`] }"
                   @input="() => manpower.rate_locked = true"
                 />
+
                 <div class="invalid-feedback" v-if="form.errors?.[`manpower.${index}.rate_per_day`]">
                   {{ form.errors[`manpower.${index}.rate_per_day`] }}
-                </div></td>
+                </div>
+              </td>
 
               <td>
                 <input
@@ -102,6 +104,7 @@
               </td>
 
               <td>{{ calculateCost(manpower).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
+              
               <td>
                 <button type="button" class="btn btn-sm btn-danger" @click="removeManpower(index)">
                   <i class="bi bi-trash"></i>
