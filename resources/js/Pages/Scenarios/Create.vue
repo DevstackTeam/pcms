@@ -2,6 +2,16 @@
   <div class="container-fluid">
     <Header iconClass="bi-kanban" title="Project" :subtitle="project.name"></Header>
 
+    <div v-if="form.errors.total_cost" class="alert alert-danger d-flex align-items-center gap-2 p-2 small mb-3">
+      <i class="bi bi-exclamation-circle-fill"></i>
+      <div>{{ form.errors.total_cost }}</div>
+    </div>
+
+    <div v-if="form.errors.manpower" class="alert alert-danger d-flex align-items-center gap-2 p-2 small mb-3">
+      <i class="bi bi-exclamation-circle-fill"></i>
+      <div>{{ form.errors.manpower }}</div>
+    </div>
+
     <CardBox title="Create Scenario">
       <form @submit.prevent="submit">
         <div class="row mb-4">
@@ -41,7 +51,11 @@
           <tbody>
             <tr v-for="(manpower, index) in form.manpower" :key="index">
               <td>
-                <select v-model="manpower.designation_id" class="form-select">
+                <select
+                  v-model="manpower.designation_id"
+                  class="form-select"
+                  :class="{ 'is-invalid': form.errors?.[`manpower.${index}.designation_id`] }"
+                >
                   <option value="">Select Designation</option>
                   <option 
                     v-for="designation in designations" 
@@ -51,11 +65,48 @@
                     {{ designation.name }}
                   </option>
                 </select>
+
+                <div class="invalid-feedback" v-if="form.errors?.[`manpower.${index}.designation_id`]">
+                  {{ form.errors[`manpower.${index}.designation_id`] }}
+                </div>
               </td>
 
-              <td><input v-model="manpower.rate_per_day" class="form-control" @input="() => manpower.rate_locked = true"></td>
-              <td><input v-model.number="manpower.no_of_people" type="number" class="form-control" /></td>
-              <td><input v-model.number="manpower.total_day" type="number" class="form-control" /></td>
+              <td>
+                <input
+                  v-model.number="manpower.rate_per_day"
+                  type="number"
+                  class="form-control"
+                  :class="{ 'is-invalid': form.errors?.[`manpower.${index}.rate_per_day`] }"
+                  @input="() => manpower.rate_locked = true"
+                />
+                <div class="invalid-feedback" v-if="form.errors?.[`manpower.${index}.rate_per_day`]">
+                  {{ form.errors[`manpower.${index}.rate_per_day`] }}
+                </div></td>
+
+              <td>
+                <input
+                  v-model.number="manpower.no_of_people"
+                  type="number"
+                  class="form-control"
+                  :class="{ 'is-invalid': form.errors?.[`manpower.${index}.no_of_people`] }"
+                />
+                <div class="invalid-feedback" v-if="form.errors?.[`manpower.${index}.no_of_people`]">
+                  {{ form.errors[`manpower.${index}.no_of_people`] }}
+                </div>
+              </td>
+
+              <td>
+                <input
+                  v-model.number="manpower.total_day"
+                  type="number"
+                  class="form-control"
+                  :class="{ 'is-invalid': form.errors?.[`manpower.${index}.total_day`] }"
+                />
+                <div class="invalid-feedback" v-if="form.errors?.[`manpower.${index}.total_day`]">
+                  {{ form.errors[`manpower.${index}.total_day`] }}
+                </div>
+              </td>
+
               <td>{{ calculateCost(manpower).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
               <td>
                 <button type="button" class="btn btn-sm btn-danger" @click="removeManpower(index)">
@@ -162,6 +213,7 @@ const addManpower = () => {
 
 const removeManpower = (index) => {
   form.manpower.splice(index, 1)
+  form.clearErrors()
 }
 
 const calculateCost = (mp) => (mp.no_of_people || 0) * (mp.total_day || 0) * (mp.rate_per_day || 0)

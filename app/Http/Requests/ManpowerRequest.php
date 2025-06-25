@@ -30,4 +30,25 @@ class ManpowerRequest extends FormRequest
             'manpower.*.total_cost' => 'required|numeric|min:0',
         ];
     }
+
+    public function messages(): array
+    {
+        $fields = [
+            'designation_id',
+            'rate_per_day',
+            'no_of_people',
+            'total_day',
+            'total_cost',
+        ];
+
+        $messages = [];
+
+        foreach ($fields as $field) {
+            $messages["manpower.*.$field.required"] = 'This field is required.';
+            $messages["manpower.*.$field.min"] = 'Invalid value.';
+            $messages["manpower.required"] = 'Please add at least one manpower';
+        }
+
+        return $messages;
+    }
 }
