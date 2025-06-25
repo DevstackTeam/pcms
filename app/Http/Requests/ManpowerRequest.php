@@ -44,8 +44,9 @@ class ManpowerRequest extends FormRequest
         $messages = [];
 
         foreach ($fields as $field) {
-            $messages["manpower.*.$field.required"] = 'This field is required.';
+            $messages["manpower.*.$field.required"] = 'Required.';
             $messages["manpower.*.$field.min"] = 'Invalid value.';
+            $messages["manpower.*.$field.integer"] = 'Invalid value.';
             $messages["manpower.required"] = 'Please add at least one manpower';
         }
 
