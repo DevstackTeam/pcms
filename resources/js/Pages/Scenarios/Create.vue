@@ -117,7 +117,7 @@
                 />
               </td>
 
-              <td>{{ calculateCost(manpower).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
+              <td>{{ (manpower.total_cost || 0).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
 
               <td>
                 <button type="button" class="btn btn-sm btn-danger" @click="removeManpower(index)">
@@ -179,6 +179,8 @@ import FormInput from '../../Components/FormInput.vue'
 import FormDetail from '../../Components/FormDetail.vue'
 import { Link, useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
+import { useSanitizeInput } from '../../Composables/Formatter'
+import { useCostCalculator } from '../../Composables/Calculation'
 
 defineOptions({
   layout: SidebarLayout,
@@ -229,21 +231,10 @@ const removeManpower = (index) => {
   form.clearErrors()
 }
 
-const calculateCost = (mp) => (mp.no_of_people || 0) * (mp.total_day || 0) * (mp.rate_per_day || 0)
+const { sanitizeDecimalInput } = useSanitizeInput()
+const handleRateInput = (e, mp) => sanitizeDecimalInput(e, mp, 'rate_per_day')
 
-watch(
-  () => [form.total_cost, form.markup],
-  ([total_cost, markup]) => {
-    const cost = parseFloat(total_cost)
-    const percent = parseFloat(markup)
-
-    if (!isNaN(cost) && !isNaN(percent)) {
-      form.final_cost = ((100 + percent) / 100 * cost).toFixed(2)
-    } else {
-      form.final_cost = null
-    }
-  }
-)
+useCostCalculator(form)
 
 watch(
   () => form.manpower.map(mp => mp.designation_id),
@@ -261,34 +252,4 @@ watch(
     })
   }
 )
-
-watch(
-  () => form.manpower,
-  () => {
-    let total = 0
-
-    form.manpower.forEach((mp) => {
-      const cost = calculateCost(mp)
-      mp.total_cost = cost
-      total += cost
-    })
-
-    form.total_cost = total
-  },
-  { deep: true }
-)
-
-const handleRateInput = (event, mp) => {
-  let val = event.target.value
-  val = val.replace(/[^0-9.]/g, '')
-
-  if (val.includes('.')) {
-    const [int, dec] = val.split('.')
-    val = `${int}.${dec.slice(0, 2)}`
-  }
-
-  mp.rate_per_day = val
-  mp.rate_locked = true
-}
-
 </script>
