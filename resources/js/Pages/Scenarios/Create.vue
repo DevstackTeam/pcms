@@ -41,10 +41,11 @@
           <thead>
             <tr>
               <th scope="col" style="width: 25%;">Designation</th>
-              <th scope="col" style="width: 15%;">Rate/Day</th>
+              <th scope="col" style="width: 13%;">Rate/Day</th>
               <th scope="col" style="width: 15%;">No. of People</th>
-              <th scope="col" style="width: 15%;">Total Day</th>
-              <th scope="col" style="width: 25%;">Cost</th>
+              <th scope="col" style="width: 12%;">Total Day</th>
+              <th scope="col" style="width: 15%;">Remark</th>
+              <th scope="col" style="width: 15%;">Cost</th>
               <th scope="col" style="width: 5%;">Action</th>
             </tr>
           </thead>
@@ -99,6 +100,20 @@
                   hide-details="auto"
                   :error="!!form.errors?.[`manpower.${index}.total_day`]"
                   :error-messages="form.errors?.[`manpower.${index}.total_day`] ? [form.errors[`manpower.${index}.total_day`]] : []"
+                />
+              </td>
+
+              <td>
+                <v-textarea
+                  v-model="manpower.remark"
+                  type="text"
+                  variant="outlined"
+                  density="compact"
+                  hide-details="auto"
+                  rows="1"
+                  auto-grow
+                  :error="!!form.errors?.[`manpower.${index}.remark`]"
+                  :error-messages="form.errors?.[`manpower.${index}.remark`] ? [form.errors[`manpower.${index}.remark`]] : []"
                 />
               </td>
 
@@ -186,6 +201,7 @@ const form = useForm({
       rate_per_day: null,
       no_of_people: null,
       total_day: null,
+      remark: null,
       total_cost: null,
       rate_locked: false,
     },
@@ -202,6 +218,7 @@ const addManpower = () => {
     rate_per_day:null, 
     no_of_people: null, 
     total_day: null, 
+    remark: null,
     total_cost:null,
     rate_locked: false,
   })

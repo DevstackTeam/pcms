@@ -22,11 +22,12 @@
         <table class="table table-bordered text-center">
           <thead>
             <tr>
-              <th scope="col" style="width: 30%;">Designation</th>
-              <th scope="col" style="width: 15%;">Rate/Day</th>
+              <th scope="col" style="width: 25%;">Designation</th>
+              <th scope="col" style="width: 13%;">Rate/Day</th>
               <th scope="col" style="width: 15%;">No. of People</th>
-              <th scope="col" style="width: 15%;">Total Day</th>
-              <th scope="col" style="width: 25%;">Cost</th>
+              <th scope="col" style="width: 12%;">Total Day</th>
+              <th scope="col" style="width: 15%;">Remark</th>
+              <th scope="col" style="width: 15%;">Cost</th>
             </tr>
           </thead>
           <tbody>
@@ -36,6 +37,7 @@
                 {{ parseFloat(manpower.rate_per_day).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
               <td>{{ manpower.no_of_people }}</td>
               <td>{{ manpower.total_day }}</td>
+              <td style="text-align: left;">{{ manpower.remark }}</td>
               <td>{{ parseFloat(manpower.total_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
             </tr>
           </tbody>
@@ -50,7 +52,7 @@
 
           <div class="col">
             <FormDetail label="Markup">
-              {{ scenario.markup }}
+              {{ scenario.markup }}%
             </FormDetail>
           </div>
           

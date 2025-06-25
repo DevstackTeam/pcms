@@ -41,10 +41,11 @@
           <thead>
             <tr>
               <th scope="col" style="width: 25%;">Designation</th>
-              <th scope="col" style="width: 15%;">Rate/Day</th>
+              <th scope="col" style="width: 13%;">Rate/Day</th>
               <th scope="col" style="width: 15%;">No. of People</th>
-              <th scope="col" style="width: 15%;">Total Day</th>
-              <th scope="col" style="width: 25%;">Cost</th>
+              <th scope="col" style="width: 12%;">Total Day</th>
+              <th scope="col" style="width: 15%;">Remark</th>
+              <th scope="col" style="width: 15%;">Cost</th>
               <th scope="col" style="width: 5%;">Action</th>
             </tr>
           </thead>
@@ -67,43 +68,54 @@
               </td>
 
               <td>
-                <input
-                  v-model.number="manpower.rate_per_day"
-                  type="number"
-                  class="form-control"
-                  :class="{ 'is-invalid': form.errors?.[`manpower.${index}.rate_per_day`] }"
-                  @input="() => manpower.rate_locked = true"
+                <v-text-field
+                  v-model="manpower.rate_per_day"
+                  type="text"
+                  variant="outlined"
+                  density="compact"
+                  hide-details="auto"
+                  :error="!!form.errors?.[`manpower.${index}.rate_per_day`]"
+                  :error-messages="form.errors?.[`manpower.${index}.rate_per_day`] ? [form.errors[`manpower.${index}.rate_per_day`]] : []"
+                  @input="e => handleRateInput(e, manpower)"
                 />
-
-                <div class="invalid-feedback" v-if="form.errors?.[`manpower.${index}.rate_per_day`]">
-                  {{ form.errors[`manpower.${index}.rate_per_day`] }}
-                </div>
               </td>
 
               <td>
-                <input
+                <v-text-field
                   v-model.number="manpower.no_of_people"
                   type="number"
-                  class="form-control"
-                  :class="{ 'is-invalid': form.errors?.[`manpower.${index}.no_of_people`] }"
+                  variant="outlined"
+                  density="compact"
+                  hide-details="auto"
+                  :error="!!form.errors?.[`manpower.${index}.no_of_people`]"
+                  :error-messages="form.errors?.[`manpower.${index}.no_of_people`] ? [form.errors[`manpower.${index}.no_of_people`]] : []"
                 />
-
-                <div class="invalid-feedback" v-if="form.errors?.[`manpower.${index}.no_of_people`]">
-                  {{ form.errors[`manpower.${index}.no_of_people`] }}
-                </div>
               </td>
 
               <td>
-                <input
+                <v-text-field
                   v-model.number="manpower.total_day"
                   type="number"
-                  class="form-control"
-                  :class="{ 'is-invalid': form.errors?.[`manpower.${index}.total_day`] }"
+                  variant="outlined"
+                  density="compact"
+                  hide-details="auto"
+                  :error="!!form.errors?.[`manpower.${index}.total_day`]"
+                  :error-messages="form.errors?.[`manpower.${index}.total_day`] ? [form.errors[`manpower.${index}.total_day`]] : []"
                 />
+              </td>
 
-                <div class="invalid-feedback" v-if="form.errors?.[`manpower.${index}.total_day`]">
-                  {{ form.errors[`manpower.${index}.total_day`] }}
-                </div>
+              <td>
+                <v-textarea
+                  v-model="manpower.remark"
+                  type="text"
+                  variant="outlined"
+                  density="compact"
+                  hide-details="auto"
+                  rows="1"
+                  auto-grow
+                  :error="!!form.errors?.[`manpower.${index}.remark`]"
+                  :error-messages="form.errors?.[`manpower.${index}.remark`] ? [form.errors[`manpower.${index}.remark`]] : []"
+                />
               </td>
 
               <td>RM {{ calculateCost(manpower).toLocaleString() }}</td>
@@ -192,6 +204,7 @@ const form = useForm({
     rate_per_day: mp.rate_per_day,
     no_of_people: mp.no_of_people,
     total_day: mp.total_day,
+    remark: mp.remark,
     total_cost: mp.total_cost,
     rate_locked: false,
   })),
@@ -207,6 +220,7 @@ const addManpower = () => {
     rate_per_day:null, 
     no_of_people: null, 
     total_day: null, 
+    remark: null,
     total_cost:null,
     rate_locked: false,
   })
@@ -261,4 +275,17 @@ watch(
   },
   { deep: true }
 )
+
+const handleRateInput = (event, mp) => {
+  let val = event.target.value
+  val = val.replace(/[^0-9.]/g, '')
+
+  if (val.includes('.')) {
+    const [int, dec] = val.split('.')
+    val = `${int}.${dec.slice(0, 2)}`
+  }
+
+  mp.rate_per_day = val
+  mp.rate_locked = true
+}
 </script>
