@@ -7,7 +7,7 @@
         <div class="row mb-4">
           <div class="col">
             <FormDetail label="Duration">
-              {{ scenario.duration }}
+              {{ scenario.duration }} {{ scenario.duration == 1 ? 'Month' : 'Months' }}
             </FormDetail>
           </div>
 
