@@ -51,24 +51,18 @@
           <tbody>
             <tr v-for="(manpower, index) in form.manpower" :key="index">
               <td>
-                <select
+                <v-autocomplete
                   v-model="manpower.designation_id"
-                  class="form-select"
-                  :class="{ 'is-invalid': form.errors?.[`manpower.${index}.designation_id`] }"
-                >
-                  <option value="">Select Designation</option>
-                  <option 
-                    v-for="designation in designations" 
-                    :key="designation.id" 
-                    :value="designation.id"
-                  >
-                    {{ designation.name }}
-                  </option>
-                </select>
-
-                <div class="invalid-feedback" v-if="form.errors?.[`manpower.${index}.designation_id`]">
-                  {{ form.errors[`manpower.${index}.designation_id`] }}
-                </div>
+                  :items="designations"
+                  item-title="name"
+                  item-value="id"
+                  label="Select Designation"
+                  variant="outlined"
+                  density="compact"
+                  hide-details="auto"
+                  :error="!!form.errors?.[`manpower.${index}.designation_id`]"
+                  :error-messages="form.errors?.[`manpower.${index}.designation_id`] ? [form.errors[`manpower.${index}.designation_id`]] : []"
+                ></v-autocomplete>
               </td>
 
               <td>

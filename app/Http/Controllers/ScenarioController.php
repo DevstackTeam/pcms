@@ -35,7 +35,7 @@ class ScenarioController extends Controller
 
     public function create(Project $project)
     {
-        $designations = Designation::all();
+        $designations = Designation::orderBy('name')->get();
 
         return Inertia::render('Scenarios/Create', [
             'project' => $project,
@@ -67,7 +67,7 @@ class ScenarioController extends Controller
 
     public function edit(Project $project, Scenario $scenario)
     {
-        $designations = Designation::all();
+        $designations = Designation::orderBy('name')->get();
         $manpowers = $scenario->manpowers()->get();
 
         return Inertia::render('Scenarios/Edit', [
