@@ -17,18 +17,30 @@
         >
           <thead class="table-light">
             <tr>
-              <th scope="col" style="width: 10%;">No</th>
-              <th scope="col" style="width: 25%;">Duration</th>
+              <th scope="col" style="width: 7%;">No</th>
+              <th scope="col" style="width: 15%;">Duration</th>
               <th scope="col" style="width: 15%;">Markup</th>
-              <th scope="col" style="width: 25%;">Final Cost</th>
-              <th scope="col" style="width: 25%;">Actions</th>
+              <th scope="col" style="width: 24%;">Total Cost</th>
+              <th scope="col" style="width: 24%;">Final Cost</th>
+              <th scope="col" style="width: 15%;">Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="scenario in scenarios" :key="scenario.id">
               <td>{{ scenario.id }}</td>
-              <td>{{ scenario.duration }} Month</td>
+              <td>{{ scenario.duration }} {{ scenario.duration == 1 ? 'Month' : 'Months' }}</td>
               <td>{{ scenario.markup }}%</td>
+
+              <td class="text-center">
+                <div class="d-inline-block text-start" style="width: 150px;">
+                  {{ 
+                    parseFloat(scenario.total_cost).toLocaleString('ms-MY', {
+                      style: 'currency',
+                      currency: 'MYR'
+                    }) 
+                  }}
+                </div>
+              </td>
 
               <td class="text-center">
                 <div class="d-inline-block text-start" style="width: 150px;">

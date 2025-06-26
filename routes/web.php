@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\User;
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ScenarioController;
@@ -11,7 +8,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DesignationController;
 
 Route::get('/', function () {
-    return Inertia::render('Home');
+    return redirect()->route('login');
 });
 
 Route::middleware('guest')->group(function () {

@@ -2,6 +2,16 @@
   <div class="container-fluid">
     <Header iconClass="bi-kanban" title="Project" :subtitle="project.name"></Header>
 
+    <div v-if="form.errors.total_cost" class="alert alert-danger d-flex align-items-center gap-2 p-2 small mb-3">
+      <i class="bi bi-exclamation-circle-fill"></i>
+      <div>{{ form.errors.total_cost }}</div>
+    </div>
+
+    <div v-if="form.errors.manpower" class="alert alert-danger d-flex align-items-center gap-2 p-2 small mb-3">
+      <i class="bi bi-exclamation-circle-fill"></i>
+      <div>{{ form.errors.manpower }}</div>
+    </div>
+
     <CardBox title="Create Scenario">
       <form @submit.prevent="submit">
         <div class="row mb-4">
@@ -31,32 +41,84 @@
           <thead>
             <tr>
               <th scope="col" style="width: 25%;">Designation</th>
-              <th scope="col" style="width: 15%;">Rate/Day</th>
+              <th scope="col" style="width: 13%;">Rate/Day</th>
               <th scope="col" style="width: 15%;">No. of People</th>
-              <th scope="col" style="width: 15%;">Total Day</th>
-              <th scope="col" style="width: 25%;">Cost</th>
+              <th scope="col" style="width: 12%;">Total Day</th>
+              <th scope="col" style="width: 15%;">Remark</th>
+              <th scope="col" style="width: 15%;">Cost</th>
               <th scope="col" style="width: 5%;">Action</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(manpower, index) in form.manpower" :key="index">
               <td>
-                <select v-model="manpower.designation_id" class="form-select">
-                  <option value="">Select Designation</option>
-                  <option 
-                    v-for="designation in designations" 
-                    :key="designation.id" 
-                    :value="designation.id"
-                  >
-                    {{ designation.name }}
-                  </option>
-                </select>
+                <v-autocomplete
+                  v-model="manpower.designation_id"
+                  :items="designations"
+                  item-title="name"
+                  item-value="id"
+                  label="Select Designation"
+                  variant="outlined"
+                  density="compact"
+                  hide-details="auto"
+                  :error="!!form.errors?.[`manpower.${index}.designation_id`]"
+                  :error-messages="form.errors?.[`manpower.${index}.designation_id`] ? [form.errors[`manpower.${index}.designation_id`]] : []"
+                ></v-autocomplete>
               </td>
 
-              <td><input v-model="manpower.rate_per_day" class="form-control" @input="() => manpower.rate_locked = true"></td>
-              <td><input v-model.number="manpower.no_of_people" type="number" class="form-control" /></td>
-              <td><input v-model.number="manpower.total_day" type="number" class="form-control" /></td>
-              <td>{{ calculateCost(manpower).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
+              <td>
+                <v-text-field
+                  v-model="manpower.rate_per_day"
+                  type="text"
+                  variant="outlined"
+                  density="compact"
+                  hide-details="auto"
+                  :error="!!form.errors?.[`manpower.${index}.rate_per_day`]"
+                  :error-messages="form.errors?.[`manpower.${index}.rate_per_day`] ? [form.errors[`manpower.${index}.rate_per_day`]] : []"
+                  @input="e => handleRateInput(e, manpower)"
+                />
+              </td>
+
+              <td>
+                <v-text-field
+                  v-model.number="manpower.no_of_people"
+                  type="number"
+                  variant="outlined"
+                  density="compact"
+                  hide-details="auto"
+                  :error="!!form.errors?.[`manpower.${index}.no_of_people`]"
+                  :error-messages="form.errors?.[`manpower.${index}.no_of_people`] ? [form.errors[`manpower.${index}.no_of_people`]] : []"
+                />
+              </td>
+
+              <td>
+                <v-text-field
+                  v-model.number="manpower.total_day"
+                  type="number"
+                  variant="outlined"
+                  density="compact"
+                  hide-details="auto"
+                  :error="!!form.errors?.[`manpower.${index}.total_day`]"
+                  :error-messages="form.errors?.[`manpower.${index}.total_day`] ? [form.errors[`manpower.${index}.total_day`]] : []"
+                />
+              </td>
+
+              <td>
+                <v-textarea
+                  v-model="manpower.remark"
+                  type="text"
+                  variant="outlined"
+                  density="compact"
+                  hide-details="auto"
+                  rows="1"
+                  auto-grow
+                  :error="!!form.errors?.[`manpower.${index}.remark`]"
+                  :error-messages="form.errors?.[`manpower.${index}.remark`] ? [form.errors[`manpower.${index}.remark`]] : []"
+                />
+              </td>
+
+              <td>{{ (manpower.total_cost || 0).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
+
               <td>
                 <button type="button" class="btn btn-sm btn-danger" @click="removeManpower(index)">
                   <i class="bi bi-trash"></i>
@@ -117,6 +179,8 @@ import FormInput from '../../Components/FormInput.vue'
 import FormDetail from '../../Components/FormDetail.vue'
 import { Link, useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
+import { useSanitizeInput } from '../../Composables/Formatter'
+import { useCostCalculator } from '../../Composables/Calculation'
 
 defineOptions({
   layout: SidebarLayout,
@@ -139,6 +203,7 @@ const form = useForm({
       rate_per_day: null,
       no_of_people: null,
       total_day: null,
+      remark: null,
       total_cost: null,
       rate_locked: false,
     },
@@ -155,6 +220,7 @@ const addManpower = () => {
     rate_per_day:null, 
     no_of_people: null, 
     total_day: null, 
+    remark: null,
     total_cost:null,
     rate_locked: false,
   })
@@ -162,23 +228,13 @@ const addManpower = () => {
 
 const removeManpower = (index) => {
   form.manpower.splice(index, 1)
+  form.clearErrors()
 }
 
-const calculateCost = (mp) => (mp.no_of_people || 0) * (mp.total_day || 0) * (mp.rate_per_day || 0)
+const { sanitizeDecimalInput } = useSanitizeInput()
+const handleRateInput = (e, mp) => sanitizeDecimalInput(e, mp, 'rate_per_day')
 
-watch(
-  () => [form.total_cost, form.markup],
-  ([total_cost, markup]) => {
-    const cost = parseFloat(total_cost)
-    const percent = parseFloat(markup)
-
-    if (!isNaN(cost) && !isNaN(percent)) {
-      form.final_cost = ((100 + percent) / 100 * cost).toFixed(2)
-    } else {
-      form.final_cost = null
-    }
-  }
-)
+useCostCalculator(form)
 
 watch(
   () => form.manpower.map(mp => mp.designation_id),
@@ -195,20 +251,5 @@ watch(
       }
     })
   }
-)
-
-watch(
-  () => form.manpower,
-  () => {
-    let total = 0
-
-    form.manpower.forEach((mp) => {
-      const cost = calculateCost(mp)
-      total += cost
-    })
-
-    form.total_cost = total
-  },
-  { deep: true }
 )
 </script>

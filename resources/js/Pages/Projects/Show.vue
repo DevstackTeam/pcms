@@ -13,18 +13,15 @@
       <div class="row">
         <div class="col-md-6">
           <div class="mb-3">
-            <label class="form-label">Project Name</label>
-            <input
-              type="text"
-              class="form-control"
-              :value="project.name"
-              disabled
-            />
+            <FormDetail label="Project Name">
+              {{ project.name }}
+            </FormDetail>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Description</label>
+            <label for="description" class="form-label">Description</label>
             <textarea
+              id="description"
               class="form-control"
               rows="4"
               :value="project.description"
@@ -35,23 +32,15 @@
 
         <div class="col-md-6">
           <div class="mb-3">
-            <label class="form-label">Client</label>
-            <input
-              type="text"
-              class="form-control"
-              :value="project.client"
-              disabled
-            />
+            <FormDetail label="Client">
+              {{ project.client }}
+            </FormDetail>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Status</label>
-            <input
-              type="text"
-              class="form-control"
-              :value="project.status"
-              disabled
-            />
+            <FormDetail label="Status">
+              {{ project.status }}
+            </FormDetail>
           </div>
         </div>
       </div>
@@ -76,6 +65,7 @@ import TabLink from '../../Components/TabLink.vue'
 import { Link } from '@inertiajs/vue3'
 import { usePage } from '@inertiajs/vue3'
 import { ref, watchEffect } from 'vue'
+import FormDetail from '../../Components/FormDetail.vue'
 
 defineOptions({ layout: SidebarLayout })
 

@@ -6,13 +6,13 @@
       <form>
         <div class="row mb-4">
           <div class="col">
-            <FormDetail label="Duration" id="duration">
-              {{ scenario.duration }}
+            <FormDetail label="Duration">
+              {{ scenario.duration }} {{ scenario.duration == 1 ? 'Month' : 'Months' }}
             </FormDetail>
           </div>
 
           <div class="col">
-            <FormDetail label="Remark" id="remark">
+            <FormDetail label="Remark">
               {{ scenario.remark }}
             </FormDetail>
           </div>
@@ -22,11 +22,12 @@
         <table class="table table-bordered text-center">
           <thead>
             <tr>
-              <th scope="col" style="width: 30%;">Designation</th>
-              <th scope="col" style="width: 15%;">Rate/Day</th>
+              <th scope="col" style="width: 25%;">Designation</th>
+              <th scope="col" style="width: 13%;">Rate/Day</th>
               <th scope="col" style="width: 15%;">No. of People</th>
-              <th scope="col" style="width: 15%;">Total Day</th>
-              <th scope="col" style="width: 25%;">Cost</th>
+              <th scope="col" style="width: 12%;">Total Day</th>
+              <th scope="col" style="width: 15%;">Remark</th>
+              <th scope="col" style="width: 15%;">Cost</th>
             </tr>
           </thead>
           <tbody>
@@ -36,6 +37,7 @@
                 {{ parseFloat(manpower.rate_per_day).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
               <td>{{ manpower.no_of_people }}</td>
               <td>{{ manpower.total_day }}</td>
+              <td style="text-align: left;">{{ manpower.remark }}</td>
               <td>{{ parseFloat(manpower.total_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
             </tr>
           </tbody>
@@ -43,19 +45,19 @@
 
         <div class="row mb-3">
           <div class="col">
-            <FormDetail label="Total Cost" id="total-cost">
+            <FormDetail label="Total Cost">
               {{ parseFloat(scenario.total_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}
             </FormDetail>
           </div>
 
           <div class="col">
-            <FormDetail label="Markup" id="markup">
-              {{ scenario.markup }}
+            <FormDetail label="Markup">
+              {{ scenario.markup }}%
             </FormDetail>
           </div>
           
           <div class="col">
-            <FormDetail label="Final Cost" id="final-cost">
+            <FormDetail label="Final Cost">
               {{ parseFloat(scenario.final_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}
             </FormDetail>
           </div>

@@ -20,13 +20,21 @@ class ScenarioRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-{
-    return [
-        'duration' => 'required|int|max:255',
-        'remark' => 'nullable|string',
-        'total_cost' => 'required|numeric|min:0',
-        'markup' => 'required|numeric|min:0',
-        'final_cost' => 'required|numeric|min:0',
-    ];
-}
+    {
+        return [
+            'duration' => 'required|int|max:255',
+            'remark' => 'nullable|string',
+            'total_cost' => 'required|numeric|min:0',
+            'markup' => 'required|numeric|min:0',
+            'final_cost' => 'required|numeric|min:0',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'total_cost.required' => 'Please fill manpower table',
+            'total_cost.min' => 'Invalid value for Total Cost'
+        ];
+    }
 }
