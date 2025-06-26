@@ -65,12 +65,12 @@ class ScenarioController extends Controller
 
         foreach ($validated['manpower'] as $mp) {
             $scenario->manpowers()->create([
-                'designation_id' => $mp['designation_id'],
-                'rate_per_day' => $mp['rate_per_day'],
-                'no_of_people' => $mp['no_of_people'],
-                'total_day' => $mp['total_day'],
-                'total_cost' => $mp['total_cost'],
-            ]);
+            'designation_id' => $mp['designation_id'],
+            'rate_per_day' => $mp['rate_per_day'],
+            'no_of_people' => $mp['no_of_people'],
+            'total_day' => $mp['total_day'],
+            'total_cost' => $mp['total_cost'],
+]);
         }
 
         return redirect()
@@ -147,7 +147,7 @@ class ScenarioController extends Controller
     public function destroy(Project $project, Scenario $scenario)
     {
         $scenario->delete();
-    
+
         return redirect()
             ->route('projects.scenarios.index', $project)
             ->with('success', 'Scenario deleted successfully');

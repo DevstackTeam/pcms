@@ -7,34 +7,32 @@
       <form @submit.prevent="submit">
         <div class="row">
           <div class="col-md-6">
-            <div class="mb-3">
-              <label class="form-label">Project Name</label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.name"
-              />
-            </div>
+            <FormInput
+              label="Project Name"
+              type="text"
+              v-model="form.name"
+              :error="form.errors.name"
+            />
 
-            <div class="mb-3">
-              <label class="form-label">Description</label>
-              <textarea
-                class="form-control"
-                rows="4"
-                v-model="form.description"
-              ></textarea>
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              id="description"
+              class="form-control"
+              rows="4"
+              v-model="form.description"
+            ></textarea>
+            <div v-if="form.errors.description" class="text-danger small">
+              {{ form.errors.description }}
             </div>
           </div>
 
           <div class="col-md-6">
-            <div class="mb-3">
-              <label class="form-label">Client</label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="form.client"
-              />
-            </div>
+            <FormInput
+              label="Client"
+              type="text"
+              v-model="form.client"
+              :error="form.errors.client"
+            />
 
             <div class="mb-3">
               <label for="status" class="form-label">Status</label>
@@ -87,11 +85,14 @@ import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import { Link } from '@inertiajs/vue3'
 import { ref } from 'vue'
+import FormInput from '../../Components/FormInput.vue'
 
 const hover = ref(null)
 const isOpen = ref(false)
 
-defineOptions({ layout: SidebarLayout })
+defineOptions({
+    layout: SidebarLayout
+})
 
 const props = defineProps({
   project: Object,
@@ -113,4 +114,5 @@ const form = useForm({
 const submit = () => {
   form.patch(`/projects/${props.project.id}`)
 }
+
 </script>

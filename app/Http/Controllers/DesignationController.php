@@ -42,13 +42,15 @@ class DesignationController extends Controller
     {
         $this->designationService->update($designation, $request->only('name', 'rate_per_day'));
 
-        return redirect()->route('designations.index')->with('success', 'Designation updated.');
+        return redirect()->route('designations.index')
+            ->with('success', 'Designation updated.');
     }
 
     public function destroy(Designation $designation)
     {
         $this->designationService->delete($designation);
 
-        return redirect()->route('designations.index')->with('success', 'Designation deleted.');
+        return redirect()->route('designations.index')
+            ->with('success', 'Designation deleted.');
     }
 }

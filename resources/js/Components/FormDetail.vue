@@ -1,5 +1,5 @@
 <template>
-  <label :for="id" class="form-label">{{ label }}</label>
+  <div class="form-label">{{ label }}</div>
   <div :id="id" class="form-control bg-secondary-subtle">
     <slot />
   </div>
@@ -11,9 +11,5 @@ defineProps({
     type: String,
     default: "Label"
   },
-  id: {
-    type: String,
-    default: ''
-  }
 })
 </script>

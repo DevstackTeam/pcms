@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <Header iconClass="bi-kanban" title="Projects"></Header>
+    <Header iconClass="bi-kanban" title="Projects" />
 
     <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
       {{ successMessage }}
@@ -10,7 +10,6 @@
     <CardBox title="Project List" :showButton="true" buttonText="Add Project" @button-click="goToCreate">
       <div class="row mb-3">
         <div class="d-flex justify-content-start align-items-center gap-2">
-
           <input
             v-model="search"
             type="search"
@@ -20,7 +19,11 @@
           />
 
           <div class="dropdown" style="max-width: 200px; position: relative;">
-            <button class="form-select text-start " style="min-width: 200px; max-width: 100%; padding: 6px 12px;" @click.prevent="isOpen = !isOpen">
+            <button
+              class="form-select text-start"
+              style="min-width: 200px; max-width: 100%; padding: 6px 12px;"
+              @click.prevent="isOpen = !isOpen"
+            >
               {{ props.filters.status || 'All Status' }}
             </button>
 
@@ -52,6 +55,7 @@
           </div>
         </div>
       </div>
+
       <div class="table-responsive">
         <table class="table table-hover table-bordered table-striped align-middle text-center" style="table-layout: fixed; width: 100%;">
           <thead class="table-light">
@@ -85,12 +89,17 @@
                 </span>
               </td>
               <td class="justify-content-center">
-                <Link :href="`/projects/${project.id}`" class="text-primary me-2"><i class="bi bi-eye me-2"></i></Link>
-                <Link :href="`/projects/${project.id}/edit`" class="text-primary me-3"><i class="bi bi-pencil"></i></Link>
-                <a href="#" @click.prevent="confirmDelete(project.id)" class="text-danger me-2"><i class="bi bi-trash"></i></a>
+                <Link :href="`/projects/${project.id}`" class="text-warning me-2">
+                  <i class="bi bi-eye me-2"></i>
+                </Link>
+                <Link :href="`/projects/${project.id}/edit`" class="text-primary me-3">
+                  <i class="bi bi-pencil"></i>
+                </Link>
+                <button class="btn p-0 text-danger" @click="confirmDelete(project.id)">
+                  <i class="bi bi-trash"></i>
+                </button>
               </td>
             </tr>
-
             <tr v-if="projects.data.length === 0">
               <td colspan="6" class="text-center text-muted">No projects found</td>
             </tr>
@@ -98,7 +107,20 @@
         </table>
       </div>
     </CardBox>
+
     <PaginationLink :links="projects.links" class="mt-3" />
+    <Modal v-if="showConfirmModal" @close="showConfirmModal = false">
+      <template #title>
+        Confirm Deletion
+      </template>
+      <template #body>
+        <p>Are you sure you want to delete this project?</p>
+        <div class="d-flex justify-content-end gap-2 mt-3">
+          <button class="btn btn-secondary" @click="showConfirmModal = false">Cancel</button>
+          <button class="btn btn-danger" @click="performDelete">Yes, Delete</button>
+        </div>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -109,6 +131,7 @@ import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import PaginationLink from '@/Components/PaginationLink.vue'
+import Modal from '@/Components/Modal.vue'
 import { useFlash } from '@/Composables/Flash'
 
 defineOptions({ layout: SidebarLayout })
@@ -120,24 +143,37 @@ const props = defineProps({
   status: Array,
 })
 
-const goToCreate = () => {
-  router.visit('/projects/create')
-}
-
-const confirmDelete = (id) => {
-  if (confirm('Are you sure you want to delete this project?')) {
-    router.delete(`/projects/${id}`)
-  }
-}
-
 const search = ref(props.filters?.search || '')
 const status = ref(props.filters?.status || '')
 const isOpen = ref(false)
 const hover = ref(null)
 
+const showConfirmModal = ref(false)
+const confirmDeleteId = ref(null)
+
+const goToCreate = () => {
+  router.visit('/projects/create')
+}
+
 const selectStatus = (selected) => {
   status.value = selected
   isOpen.value = false
+}
+
+function confirmDelete(id) {
+  confirmDeleteId.value = id
+  showConfirmModal.value = true
+}
+
+function performDelete() {
+  if (!confirmDeleteId.value) return
+
+  router.delete(`/projects/${confirmDeleteId.value}`, {
+    onSuccess: () => {
+      showConfirmModal.value = false
+      confirmDeleteId.value = null
+    }
+  })
 }
 
 const { successMessage } = useFlash(props)
@@ -151,5 +187,4 @@ watch([search, status], () => {
     preserveScroll: true,
   })
 })
-
 </script>

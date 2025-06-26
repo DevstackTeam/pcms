@@ -6,7 +6,7 @@
       <form @submit.prevent="submit">
         <div class="row mb-4">
           <div class="col">
-            <FormInput 
+            <FormInput
               v-model="form.duration"
               label="Duration"
               id="duration"
@@ -16,7 +16,7 @@
           </div>
 
           <div class="col">
-            <FormInput 
+            <FormInput
               v-model="form.remark"
               label="Remark"
               id="remark"
@@ -43,9 +43,9 @@
               <td>
                 <select v-model="manpower.designation_id" class="form-select">
                   <option value="">Select Designation</option>
-                  <option 
-                    v-for="designation in designations" 
-                    :key="designation.id" 
+                  <option
+                    v-for="designation in designations"
+                    :key="designation.id"
                     :value="designation.id"
                   >
                     {{ designation.name }}
@@ -150,11 +150,11 @@ const submit = () => {
 }
 
 const addManpower = () => {
-  form.manpower.push({ 
-    designation_id: null, 
-    rate_per_day:null, 
-    no_of_people: null, 
-    total_day: null, 
+  form.manpower.push({
+    designation_id: null,
+    rate_per_day:null,
+    no_of_people: null,
+    total_day: null,
     total_cost:null,
     rate_locked: false,
   })
@@ -204,6 +204,7 @@ watch(
 
     form.manpower.forEach((mp) => {
       const cost = calculateCost(mp)
+      mp.total_cost = cost
       total += cost
     })
 
