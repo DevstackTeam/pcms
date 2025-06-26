@@ -27,14 +27,7 @@ class DesignationRequest extends FormRequest
                 'required',
                 Rule::unique('designations', 'name')->ignore($this->designation)
             ],
-            'rate_per_day' => ['required', 'numeric', 'min:0', 'regex:/^\d+(\.\d{1,2})?$/'],
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'rate_per_day.regex' => 'The rate per day must be a number with up to two decimal places.',
+            'rate_per_day' => ['required', 'numeric', 'min:0',],
         ];
     }
 }

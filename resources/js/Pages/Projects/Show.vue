@@ -14,32 +14,31 @@
         <div class="col-md-6">
           <div class="mb-3">
             <FormDetail label="Project Name">
-              {{ project.name }}
+                {{ project.name }}
             </FormDetail>
           </div>
 
-          <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
+           <div class="mb-3">
+            <label class="form-label" for="description">Description</label>
             <textarea
               id="description"
               class="form-control"
               rows="4"
-              :value="project.description"
               disabled
-            ></textarea>
+            >{{ project.description }}</textarea>
           </div>
         </div>
 
         <div class="col-md-6">
           <div class="mb-3">
             <FormDetail label="Client">
-              {{ project.client }}
+                {{ project.client }}
             </FormDetail>
           </div>
 
           <div class="mb-3">
             <FormDetail label="Status">
-              {{ project.status }}
+                {{ project.status }}
             </FormDetail>
           </div>
         </div>

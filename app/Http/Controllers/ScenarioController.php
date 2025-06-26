@@ -79,8 +79,8 @@ class ScenarioController extends Controller
     }
 
     public function update(
-        Project $project, 
-        Scenario $scenario, 
+        Project $project,
+        Scenario $scenario,
         ScenarioRequest $scenario_request,
         ManpowerRequest $mp_request,
     )
@@ -99,7 +99,7 @@ class ScenarioController extends Controller
     public function destroy(Project $project, Scenario $scenario)
     {
         $scenario->delete();
-    
+
         return redirect()
             ->route('projects.scenarios.index', $project)
             ->with('success', 'Scenario deleted successfully');

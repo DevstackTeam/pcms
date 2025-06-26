@@ -7,14 +7,13 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <TabLink :projectId="project.id" />
+    <TabLink :projectId="project.id"/>
 
     <CardBox title="Project's Scenario" :showButton="true" buttonText="Add Scenario" @button-click="goToCreate">
       <div class="table-responsive">
-        <table 
+        <table
           class="table table-hover table-bordered table-striped align-middle text-center"
-          style="table-layout: fixed; width: 100%;"
-        >
+          style="table-layout: fixed; width: 100%;">
           <thead class="table-light">
             <tr>
               <th scope="col" style="width: 7%;">No</th>
@@ -62,10 +61,10 @@
                   <i class="bi bi-pencil"></i>
                 </Link>
 
-                <button 
-                  type="button" 
-                  class="btn btn-link text-danger p-0" 
-                  title="Delete" 
+                <button
+                  type="button"
+                  class="btn btn-link text-danger p-0"
+                  title="Delete"
                   @click="confirmDelete(scenario.id)"
                 >
                   <i class="bi bi-trash"></i>
@@ -109,8 +108,8 @@
               <thead class="table-dark">
                 <tr>
                   <th></th>
-                  <th>{{ selectedScenario1.name || 'Scenario 1' }}</th>
-                  <th>{{ selectedScenario2.name || 'Scenario 2' }}</th>
+                <th>{{ selectedScenario1?.name || 'Scenario ' + selectedScenario1?.id }}</th>
+                <th>{{ selectedScenario2?.name || 'Scenario ' + selectedScenario2?.id }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -122,17 +121,17 @@
                 <tr>
                   <td>Total Cost</td>
                   <td>
-                    {{ 
-                      parseFloat(selectedScenario1.total_cost).toLocaleString('ms-MY', { 
-                        style: 'currency', 
-                        currency: 'MYR' 
-                      }) 
+                    {{
+                      parseFloat(selectedScenario1.total_cost).toLocaleString('ms-MY', {
+                        style: 'currency',
+                        currency: 'MYR'
+                      })
                     }}</td>
                   <td>
-                    {{ 
-                      parseFloat(selectedScenario2.total_cost).toLocaleString('ms-MY', { 
-                        style: 'currency', 
-                        currency: 'MYR' }) 
+                    {{
+                      parseFloat(selectedScenario2.total_cost).toLocaleString('ms-MY', {
+                        style: 'currency',
+                        currency: 'MYR' })
                     }}
                   </td>
                 </tr>
@@ -145,20 +144,20 @@
                   <td>Final Cost</td>
 
                   <td :class="finalCostClass(selectedScenario1.final_cost, selectedScenario2.final_cost)">
-                    {{ 
-                      parseFloat(selectedScenario1.final_cost).toLocaleString('ms-MY', { 
-                        style: 'currency', 
-                        currency: 'MYR' 
-                      }) 
+                    {{
+                      parseFloat(selectedScenario1.final_cost).toLocaleString('ms-MY', {
+                        style: 'currency',
+                        currency: 'MYR'
+                      })
                     }}
                   </td>
-                  
+
                   <td :class="finalCostClass(selectedScenario2.final_cost, selectedScenario1.final_cost)">
-                    {{ 
-                      parseFloat(selectedScenario2.final_cost).toLocaleString('ms-MY', { 
-                        style: 'currency', 
-                        currency: 'MYR' 
-                      }) 
+                    {{
+                      parseFloat(selectedScenario2.final_cost).toLocaleString('ms-MY', {
+                        style: 'currency',
+                        currency: 'MYR'
+                      })
                     }}
                   </td>
                 </tr>

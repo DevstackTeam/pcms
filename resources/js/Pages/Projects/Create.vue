@@ -5,18 +5,14 @@
     <CardBox title="Create New Project">
       <form @submit.prevent="submit">
         <div class="row">
-          <!-- Left side: Project Name & Description -->
           <div class="col-md-6">
             <div class="mb-3">
-              <label for="name" class="form-label">Project Name</label>
-              <input
+              <FormInput
                 v-model="form.name"
-                type="text"
+                label="Project Name"
                 id="name"
-                class="form-control"
-                :class="{ 'is-invalid': form.errors.name }"
+                :error="form.errors.name"
               />
-              <div class="invalid-feedback">{{ form.errors.name }}</div>
             </div>
 
             <div class="mb-3">
@@ -26,24 +22,19 @@
                 id="description"
                 class="form-control"
                 rows="4"
-                :class="{ 'is-invalid': form.errors.description }"
               ></textarea>
-              <div class="invalid-feedback">{{ form.errors.description }}</div>
+              <div v-if="form.errors.description" class="text-danger small">{{ form.errors.description }}</div>
             </div>
           </div>
 
-          <!-- Right side: Client & Status -->
           <div class="col-md-6">
             <div class="mb-3">
-              <label for="client" class="form-label">Client</label>
-              <input
+              <FormInput
                 v-model="form.client"
-                type="text"
+                label="Client"
                 id="client"
-                class="form-control"
-                :class="{ 'is-invalid': form.errors.client }"
+                :error="form.errors.client"
               />
-              <div class="invalid-feedback">{{ form.errors.client }}</div>
             </div>
 
             <div class="mb-3">
@@ -51,10 +42,10 @@
               <div class="dropdown">
                 <button
                   class="form-select text-start"
-                  @click.prevent="isOpen = !isOpen"
-                >
+                  @click.prevent="isOpen = !isOpen">
                   {{ form.status || 'Select status' }}
                 </button>
+
                 <ul
                   v-if="isOpen"
                   class="list-group border shadow-sm mt-1"
@@ -72,7 +63,6 @@
                     >
                     {{ option }}
                 </li>
-
                 </ul>
               </div>
               <div v-if="form.errors.status" class="text-danger small">{{ form.errors.status }}</div>
@@ -94,12 +84,12 @@ import { useForm, router } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
+import FormInput from '../../Components/FormInput.vue'
 
 const hover = ref(null)
 
 const props = defineProps({
   status: Array
-  // statusOptions: Object
 })
 
 defineOptions({ layout: SidebarLayout })

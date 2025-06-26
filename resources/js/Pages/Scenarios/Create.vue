@@ -16,7 +16,7 @@
       <form @submit.prevent="submit">
         <div class="row mb-4">
           <div class="col">
-            <FormInput 
+            <FormInput
               v-model="form.duration"
               label="Duration"
               id="duration"
@@ -26,7 +26,7 @@
           </div>
 
           <div class="col">
-            <FormInput 
+            <FormInput
               v-model="form.remark"
               label="Remark"
               id="remark"
@@ -215,11 +215,11 @@ const submit = () => {
 }
 
 const addManpower = () => {
-  form.manpower.push({ 
-    designation_id: null, 
-    rate_per_day:null, 
-    no_of_people: null, 
-    total_day: null, 
+  form.manpower.push({
+    designation_id: null,
+    rate_per_day:null,
+    no_of_people: null,
+    total_day: null,
     remark: null,
     total_cost:null,
     rate_locked: false,
