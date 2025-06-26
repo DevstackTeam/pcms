@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Models\Designation;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 
@@ -21,25 +22,28 @@ public function getFilteredDesignations(?string $search)
         ->appends(request()->query());
 }
 
-    public function create(array $data): Designation
+    public function store(array $data): Designation
     {
-        return DB::transaction(function () use ($data) {
-            $data['user_id'] = auth()->id();
-            return Designation::create($data);
-        });
+        $designation = Designation::create([
+            'name' => $data['name'],
+            'rate_per_day' => $data['rate_per_day'],
+            'user_id' => Auth::user()->id,
+        ]);
+        return $designation;
     }
 
     public function update(Designation $designation, array $data): Designation
     {
-        return DB::transaction(function () use ($designation, $data) {
-            $designation->update($data);
-            return $designation;
-        });
+        $designation->update([
+            'name' => $data['name'],
+            'rate_per_day' => $data['rate_per_day'],
+        ]);
+        return $designation;
     }
 
     public function delete(Designation $designation): void
     {
-        DB::transaction(fn () => $designation->delete());
+        $designation->delete();
     }
 }
 
