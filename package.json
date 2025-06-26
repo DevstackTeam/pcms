@@ -19,8 +19,12 @@
     },
     "dependencies": {
         "@inertiajs/vue3": "^1.0.0",
+        "@mdi/font": "^7.4.47",
         "bootstrap": "^5.3.6",
         "bootstrap-icons": "^1.13.1",
-        "vue": "^3.4.0"
+        "sass": "^1.89.2",
+        "sass-loader": "^16.0.5",
+        "vue": "^3.4.0",
+        "vuetify": "^3.8.11"
     }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="form-label">{{ label }}</div>
-  <div :id="id" class="form-control bg-secondary-subtle">
+  <div class="form-control bg-secondary-subtle">
     <slot />
   </div>
 </template>

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('rate_per_day', 10, 2);
             $table->integer('no_of_people');
             $table->integer('total_day');
+            $table->string('remark')->nullable();
             $table->decimal('total_cost', 10, 2);
             $table->timestamps();
         });

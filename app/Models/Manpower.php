@@ -13,6 +13,7 @@ class Manpower extends Model
         'total_day',
         'rate_per_day',
         'no_of_people',
+        'remark',
         'total_cost',
     ];
 

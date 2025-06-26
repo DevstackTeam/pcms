@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ManpowerRequest;
+use App\Http\Requests\ScenarioRequest;
 use App\Models\Designation;
 use App\Models\Scenario;
 use App\Models\Project;
+use App\Services\ManpowerService;
 use App\Services\ScenarioService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -12,10 +15,12 @@ use Inertia\Inertia;
 class ScenarioController extends Controller
 {
     protected $scenarioService;
+    protected $manpowerService;
 
-    public function __construct(ScenarioService $scenarioService)
+    public function __construct(ScenarioService $scenarioService, ManpowerService $manpowerService)
     {
         $this->scenarioService = $scenarioService;
+        $this->manpowerService = $manpowerService;
     }
 
     public function index(Project $project)
@@ -30,7 +35,7 @@ class ScenarioController extends Controller
 
     public function create(Project $project)
     {
-        $designations = Designation::all();
+        $designations = Designation::orderBy('name')->get();
 
         return Inertia::render('Scenarios/Create', [
             'project' => $project,
@@ -38,40 +43,11 @@ class ScenarioController extends Controller
         ]);
     }
 
-    public function store(Project $project, Request $request)
+    public function store(Project $project, ScenarioRequest $scenario_request, ManpowerRequest $mp_request)
     {
-        $validated = $request->validate([
-            'duration' => 'required|numeric',
-            'remark' => 'nullable|string',
-            'markup' => 'required|numeric',
-            'total_cost' => 'required|numeric',
-            'final_cost' => 'required|numeric',
+        $scenario = $this->scenarioService->store($scenario_request->validated(), $project);
 
-            'manpower' => 'required|array',
-            'manpower.*.designation_id' => 'required|exists:designations,id',
-            'manpower.*.rate_per_day' => 'required|numeric',
-            'manpower.*.no_of_people' => 'required|integer',
-            'manpower.*.total_day' => 'required|integer',
-            'manpower.*.total_cost' => 'required|numeric',
-        ]);
-
-        $scenario = $project->scenarios()->create([
-            'duration' => $validated['duration'],
-            'remark' => $validated['remark'],
-            'markup' => $validated['markup'],
-            'total_cost' => $validated['total_cost'],
-            'final_cost' => $validated['final_cost'],
-        ]);
-
-        foreach ($validated['manpower'] as $mp) {
-            $scenario->manpowers()->create([
-            'designation_id' => $mp['designation_id'],
-            'rate_per_day' => $mp['rate_per_day'],
-            'no_of_people' => $mp['no_of_people'],
-            'total_day' => $mp['total_day'],
-            'total_cost' => $mp['total_cost'],
-]);
-        }
+        $this->manpowerService->storeMany($mp_request->validated()['manpower'], $scenario);
 
         return redirect()
             ->route('projects.scenarios.index', $project)
@@ -91,7 +67,7 @@ class ScenarioController extends Controller
 
     public function edit(Project $project, Scenario $scenario)
     {
-        $designations = Designation::all();
+        $designations = Designation::orderBy('name')->get();
         $manpowers = $scenario->manpowers()->get();
 
         return Inertia::render('Scenarios/Edit', [
@@ -102,42 +78,18 @@ class ScenarioController extends Controller
         ]);
     }
 
-    public function update(Project $project, Request $request, Scenario $scenario)
+    public function update(
+        Project $project,
+        Scenario $scenario,
+        ScenarioRequest $scenario_request,
+        ManpowerRequest $mp_request,
+    )
     {
-        $validated = $request->validate([
-            'markup' => 'required|numeric',
-            'duration' => 'required|int',
-            'remark' => 'nullable|string',
-            'total_cost' => 'required',
-            'final_cost' => 'required',
-
-            'manpower' => 'required|array',
-            'manpower.*.designation_id' => 'required|exists:designations,id',
-            'manpower.*.rate_per_day' => 'required|numeric',
-            'manpower.*.no_of_people' => 'required|integer',
-            'manpower.*.total_day' => 'required|integer',
-            'manpower.*.total_cost' => 'required|numeric',
-        ]);
-
-        $scenario->update([
-            'duration' => $validated['duration'],
-            'remark' => $validated['remark'],
-            'markup' => $validated['markup'],
-            'total_cost' => $validated['total_cost'],
-            'final_cost' => $validated['final_cost'],
-        ]);
+        $scenario = $this->scenarioService->update($scenario_request->validated(), $scenario);
 
         $scenario->manpowers()->delete();
 
-        foreach ($validated['manpower'] as $mp) {
-            $scenario->manpowers()->create([
-                'designation_id' => $mp['designation_id'],
-                'rate_per_day' => $mp['rate_per_day'],
-                'no_of_people' => $mp['no_of_people'],
-                'total_day' => $mp['total_day'],
-                'total_cost' => $mp['total_cost'],
-            ]);
-        }
+        $this->manpowerService->storeMany($mp_request->validated()['manpower'], $scenario);
 
         return redirect()
             ->route('projects.scenarios.index', $project)
