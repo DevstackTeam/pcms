@@ -31,7 +31,7 @@ class DesignationController extends Controller
 
     public function store(DesignationRequest $request)
     {
-        $designation = $this->designationService->create($request->only('name', 'rate_per_day'));
+        $designation = $this->designationService->store($request->only('name', 'rate_per_day'));
 
         return redirect()
             ->route('designations.index', ['designation' => $designation])
