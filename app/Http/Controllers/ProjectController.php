@@ -18,9 +18,6 @@ class ProjectController extends Controller
         $this->projectService = $projectService;
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -35,9 +32,6 @@ class ProjectController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return Inertia::render('Projects/Create', [
@@ -45,9 +39,6 @@ class ProjectController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(ProjectRequest $request)
     {
         $project = $this->projectService->store($request->validated());
@@ -57,9 +48,6 @@ class ProjectController extends Controller
             ->with('success', 'Project created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Project $project)
     {
         return Inertia::render('Projects/Show', [
@@ -67,9 +55,6 @@ class ProjectController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Project $project)
     {
         return Inertia::render('Projects/Edit', [
@@ -78,9 +63,6 @@ class ProjectController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(ProjectRequest $request, Project $project)
     {
         $project = $this->projectService->update($project, $request->validated());
@@ -90,9 +72,6 @@ class ProjectController extends Controller
             ->with('success', 'Project updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Project $project)
     {
         $project->delete();

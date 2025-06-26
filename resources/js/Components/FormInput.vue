@@ -3,6 +3,7 @@
     <label :for="id" class="form-label">{{ label }}</label>
 
     <div :class="['input-group', { 'has-toggle': toggle }]">
+
       <input
         :id="id"
         :type="inputType"
@@ -66,6 +67,10 @@ const props = defineProps({
     default: false
   },
   disabled: {
+    type: Boolean,
+    default: false
+  },
+  textarea: {
     type: Boolean,
     default: false
   }

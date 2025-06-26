@@ -24,9 +24,8 @@
               id="description"
               class="form-control"
               rows="4"
-              :value="project.description"
               disabled
-            ></textarea>
+            >{{ project.description }}</textarea>
           </div>
         </div>
 
