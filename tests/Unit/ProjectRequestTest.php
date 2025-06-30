@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 
-use function PHPUnit\Framework\assertFalse;
-
 class ProjectRequestTest extends TestCase
 {
     private array $rules;
@@ -55,9 +53,9 @@ class ProjectRequestTest extends TestCase
     public function test_fails_validation_with_missing_required_fields()
     {
         $data = [
-            'name' => '',
+            'name' => null,
             'description' => 'Test description',
-            'client' => '',
+            'client' => null,
             'status' => null,
         ];
 
