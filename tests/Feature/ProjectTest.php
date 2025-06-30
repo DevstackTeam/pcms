@@ -114,4 +114,50 @@ class ProjectTest extends TestCase
 
         $response->assertSessionHas('success', 'Project deleted successfully.');
     }
+
+    #[Test]
+    public function it_returns_projects_index_page_with_filters()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        Project::create([
+            'user_id' => $user->id,
+            'name' => 'Website Redesign',
+            'client' => 'Client A',
+            'description' => null,
+            'status' => ProjectStatus::ACTIVE->value,
+        ]);
+
+        Project::create([
+            'user_id' => $user->id,
+            'name' => 'Website Revamp',
+            'client' => 'Client B',
+            'description' => null,
+            'status' => ProjectStatus::ACTIVE->value,
+        ]);
+
+        Project::create([
+            'user_id' => $user->id,
+            'name' => 'Mobile App',
+            'client' => 'Client C',
+            'description' => null,
+            'status' => ProjectStatus::COMPLETED->value,
+        ]);
+
+        $response = $this->get(route('projects.index', [
+            'search' => 'Website',
+            'status' => ProjectStatus::ACTIVE->value,
+        ]));
+
+        $response->assertOk();
+
+        $response->assertInertia(fn ($page) => 
+            $page->component('Projects/Index')
+                ->has('projects.data', 2)
+                ->where('filters.search', 'Website')
+                ->where('filters.status', ProjectStatus::ACTIVE->value)
+                ->where('status', array_map(fn($case) => $case->value, ProjectStatus::cases()))
+        );
+    }
 }
