@@ -1,27 +1,21 @@
 <?php
 
 use App\Http\Requests\ManpowerRequest;
-use App\Models\User;
+use App\Models\Designation;
 use Illuminate\Support\Facades\Validator;
 
 beforeEach(function () {
-    $this->user = User::factory()->create();
-    $this->actingAs($this->user);
+    $this->designation = Designation::factory()->create();
     $this->rules = (new ManpowerRequest())->rules();
     $this->messages = (new ManpowerRequest())->messages();
 });
 
 test('passes validation with valid data', function () {
-    $designation = $this->user->designations()->create([
-        'name' => 'Developer', 
-        'rate_per_day' => 100.00,
-    ]);
-
     $data = [
         'manpower' => [
             [
-                'designation_id' => $designation->id,
-                'rate_per_day' => $designation->rate_per_day,
+                'designation_id' => $this->designation->id,
+                'rate_per_day' => $this->designation->rate_per_day,
                 'no_of_people' => 2,
                 'total_day' => 5,
                 'remark' => 'Skilled workers',
@@ -36,24 +30,19 @@ test('passes validation with valid data', function () {
 });
 
 test('passes validation with multiple data entry', function () {
-    $designation = $this->user->designations()->create([
-        'name' => 'Engineer', 
-        'rate_per_day' => 100.00,
-    ]);
-
     $data = [
         'manpower' => [
             [
-                'designation_id' => $designation->id,
-                'rate_per_day' => $designation->rate_per_day,
+                'designation_id' => $this->designation->id,
+                'rate_per_day' => $this->designation->rate_per_day,
                 'no_of_people' => 2,
                 'total_day' => 5,
                 'remark' => 'Skilled workers',
                 'total_cost' => 1000.00,
             ],
             [
-                'designation_id' => $designation->id,
-                'rate_per_day' => $designation->rate_per_day,
+                'designation_id' => $this->designation->id,
+                'rate_per_day' => $this->designation->rate_per_day,
                 'no_of_people' => 3,
                 'total_day' => 4,
                 'remark' => 'Experienced workers',
@@ -68,16 +57,11 @@ test('passes validation with multiple data entry', function () {
 });
 
 test('passes validation with nullabe remark', function () {
-    $designation = $this->user->designations()->create([
-        'name' => 'Developer', 
-        'rate_per_day' => 100.00,
-    ]);
-
     $data = [
         'manpower' => [
             [
-                'designation_id' => $designation->id,
-                'rate_per_day' => $designation->rate_per_day,
+                'designation_id' => $this->designation->id,
+                'rate_per_day' => $this->designation->rate_per_day,
                 'no_of_people' => 2,
                 'total_day' => 5,
                 'remark' => null,
@@ -92,15 +76,10 @@ test('passes validation with nullabe remark', function () {
 });
 
 test('fails validation when numeric or integer fields filled with NaN', function () {
-    $designation = $this->user->designations()->create([
-        'name' => 'Developer', 
-        'rate_per_day' => 100.00,
-    ]);
-
     $data = [
         'manpower' => [
             [
-                'designation_id' => $designation->id,
+                'designation_id' => $this->designation->id,
                 'rate_per_day' => 'not a number',
                 'no_of_people' => 'not a number',
                 'total_day' => 'not a number',
@@ -130,15 +109,10 @@ test('fails validation when numeric or integer fields filled with NaN', function
 });
 
 test('fails validation when numeric or integer fields filled with negative number', function () {
-    $designation = $this->user->designations()->create([
-        'name' => 'Developer', 
-        'rate_per_day' => 100.00,
-    ]);
-
     $data = [
         'manpower' => [
             [
-                'designation_id' => $designation->id,
+                'designation_id' => $this->designation->id,
                 'rate_per_day' => -200.00,
                 'no_of_people' => -4,
                 'total_day' => -30,
