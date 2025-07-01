@@ -48,6 +48,7 @@ class ManpowerRequest extends FormRequest
             $messages["manpower.*.$field.required"] = 'Required.';
             $messages["manpower.*.$field.min"] = 'Invalid value.';
             $messages["manpower.*.$field.integer"] = 'Invalid value.';
+            $messages["manpower.*.$field.numeric"] = 'Invalid value.';
             $messages["manpower.required"] = 'Please add at least one manpower';
         }
 
