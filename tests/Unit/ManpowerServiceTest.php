@@ -1,25 +1,10 @@
 <?php
 
-use App\Enums\ProjectStatus;
-use App\Models\User;
+use App\Models\Scenario;
 use App\Services\ManpowerService;
 
 beforeEach(function () {
-    $this->user = User::factory()->create();
-    $this->actingAs($this->user);
-    $this->project = $this->user->projects()->create([
-        'name' => 'Test Project',
-        'description' => 'This is a test project.',
-        'client' => 'Test Client',
-        'status' => ProjectStatus::ACTIVE->value,
-    ]);
-    $this->scenario = $this->project->scenarios()->create([
-        'markup' => 9,
-        'duration' => 30,
-        'remark' => 'Initial scenario',
-        'total_cost' => 10000.00,
-        'final_cost' => 11000.00,
-    ]);
+    $this->scenario = Scenario::factory()->create();
     $this->service = new ManpowerService();
 });
 
