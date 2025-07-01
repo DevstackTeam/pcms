@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Manpower extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'designation_id',
         'scenario_id',
@@ -22,7 +25,7 @@ class Manpower extends Model
         return $this->belongsTo(Designation::class);
     }
 
-    public function user(): BelongsTo
+    public function scenario(): BelongsTo
     {
         return $this->belongsTo(Scenario::class);
     }
