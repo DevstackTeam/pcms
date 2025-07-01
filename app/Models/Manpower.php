@@ -22,7 +22,7 @@ class Manpower extends Model
         return $this->belongsTo(Designation::class);
     }
 
-    public function user(): BelongsTo
+    public function scenario(): BelongsTo
     {
         return $this->belongsTo(Scenario::class);
     }
