@@ -175,4 +175,40 @@ class ProjectServiceTest extends TestCase
 
         $this->assertCount(2, $results); 
     }
+
+    #[Test]
+    public function test_search_return_empty_when_no_results_found()
+    {
+        $this->user->projects()->create([
+            'name' => 'Web App Redesign',
+            'description' => 'Redesigning the company website',
+            'client' => 'TechCorp',
+            'status' => ProjectStatus::ACTIVE->value,
+        ]);
+
+        $this->user->projects()->create([
+            'name' => 'Mobile App Development',
+            'description' => 'Building a new mobile app',
+            'client' => 'Devstack',
+            'status' => ProjectStatus::NOT_STARTED->value,
+        ]);
+
+        $this->user->projects()->create([
+            'name' => 'E-commerce Platform',
+            'description' => 'Trusted e-commerce platform',
+            'client' => 'Amazon',
+            'status' => ProjectStatus::ACTIVE->value,
+        ]);
+
+        $this->user->projects()->create([
+            'name' => 'Online Banking App',
+            'description' => 'Easy online banking',
+            'client' => 'Maybank',
+            'status' => ProjectStatus::COMPLETED->value,
+        ]);
+
+        $results = $this->service->search('Keje.my', 'Not Started');
+
+        $this->assertEmpty($results); 
+    }
 }
