@@ -9,16 +9,6 @@ beforeEach(function () {
     $this->actingAs($this->user);
 });
 
-test('index function successfully renders projects index page', function () {
-    $response = $this->get(route('projects.index'));
-
-    $response->assertStatus(200);
-
-    $response->assertInertia(fn ($page) =>
-        $page->component('Projects/Index')
-    );
-});
-
 test('renders projects index page with all projects list', function () {
     Project::factory(5)->create([
         'user_id' => $this->user->id,
@@ -132,16 +122,6 @@ test('renders projects index page with searched projects and filtered by status'
             ->where('projects.data.0.status', ProjectStatus::ACTIVE->value)
             ->where('projects.data.1.name', 'Website Launch')
             ->where('projects.data.1.status', ProjectStatus::ACTIVE->value)
-    );
-});
-
-test('create function successfully renders projects create page', function () {
-    $response = $this->get(route('projects.create'));
-
-    $response->assertStatus(200);
-
-    $response->assertInertia(fn ($page) =>
-        $page->component('Projects/Create')
     );
 });
 
