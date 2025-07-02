@@ -169,3 +169,16 @@ test('redirects user to projects show page after creating project', function () 
     $response->assertStatus(302);
     $response->assertRedirect(route('projects.show', $project->id));
 });
+
+test('display success message after creating project', function () {
+    $data = [
+        'name' => 'New Project',
+        'description' => 'Project description',
+        'client' => 'Client Name',
+        'status' => ProjectStatus::NOT_STARTED->value,
+    ];
+
+    $response = $this->post(route('projects.store', $data));
+
+    $response->assertSessionHas('success', 'Project created successfully.');
+});
