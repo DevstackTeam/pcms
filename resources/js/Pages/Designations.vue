@@ -105,7 +105,7 @@ import Modal from '../Components/Modal.vue'
 import PaginationLink from '../Components/PaginationLink.vue'
 import FormInput from '../Components/FormInput.vue'
 import { useForm, router } from '@inertiajs/vue3'
-import { ref, defineProps, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useFlash } from '../Composables/Flash'
 
 const search = ref('')
