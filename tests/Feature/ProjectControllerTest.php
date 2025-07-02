@@ -170,7 +170,7 @@ test('redirects user to projects show page after creating project', function () 
     $response->assertRedirect(route('projects.show', $project->id));
 });
 
-test('display success message after creating project', function () {
+test('displays success message after creating project', function () {
     $data = [
         'name' => 'New Project',
         'description' => 'Project description',
@@ -181,4 +181,41 @@ test('display success message after creating project', function () {
     $response = $this->post(route('projects.store', $data));
 
     $response->assertSessionHas('success', 'Project created successfully.');
+});
+
+test('renders projects show page with correct project data', function () {
+    $project = Project::factory()->create([
+        'user_id' => $this->user->id
+    ]);
+
+    $response = $this->get(route('projects.show', $project->id));
+
+    $response->assertInertia(fn ($page) =>
+        $page->component('Projects/Show')
+            ->has('project')
+            ->where('project.id', $project->id)
+            ->where('project.name', $project->name)
+            ->where('project.description', $project->description)
+            ->where('project.client', $project->client)
+            ->where('project.status', $project->status)
+    );
+});
+
+test('renders projects edit page with correct project data and project status enum', function () {
+    $project = Project::factory()->create([
+        'user_id' => $this->user->id
+    ]);
+
+    $response = $this->get(route('projects.edit', $project->id));
+
+    $response->assertInertia(fn ($page) =>
+        $page->component('Projects/Edit')
+            ->has('project')
+            ->where('project.id', $project->id)
+            ->where('project.name', $project->name)
+            ->where('project.description', $project->description)
+            ->where('project.client', $project->client)
+            ->where('project.status', $project->status)
+            ->has('status')
+    );
 });
