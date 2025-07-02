@@ -254,3 +254,24 @@ test('displays success message after updating project', function () {
 
     $response->assertSessionHas('success', 'Project updated successfully.');
 });
+
+test('redirects user to projects index page after deleting project', function () {
+    $project = Project::factory()->create([
+        'user_id' => $this->user->id
+    ]);
+
+    $response = $this->delete(route('projects.destroy', $project->id));
+
+    $response->assertStatus(302);
+    $response->assertRedirect(route('projects.index'));
+});
+
+test('displays success message after deleting project', function () {
+    $project = Project::factory()->create([
+        'user_id' => $this->user->id
+    ]);
+
+    $response = $this->delete(route('projects.destroy', $project->id));
+
+    $response->assertSessionHas('success', 'Project deleted successfully.');
+});
