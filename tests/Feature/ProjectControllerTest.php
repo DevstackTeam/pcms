@@ -219,3 +219,38 @@ test('renders projects edit page with correct project data and project status en
             ->has('status')
     );
 });
+
+test('redirects user to projects show page after updating project', function () {
+    $project = Project::factory()->create([
+        'user_id' => $this->user->id
+    ]);
+
+    $data = [
+        'name' => 'Updated Project',
+        'description' => 'Updated description',
+        'client' => 'Updated Client',
+        'status' => ProjectStatus::ACTIVE->value,
+    ];
+
+    $response = $this->patch(route('projects.update', $project->id), $data);
+
+    $response->assertStatus(302);
+    $response->assertRedirect(route('projects.show', $project->id));
+});
+
+test('displays success message after updating project', function () {
+    $project = Project::factory()->create([
+        'user_id' => $this->user->id
+    ]);
+
+    $data = [
+        'name' => 'Updated Project',
+        'description' => 'Updated description',
+        'client' => 'Updated Name',
+        'status' => ProjectStatus::NOT_STARTED->value,
+    ];
+
+    $response = $this->patch(route('projects.update', $project->id), $data);
+
+    $response->assertSessionHas('success', 'Project updated successfully.');
+});
