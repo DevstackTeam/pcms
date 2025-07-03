@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 test('successfully renders auth login page', function () {
     $response = $this->get(route('login'));
@@ -53,4 +54,18 @@ test('fails to login with invalid credentials', function () {
 
     $response->assertRedirect(route('login')); 
     $response->assertSessionHasErrors(['email']); 
+});
+
+test('redirects user to login page after logout', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    expect(Auth::check())->toBeTrue();
+
+    $response = $this->post(route('logout'));
+
+    expect(Auth::check())->toBeFalse();
+
+    $response->assertRedirect(route('login'));
 });
