@@ -9,6 +9,7 @@
     <!-- Scripts -->
     @vite(['resources/js/app.js'])
     @inertiaHead
+    @routes
 </head>
 <body class="font-sans antialiased">
     @inertia
