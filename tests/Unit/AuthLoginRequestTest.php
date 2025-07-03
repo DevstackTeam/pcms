@@ -38,3 +38,8 @@ test('fails validation when missing required fields', function () {
     expect($validator->fails())->toBeTrue();
     expect($validator->errors()->toArray())->toHaveKeys(['email', 'password']);
 });
+
+test('authorize always returns true', function () {
+    $request = new AuthLoginRequest();
+    expect($request->authorize())->toBeTrue();
+});
