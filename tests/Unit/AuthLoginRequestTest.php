@@ -27,3 +27,14 @@ test('fails validation when email is invalid', function () {
     expect($validator->fails())->toBeTrue();
     expect($validator->errors()->toArray())->toHaveKey('email');
 });
+
+test('fails validation when missing required fields', function () {
+    $data = [
+        'email' => null,
+        'password' => null,
+    ];
+
+    $validator = Validator::make($data, $this->rules);
+    expect($validator->fails())->toBeTrue();
+    expect($validator->errors()->toArray())->toHaveKeys(['email', 'password']);
+});
