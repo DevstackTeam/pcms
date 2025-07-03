@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\ProjectStatus;
 use App\Models\Project;
 
 class DashboardService
@@ -21,9 +22,9 @@ class DashboardService
             ->get();
 
         $projectCount = $projects->count();
-        $activeCount = $projects->where('status', 'Active')->count();
-        $completedCount = $projects->where('status', 'Completed')->count();
-        $notstartedCount = $projects->where('status', 'Not Started')->count();
+        $activeCount = $projects->where('status', ProjectStatus::ACTIVE->value)->count();
+        $completedCount = $projects->where('status', ProjectStatus::COMPLETED->value)->count();
+        $notstartedCount = $projects->where('status', ProjectStatus::NOT_STARTED->value)->count();
 
         return [
             'projects' => $projects,
