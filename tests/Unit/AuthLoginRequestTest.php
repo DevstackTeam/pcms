@@ -16,3 +16,14 @@ test('passes validation with valid data', function () {
     $validator = Validator::make($data, $this->rules);
     expect($validator->passes())->toBeTrue();
 });
+
+test('fails validation when email is invalid', function () {
+    $data = [
+        'email' => 'invalid-email',
+        'password' => 'password123',
+    ];
+
+    $validator = Validator::make($data, $this->rules);
+    expect($validator->fails())->toBeTrue();
+    expect($validator->errors()->toArray())->toHaveKey('email');
+});
