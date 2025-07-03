@@ -23,3 +23,18 @@ test('redirects user to dashboard after login', function () {
 
     $response->assertRedirect(route('dashboard'));
 });
+
+test('fails to login with invalid credentials', function () {
+    User::factory()->create([
+        'email' => 'user@example.com',
+        'password' => bcrypt('correct-password'), 
+    ]);
+
+    $response = $this->from(route('login'))->post('/login', [
+        'email' => 'user@example.com',
+        'password' => 'wrong-password', 
+    ]);
+
+    $response->assertRedirect(route('login')); 
+    $response->assertSessionHasErrors(['email']); 
+});
