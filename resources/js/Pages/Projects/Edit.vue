@@ -8,6 +8,7 @@
         <div class="row">
           <div class="col-md-6">
             <FormInput
+              id="project-name"
               label="Project Name"
               type="text"
               v-model="form.name"
@@ -28,6 +29,7 @@
 
           <div class="col-md-6">
             <FormInput
+              id="client"
               label="Client"
               type="text"
               v-model="form.client"
@@ -38,6 +40,7 @@
               <label for="status" class="form-label">Status</label>
               <div class="dropdown">
                 <button
+                  id="status"
                   class="form-select text-start"
                   @click.prevent="isOpen = !isOpen"
                 >

@@ -11,6 +11,7 @@
 
       <div class="mb-3 d-flex justify-content-start">
         <input
+          id="search"
           v-model="search"
           type="search"
           class="form-control"
@@ -60,6 +61,7 @@
       <template #body>
         <form @submit.prevent="submitForm">
           <FormInput
+            id="designation-name"
             label="Designation Name"
             v-model="form.name"
             type="text"
@@ -67,6 +69,7 @@
           />
 
           <FormInput
+            id="rate-per-day"
             label="Rate/Day"
             v-model="form.rate_per_day"
             :error="form.errors.rate_per_day"
