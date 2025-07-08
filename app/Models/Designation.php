@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Designation extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -25,5 +26,20 @@ class Designation extends Model
     public function manpowers(): HasMany
     {
         return $this->hasMany(Manpower::class);
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($designation) {
+            if ($designation->isForceDeleting()) {
+                $designation->manpowers()->forceDelete();
+            } else {
+                $designation->manpowers()->delete();
+            }
+        });
+
+        static::restoring(function ($designation) {
+            $designation->manpowers()->withTrashed()->restore();
+        });
     }
 }
