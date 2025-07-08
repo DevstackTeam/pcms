@@ -69,7 +69,7 @@
         </div>
 
         <div class="d-flex justify-content-end gap-2">
-       <Link :href="`/projects/${project.id}`" class="btn btn-outline-secondary">Cancel
+       <Link :href="route('projects.show', project.id)" class="btn btn-outline-secondary">Cancel
        </Link><button type="submit" class="btn btn-primary">Save</button>
       </div>
 
@@ -86,6 +86,7 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import { Link } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import FormInput from '../../Components/FormInput.vue'
+import { route } from '../../../../vendor/tightenco/ziggy/src/js'
 
 const hover = ref(null)
 const isOpen = ref(false)
@@ -112,7 +113,7 @@ const form = useForm({
 })
 
 const submit = () => {
-  form.patch(`/projects/${props.project.id}`)
+  form.patch(route('projects.update', props.project.id))
 }
 
 </script>

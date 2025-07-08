@@ -107,6 +107,7 @@ import FormInput from '../Components/FormInput.vue'
 import { useForm, router } from '@inertiajs/vue3'
 import { ref, watch } from 'vue'
 import { useFlash } from '../Composables/Flash'
+import { route } from '../../../vendor/tightenco/ziggy/src/js'
 
 const search = ref('')
 const showModal = ref(false)
@@ -138,7 +139,7 @@ function openEditModal(designation) {
 function performDelete() {
   if (!confirmDeleteId.value) return
 
-  router.delete(`/designations/${confirmDeleteId.value}`, {
+  router.delete(route('designations.destroy', confirmDeleteId.value), {
     onSuccess: () => {
       showConfirmModal.value = false
       confirmDeleteId.value = null
@@ -160,14 +161,14 @@ function closeModal() {
 
 function submitForm() {
   if (isEditMode.value) {
-    form.patch(`/designations/${editId.value}`, {
+    form.patch(route('designations.update', editId.value), {
       onSuccess: () => {
         closeModal()
         isEditMode.value = false
       }
     })
   } else {
-  form.post('/designations', {
+  form.post(route('designations.store'), {
     onSuccess: () => {
       closeModal()
     }
@@ -179,7 +180,7 @@ defineOptions({
 })
 
 watch(search, (newValue) => {
-  router.get('/designations', { search: newValue }, {
+  router.get(route('designations.index'), { search: newValue }, {
     preserveState: true,
     replace: true
   })

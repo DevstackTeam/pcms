@@ -64,8 +64,8 @@
         </div>
 
         <div class="d-flex justify-content-end">
-          <Link :href="`/projects/${project.id}/scenarios`" class="btn btn-outline-secondary">Close</Link>
-          <Link :href="`/projects/${project.id}/scenarios/${scenario.id}/edit`" class="btn btn-primary ms-2">Edit</Link>
+          <Link :href="route('projects.scenarios.index', project.id)" class="btn btn-outline-secondary">Close</Link>
+          <Link :href="route('projects.scenarios.edit', [project.id, scenario.id])" class="btn btn-primary ms-2">Edit</Link>
         </div>
       </form>
     </CardBox>
@@ -78,6 +78,7 @@ import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormDetail from '../../Components/FormDetail.vue'
+import { route } from '../../../../vendor/tightenco/ziggy/src/js'
 
 defineOptions({
   layout: SidebarLayout,

@@ -89,10 +89,10 @@
                 </span>
               </td>
               <td class="justify-content-center">
-                <Link :href="`/projects/${project.id}`" class="text-warning me-2">
+                <Link :href="route('projects.show', project.id)" class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
-                <Link :href="`/projects/${project.id}/edit`" class="text-primary me-3">
+                <Link :href="route('projects.edit', project.id)" class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
                 <button class="btn p-0 text-danger" @click="confirmDelete(project.id)">
@@ -133,6 +133,7 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import PaginationLink from '@/Components/PaginationLink.vue'
 import Modal from '@/Components/Modal.vue'
 import { useFlash } from '@/Composables/Flash'
+import { route } from '../../../../vendor/tightenco/ziggy/src/js'
 
 defineOptions({ layout: SidebarLayout })
 
@@ -152,7 +153,7 @@ const showConfirmModal = ref(false)
 const confirmDeleteId = ref(null)
 
 const goToCreate = () => {
-  router.visit('/projects/create')
+  router.get(route('projects.create'))
 }
 
 const selectStatus = (selected) => {
@@ -168,7 +169,7 @@ function confirmDelete(id) {
 function performDelete() {
   if (!confirmDeleteId.value) return
 
-  router.delete(`/projects/${confirmDeleteId.value}`, {
+  router.delete(route('projects.destroy', confirmDeleteId.value), {
     onSuccess: () => {
       showConfirmModal.value = false
       confirmDeleteId.value = null
@@ -179,7 +180,7 @@ function performDelete() {
 const { successMessage } = useFlash(props)
 
 watch([search, selectedStatus], () => {
-  router.get('/projects', {
+  router.get(route('projects.index'), {
     search: search.value,
     status: selectedStatus.value,
   }, {

@@ -46,9 +46,9 @@
 
 
       <div class="d-flex justify-content-end gap-2">
-        <Link :href="`/projects`" class="btn btn-outline-secondary">Back
+        <Link :href="route('projects.index')" class="btn btn-outline-secondary">Back
        </Link>
-      <Link :href="`/projects/${project.id}/edit`" class="btn btn-primary">
+      <Link :href="route('projects.edit', project.id)" class="btn btn-primary">
       Edit
     </Link>
     </div>
@@ -65,6 +65,7 @@ import { Link } from '@inertiajs/vue3'
 import { usePage } from '@inertiajs/vue3'
 import { ref, watchEffect } from 'vue'
 import FormDetail from '../../Components/FormDetail.vue'
+import { route } from '../../../../vendor/tightenco/ziggy/src/js'
 
 defineOptions({ layout: SidebarLayout })
 

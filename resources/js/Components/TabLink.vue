@@ -1,13 +1,13 @@
 <template>
 	<div class="mb-3 d-flex gap-2">
 		<Link
-			:href="`/projects/${projectId}`"
+			:href="route('projects.show', projectId)"
 			class="btn"
 			:class="isActive('details') ? 'btn-primary' : 'btn-outline-primary'">Details
 		</Link>
 
 		<Link
-			:href="`/projects/${projectId}/scenarios`"
+			:href="route('projects.scenarios.index', projectId)"
 			class="btn"
 			:class="isActive('scenarios') ? 'btn-primary' : 'btn-outline-primary'">Scenario
 		</Link>
@@ -16,6 +16,7 @@
 
 <script setup>
 import { Link, usePage } from '@inertiajs/vue3';
+import { route } from '../../../vendor/tightenco/ziggy/src/js';
 
 const props = defineProps({
 	projectId: {

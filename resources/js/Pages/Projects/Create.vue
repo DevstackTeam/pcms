@@ -71,7 +71,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-          <Link href="/projects" class="btn btn-outline-secondary">Cancel</Link>
+          <Link :href="route('projects.index')" class="btn btn-outline-secondary">Cancel</Link>
           <button type="submit" class="btn btn-primary ms-2">Create</button>
         </div>
       </form>
@@ -86,6 +86,7 @@ import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormInput from '../../Components/FormInput.vue'
+import { route } from '../../../../vendor/tightenco/ziggy/src/js'
 
 const hover = ref(null)
 
@@ -110,7 +111,7 @@ const selectOption = (option) => {
 }
 
 const submit = () => {
-  form.post('/projects')
+  form.post(route('projects.store'))
 }
 </script>
 

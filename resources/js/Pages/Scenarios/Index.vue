@@ -53,11 +53,11 @@
               </td>
 
               <td class="space-x-2">
-                <Link :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-primary me-2">
+                <Link :href="route('projects.scenarios.show', [project.id, scenario.id])" class="text-primary me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
 
-                <Link :href='`/projects/${project.id}/scenarios/${scenario.id}/edit`' class="text-primary me-3">
+                <Link :href="route('projects.scenarios.edit', [project.id, scenario.id])" class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
 
@@ -202,6 +202,7 @@ import Modal from '../../Components/Modal.vue';
 import { useFlash } from '../../Composables/Flash';
 import { router, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { route } from '../../../../vendor/tightenco/ziggy/src/js';
 
 defineOptions({
   layout: SidebarLayout
@@ -221,7 +222,7 @@ const props = defineProps({
 const { successMessage } = useFlash(props)
 
 const goToCreate = () => {
-  router.get(`/projects/${props.project.id}/scenarios/create`)
+  router.get(route('projects.scenarios.create', props.project.id))
 }
 
 const finalCostClass = (costA, costB) => {
@@ -238,7 +239,7 @@ function confirmDelete(id) {
 function performDelete() {
   if (!confirmDeleteId.value) return
 
-  router.delete(`/projects/${props.project.id}/scenarios/${confirmDeleteId.value}`, {
+  router.delete(route('projects.scenarios.destroy', [props.project.id, confirmDeleteId.value]), {
     onSuccess: () => {
       showConfirmModal.value = false
       confirmDeleteId.value = null

@@ -10,25 +10,25 @@
       <ul class="nav flex-column mb-auto mt-3">
 
         <li class="nav-item mb-2">
-          <Link :href="'/dashboard'" class="nav-link" :class="isActive('/dashboard')">
+          <Link :href="route('dashboard')" class="nav-link" :class="isActive('/dashboard')">
             <i class="bi bi-house-door me-2"></i> Dashboard
           </Link>
         </li>
 
         <li class="nav-item mb-2">
-          <Link :href="'/projects'" class="nav-link" :class="isActive('/projects')">
+          <Link :href="route('projects.index')" class="nav-link" :class="isActive('/projects')">
             <i class="bi bi-kanban me-2"></i> Projects
           </Link>
         </li>
 
         <li class="nav-item mb-2">
-          <Link :href="'/designations'" class="nav-link" :class="isActive('/designations')">
+          <Link :href="route('designations.index')" class="nav-link" :class="isActive('/designations')">
             <i class="bi bi-people me-2"></i> Designations
           </Link>
         </li>
 
         <li class="nav-item mb-2">
-          <Link :href="'/settings'" class="nav-link" :class="isActive('/settings')">
+          <Link href="#" class="nav-link" :class="isActive('/settings')">
             <i class="bi bi-gear me-2"></i> Settings
           </Link>
         </li>
@@ -52,10 +52,11 @@
 
 <script setup>
 import { Link, useForm, usePage } from '@inertiajs/vue3'
+import { route } from '../../../vendor/tightenco/ziggy/src/js'
 
 const form = useForm({})
 function logout() {
-  form.post('/logout')
+  form.post(route('logout'))
 }
 
 const page = usePage()

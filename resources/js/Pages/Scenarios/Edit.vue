@@ -164,7 +164,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-          <Link :href="`/projects/${project.id}/scenarios`" class="btn btn-outline-secondary">Cancel</Link>
+          <Link :href="route('projects.scenarios.index', project.id)" class="btn btn-outline-secondary">Cancel</Link>
           <button type="submit" class="btn btn-primary ms-2">Save</button>
         </div>
       </form>
@@ -182,6 +182,7 @@ import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormInput from '../../Components/FormInput.vue'
 import FormDetail from '../../Components/FormDetail.vue'
+import { route } from '../../../../vendor/tightenco/ziggy/src/js'
 
 defineOptions({
   layout: SidebarLayout,
@@ -213,7 +214,7 @@ const form = useForm({
 })
 
 const submit = () => {
-  form.patch(`/projects/${props.project.id}/scenarios/${props.scenario.id}`)
+  form.patch(route('projects.scenarios.update', [props.project.id, props.scenario.id]))
 }
 
 const addManpower = () => {

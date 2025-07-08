@@ -163,7 +163,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-          <Link :href="`/projects/${project.id}/scenarios`" class="btn btn-outline-secondary">Cancel</Link>
+          <Link :href="route('projects.scenarios.index', project.id)" class="btn btn-outline-secondary">Cancel</Link>
           <button type="submit" class="btn btn-primary ms-2">Submit</button>
         </div>
       </form>
@@ -181,6 +181,7 @@ import { Link, useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import { useSanitizeInput } from '../../Composables/Formatter'
 import { useCostCalculator } from '../../Composables/Calculation'
+import { route } from '../../../../vendor/tightenco/ziggy/src/js'
 
 defineOptions({
   layout: SidebarLayout,
@@ -211,7 +212,7 @@ const form = useForm({
 })
 
 const submit = () => {
-  form.post(`/projects/${props.project.id}/scenarios`)
+  form.post(route('projects.scenarios.store', props.project.id))
 }
 
 const addManpower = () => {
