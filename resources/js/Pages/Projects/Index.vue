@@ -11,6 +11,7 @@
       <div class="row mb-3">
         <div class="d-flex justify-content-start align-items-center gap-2">
           <input
+            id="search"
             v-model="search"
             type="search"
             class="form-control"
@@ -24,7 +25,7 @@
               style="min-width: 200px; max-width: 100%; padding: 6px 12px;"
               @click.prevent="isOpen = !isOpen"
             >
-              {{ props.filters.status || 'All Status' }}
+              {{ selectedStatus || 'All Status' }}
             </button>
 
             <ul
@@ -108,7 +109,7 @@
       </div>
     </CardBox>
 
-    <PaginationLink :links="projects.links" class="mt-3" />
+    <PaginationLink v-if="projects.data.length >= 1" :links="projects.links" class="mt-3" />
     <Modal v-if="showConfirmModal" @close="showConfirmModal = false">
       <template #title>
         Confirm Deletion
@@ -144,7 +145,7 @@ const props = defineProps({
 })
 
 const search = ref(props.filters?.search || '')
-const status = ref(props.filters?.status || '')
+const selectedStatus = ref(props.filters?.status || '')
 const isOpen = ref(false)
 const hover = ref(null)
 
@@ -156,7 +157,7 @@ const goToCreate = () => {
 }
 
 const selectStatus = (selected) => {
-  status.value = selected
+  selectedStatus.value = selected
   isOpen.value = false
 }
 
@@ -178,10 +179,10 @@ function performDelete() {
 
 const { successMessage } = useFlash(props)
 
-watch([search, status], () => {
+watch([search, selectedStatus], () => {
   router.get('/projects', {
     search: search.value,
-    status: status.value,
+    status: selectedStatus.value,
   }, {
     preserveState: true,
     preserveScroll: true,

@@ -14,11 +14,11 @@ class ScenarioFactory extends Factory
     {
         return [
             'project_id' => Project::factory(),
-            'duration' => fake()->numberBetween(1, 10),
+            'markup' => fake()->numberBetween(5, 30),
+            'duration' => fake()->numberBetween(1, 12),
             'remark' => fake()->sentence(),
-            'markup' => fake()->randomFloat(2, 0, 50),
             'total_cost' => fake()->numberBetween(1000, 10000),
-            'final_cost' => fake()->numberBetween(1100, 12000),
+            'final_cost' => fake()->numberBetween(1000, 10000),
         ];
     }
 }

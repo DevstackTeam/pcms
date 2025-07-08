@@ -71,7 +71,8 @@
         </div>
 
         <div class="d-flex justify-content-end">
-          <button type="submit" class="btn btn-primary">Create</button>
+          <Link href="/projects" class="btn btn-outline-secondary">Cancel</Link>
+          <button type="submit" class="btn btn-primary ms-2">Create</button>
         </div>
       </form>
     </CardBox>
@@ -80,7 +81,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useForm, router } from '@inertiajs/vue3'
+import { useForm, Link } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'

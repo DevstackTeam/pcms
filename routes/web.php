@@ -20,7 +20,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-    Route::resource('designations', DesignationController::class)->except('create', 'edit');
+    Route::resource('designations', DesignationController::class)->except('create', 'edit', 'show');
     Route::resource('projects', ProjectController::class);
     Route::resource('projects.scenarios', ScenarioController::class);
 });
