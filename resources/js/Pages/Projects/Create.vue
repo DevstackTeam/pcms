@@ -10,7 +10,7 @@
               <FormInput
                 v-model="form.name"
                 label="Project Name"
-                id="name"
+                id="project-name"
                 :error="form.errors.name"
               />
             </div>
@@ -41,6 +41,7 @@
               <label for="status" class="form-label">Status</label>
               <div class="dropdown">
                 <button
+                  id="status"
                   class="form-select text-start"
                   @click.prevent="isOpen = !isOpen">
                   {{ form.status || 'Select status' }}
