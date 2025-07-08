@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('total_cost', 10, 2);
             $table->decimal('final_cost', 10, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

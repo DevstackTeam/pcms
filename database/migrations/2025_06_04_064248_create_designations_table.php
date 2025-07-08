@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->decimal('rate_per_day', 8, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

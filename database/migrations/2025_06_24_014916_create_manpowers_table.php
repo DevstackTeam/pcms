@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('remark')->nullable();
             $table->decimal('total_cost', 10, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('client');
             $table->enum('status', ['Completed', 'Active', 'Not Started'])->default('Not Started');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
