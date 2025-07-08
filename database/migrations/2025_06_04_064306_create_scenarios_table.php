@@ -14,10 +14,10 @@ return new class extends Migration
     {
         Schema::create('scenarios', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Project::class);
+            $table->foreignIdFor(Project::class)->constrained()->cascadeOnDelete();
             $table->decimal('markup', 5, 1);
             $table->integer('duration');
-            $table->string('remark')-> nullable();
+            $table->string('remark')->nullable();
             $table->decimal('total_cost', 10, 2);
             $table->decimal('final_cost', 10, 2);
             $table->timestamps();
