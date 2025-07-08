@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('designations', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->decimal('rate_per_day', 8, 2);
             $table->timestamps();
             $table->softDeletes();

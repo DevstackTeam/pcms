@@ -25,7 +25,7 @@ class DesignationRequest extends FormRequest
          return [
             'name' => [
                 'required',
-                Rule::unique('designations', 'name')->ignore($this->designation)
+                Rule::unique('designations', 'name')->ignore($this->route('designation'))
             ],
             'rate_per_day' => ['required', 'numeric', 'min:0',],
         ];

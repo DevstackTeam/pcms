@@ -30,4 +30,9 @@ class ScenarioService
 
         return $scenario;
     }
+
+    public function delete(Scenario $scenario): void
+{
+    $scenario->delete();
+}
 }
