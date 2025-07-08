@@ -133,7 +133,7 @@
 
         <div class="row mb-3">
           <div class="col">
-            <FormDetail label="Total Cost" id="total-cost">
+            <FormDetail label="Total Cost">
               {{ parseFloat(form.total_cost).toLocaleString('ms-MY', { 
                   style: 'currency', 
                   currency: 'MYR' 
@@ -153,7 +153,7 @@
           </div>
 
           <div class="col">
-            <FormDetail label="Final Cost" id="final-cost">
+            <FormDetail label="Final Cost">
               {{ parseFloat(form.final_cost).toLocaleString('ms-MY', { 
                   style: 'currency', 
                   currency: 'MYR' 
