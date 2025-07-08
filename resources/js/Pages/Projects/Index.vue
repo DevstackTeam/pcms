@@ -108,7 +108,7 @@
       </div>
     </CardBox>
 
-    <PaginationLink :links="projects.links" class="mt-3" />
+    <PaginationLink v-if="projects.data.length >= 1" :links="projects.links" class="mt-3" />
     <Modal v-if="showConfirmModal" @close="showConfirmModal = false">
       <template #title>
         Confirm Deletion
