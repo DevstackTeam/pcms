@@ -98,7 +98,7 @@ class ScenarioController extends Controller
 
     public function destroy(Project $project, Scenario $scenario)
     {
-        $scenario->delete();
+        $this->scenarioService->delete($scenario);
 
         return redirect()
             ->route('projects.scenarios.index', $project)

@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Designation extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'name',
         'rate_per_day',

@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Manpower extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'designation_id',
         'scenario_id',

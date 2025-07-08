@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Scenario extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'project_id',
         'markup',
