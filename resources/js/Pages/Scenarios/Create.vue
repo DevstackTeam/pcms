@@ -57,6 +57,7 @@
                   :items="designations"
                   item-title="name"
                   item-value="id"
+                  autocomplete="off"
                   label="Select Designation"
                   variant="outlined"
                   density="compact"
