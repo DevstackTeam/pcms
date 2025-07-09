@@ -4,7 +4,7 @@ use App\Models\Designation;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia;
 
-it('shows the designations index page', function () {
+test('shows the designations index page', function () {
     $user = User::factory()->create();
             Designation::factory()->create(['name' => 'Engineer']);
 
@@ -20,7 +20,7 @@ it('shows the designations index page', function () {
 });
 
 
-it('stores a new designation', function () {
+test('stores a new designation', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
@@ -32,7 +32,7 @@ it('stores a new designation', function () {
     expect(Designation::where($data)->exists())->toBeTrue();
 });
 
-it('updates a designation', function () {
+test('updates a designation', function () {
     $user = User::factory()->create();
     $designation = Designation::factory()->create([
         'name' => 'Old Name',

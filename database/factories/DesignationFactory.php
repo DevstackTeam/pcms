@@ -13,7 +13,7 @@ class DesignationFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->jobTitle,
+            'name' => $this->faker->unique()->jobTitle,
             'rate_per_day' => $this->faker->numberBetween(100, 1000),
             'user_id' => User::factory(), // Make sure UserFactory exists too
         ];

@@ -1,8 +1,9 @@
 <?php
 
-use App\Models\Project;
-use App\Models\Scenario;
 use App\Models\User;
+use App\Models\Project;
+use App\Models\Manpower;
+use App\Models\Scenario;
 use App\Services\ScenarioService;
 
 
@@ -68,16 +69,16 @@ test('it updates an existing scenario', function () {
     ]);
 });
 
-test('it deletes a scenario', function () {
-    $scenario = Scenario::factory()->create([
-        'project_id' => $this->project->id,
-        'remark' => 'To be deleted',
-    ]);
+test('soft deletes related manpowers when scenario is soft deleted', function () {
+    $scenario = Scenario::factory()->create();
+    $manpower1 = Manpower::factory()->create(['scenario_id' => $scenario->id]);
+    $manpower2 = Manpower::factory()->create(['scenario_id' => $scenario->id]);
 
-    $this->service->delete($scenario);
+    $scenario->delete();
 
-    $this->assertDatabaseMissing('scenarios', [
-        'id' => $scenario->id,
-        'remark' => 'To be deleted',
-    ]);
+    expect($scenario->manpowers()->withTrashed()->count())->toBe(2)
+        ->and($manpower1->fresh()->trashed())->toBeTrue()
+        ->and($manpower2->fresh()->trashed())->toBeTrue();
 });
+
+
