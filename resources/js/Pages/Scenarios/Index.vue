@@ -53,7 +53,7 @@
               </td>
 
               <td class="space-x-2">
-                <Link :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-primary me-2">
+                <Link :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
 
@@ -85,18 +85,18 @@
         <div class="row justify-content-center mb-4">
           <div class="col-md-4 text-center">
             <select v-model="selectedScenario1" class="form-select">
-              <option disabled value="">Select Scenario 1</option>
+              <option disabled value="">Select First Scenario</option>
               <option v-for="scenario in scenarios" :key="scenario.id" :value="scenario">
-                {{ scenario.name || 'Scenario ' + scenario.id }}
+                {{ 'Scenario ' + scenario.id }}
               </option>
             </select>
           </div>
           <div class="col-md-1 text-center fw-bold align-self-center">vs</div>
           <div class="col-md-4 text-center">
             <select v-model="selectedScenario2" class="form-select">
-              <option disabled value="">Select Scenario 2</option>
+              <option disabled value="">Select Second Scenario</option>
               <option v-for="scenario in scenarios" :key="scenario.id + '-2'" :value="scenario">
-                {{ scenario.name || 'Scenario ' + scenario.id }}
+                {{ 'Scenario ' + scenario.id }}
               </option>
             </select>
           </div>
@@ -108,15 +108,19 @@
               <thead class="table-dark">
                 <tr>
                   <th></th>
-                <th>{{ selectedScenario1?.name || 'Scenario ' + selectedScenario1?.id }}</th>
-                <th>{{ selectedScenario2?.name || 'Scenario ' + selectedScenario2?.id }}</th>
+                <th>{{ 'Scenario ' + selectedScenario1?.id }}</th>
+                <th>{{ 'Scenario ' + selectedScenario2?.id }}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>Duration</td>
-                  <td>{{ selectedScenario1.duration }}</td>
-                  <td>{{ selectedScenario2.duration }}</td>
+                  <td>
+                    {{ selectedScenario1.duration }} {{ selectedScenario1.duration == 1 ? 'Month' : 'Months' }}
+                  </td>
+                  <td>
+                    {{ selectedScenario2.duration }} {{ selectedScenario2.duration == 1 ? 'Month' : 'Months' }}
+                  </td>
                 </tr>
                 <tr>
                   <td>Total Cost</td>
