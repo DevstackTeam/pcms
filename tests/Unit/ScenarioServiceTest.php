@@ -81,4 +81,22 @@ test('soft deletes related manpowers when scenario is soft deleted', function ()
         ->and($manpower2->fresh()->trashed())->toBeTrue();
 });
 
+test('force deletes related manpowers when scenario is force deleted', function () {
+    $scenario = Scenario::factory()->create();
+    $manpower = Manpower::factory()->create(['scenario_id' => $scenario->id]);
 
+    $scenario->forceDelete();
+
+    expect(Manpower::withTrashed()->count())->toBe(0);
+});
+
+test('restores related manpowers when scenario is restored', function () {
+    $scenario = Scenario::factory()->create();
+    $manpower = Manpower::factory()->create(['scenario_id' => $scenario->id]);
+
+    $scenario->delete();
+    $scenario->restore();
+
+    expect($scenario->manpowers()->count())->toBe(1)
+        ->and($manpower->fresh()->trashed())->toBeFalse();
+});
