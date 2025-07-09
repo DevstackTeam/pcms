@@ -13,7 +13,7 @@
 
           <div class="col">
             <FormDetail label="Remark">
-              {{ scenario.remark }}
+              {{ scenario.remark || '-'}}
             </FormDetail>
           </div>
         </div>
