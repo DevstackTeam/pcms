@@ -85,7 +85,7 @@
         <div class="row justify-content-center mb-4">
           <div class="col-md-4 text-center">
             <select v-model="selectedScenario1" class="form-select">
-              <option disabled value="">Select Scenario 1</option>
+              <option disabled value="">Select First Scenario</option>
               <option v-for="scenario in scenarios" :key="scenario.id" :value="scenario">
                 {{ 'Scenario ' + scenario.id }}
               </option>
@@ -94,7 +94,7 @@
           <div class="col-md-1 text-center fw-bold align-self-center">vs</div>
           <div class="col-md-4 text-center">
             <select v-model="selectedScenario2" class="form-select">
-              <option disabled value="">Select Scenario 2</option>
+              <option disabled value="">Select Second Scenario</option>
               <option v-for="scenario in scenarios" :key="scenario.id + '-2'" :value="scenario">
                 {{ 'Scenario ' + scenario.id }}
               </option>
