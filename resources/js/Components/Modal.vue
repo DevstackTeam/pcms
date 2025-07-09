@@ -1,7 +1,6 @@
 <template>
   <div
     class="modal-overlay show"
-    @click.self="$emit('close')"
     style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1050;"
   >
     <div class="modal-dialog" style="margin: 10% auto; max-width: 500px;">
