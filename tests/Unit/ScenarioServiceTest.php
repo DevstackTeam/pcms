@@ -76,7 +76,7 @@ test('it deletes a scenario', function () {
 
     $this->service->delete($scenario);
 
-    $this->assertDatabaseMissing('scenarios', [
+    $this->assertSoftDeleted('scenarios', [
         'id' => $scenario->id,
         'remark' => 'To be deleted',
     ]);

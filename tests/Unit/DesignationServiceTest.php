@@ -1,7 +1,8 @@
 <?php
 
-use App\Models\Designation;
 use App\Models\User;
+use App\Models\Manpower;
+use App\Models\Designation;
 use App\Services\DesignationService;
 
 beforeEach(function () {
@@ -128,9 +129,54 @@ test('it deletes a designation', function () {
 
     $this->service->delete($designation);
 
-    $this->assertDatabaseMissing('designations', [
+    $this->assertSoftDeleted('designations', [
+        'id' => $designation->id,
+    ]);
+});
+
+test('soft deletes related manpowers when designation is soft deleted', function () {
+    $designation = Designation::factory()->create();
+    $manpower = Manpower::factory()->create([
+        'designation_id' => $designation->id,
+    ]);
+
+    $designation->delete();
+
+    expect(Manpower::withTrashed()->find($manpower->id)->trashed())->toBeTrue();
+});
+
+test('force deletes related manpowers when designation is force deleted', function () {
+    $designation = Designation::factory()->create();
+    $manpower = Manpower::factory()->create([
+        'designation_id' => $designation->id,
+    ]);
+
+    $designation->forceDelete();
+
+    $this->assertDatabaseMissing('manpowers', [
+        'id' => $manpower->id,
+    ]);
+});
+
+test('restores related manpowers when designation is restored', function () {
+    $designation = Designation::factory()->create();
+    $manpower = Manpower::factory()->create([
+        'designation_id' => $designation->id,
+    ]);
+
+    $designation->delete();
+    expect($designation->fresh()->trashed())->toBeTrue();
+    expect(Manpower::withTrashed()->find($manpower->id)->trashed())->toBeTrue();
+
+    $designation->restore();
+
+    $this->assertDatabaseHas('designations', [
         'id' => $designation->id,
     ]);
 
-
+    $this->assertDatabaseHas('manpowers', [
+        'id' => $manpower->id,
+        'deleted_at' => null,
+    ]);
 });
+
