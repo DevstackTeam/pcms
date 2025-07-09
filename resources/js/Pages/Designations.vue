@@ -7,7 +7,12 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <CardBox title="Designation's List" :showButton="true" @button-click="showModal = true">
+    <CardBox 
+      title="Designation's List" 
+      :showButton="true" 
+      buttonText="Add Designation" 
+      @button-click="showModal = true"
+    >
 
       <div class="mb-3 d-flex justify-content-start">
         <input
