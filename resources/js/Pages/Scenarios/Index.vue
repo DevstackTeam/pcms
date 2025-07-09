@@ -53,7 +53,7 @@
               </td>
 
               <td class="space-x-2">
-                <Link :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-primary me-2">
+                <Link :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
 
@@ -115,8 +115,12 @@
               <tbody>
                 <tr>
                   <td>Duration</td>
-                  <td>{{ selectedScenario1.duration }}</td>
-                  <td>{{ selectedScenario2.duration }}</td>
+                  <td>
+                    {{ selectedScenario1.duration }} {{ selectedScenario1.duration == 1 ? 'Month' : 'Months' }}
+                  </td>
+                  <td>
+                    {{ selectedScenario2.duration }} {{ selectedScenario2.duration == 1 ? 'Month' : 'Months' }}
+                  </td>
                 </tr>
                 <tr>
                   <td>Total Cost</td>
