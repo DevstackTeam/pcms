@@ -154,10 +154,13 @@
 
           <div class="col">
             <FormDetail label="Final Cost">
-              {{ parseFloat(form.final_cost).toLocaleString('ms-MY', { 
-                  style: 'currency', 
-                  currency: 'MYR' 
-                })  
+              {{ 
+                form.final_cost 
+                  ? parseFloat(form.final_cost).toLocaleString('ms-MY', { 
+                    style: 'currency', 
+                    currency: 'MYR' 
+                  })
+                  : '-'
               }}
             </FormDetail>
           </div>
