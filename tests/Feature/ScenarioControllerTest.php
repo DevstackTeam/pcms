@@ -6,7 +6,7 @@ use App\Models\Scenario;
 use App\Models\Designation;
 use Inertia\Testing\AssertableInertia;
 
-it('shows scenario index page for a project', function () {
+test('shows scenario index page for a project', function () {
     $user = User::factory()->create();
     $project = Project::factory()->for($user)->create();
     $scenario = Scenario::factory()->for($project)->create();
@@ -21,7 +21,7 @@ it('shows scenario index page for a project', function () {
         );
 });
 
-it('shows create scenario page', function () {
+test('shows create scenario page', function () {
     $user = User::factory()->create();
     $project = Project::factory()->for($user)->create();
     Designation::factory()->count(2)->create();
@@ -36,7 +36,7 @@ it('shows create scenario page', function () {
         );
 });
 
-it('stores a new scenario with manpower', function () {
+test('stores a new scenario with manpower', function () {
     $user = User::factory()->create();
     $project = Project::factory()->for($user)->create();
     $designation = Designation::factory()->create();
@@ -68,7 +68,7 @@ $this->actingAs($user)
     expect($project->scenarios()->where('remark', 'Test scenario')->exists())->toBeTrue();
 });
 
-it('shows a scenario detail page', function () {
+test('shows a scenario detail page', function () {
     $user = User::factory()->create();
     $project = Project::factory()->for($user)->create();
     $scenario = Scenario::factory()->for($project)->create();
@@ -83,7 +83,7 @@ it('shows a scenario detail page', function () {
         );
 });
 
-it('shows edit scenario page', function () {
+test('shows edit scenario page', function () {
     $user = User::factory()->create();
     $project = Project::factory()->for($user)->create();
     $scenario = Scenario::factory()->for($project)->create();
@@ -100,7 +100,7 @@ it('shows edit scenario page', function () {
         );
 });
 
-it('updates a scenario and its manpower', function () {
+test('updates a scenario and its manpower', function () {
     $user = User::factory()->create();
     $project = Project::factory()->for($user)->create();
     $scenario = Scenario::factory()->for($project)->create();
@@ -136,7 +136,7 @@ it('updates a scenario and its manpower', function () {
     expect($scenario->remark)->toBe('Updated remark');
 });
 
-it('deletes a scenario', function () {
+test('deletes a scenario', function () {
     $user = User::factory()->create();
     $project = Project::factory()->for($user)->create();
     $scenario = Scenario::factory()->for($project)->create();
