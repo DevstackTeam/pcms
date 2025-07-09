@@ -73,6 +73,7 @@
             label="Rate/Day"
             v-model="form.rate_per_day"
             :error="form.errors.rate_per_day"
+            @input="e => handleRateInput(e, form)"
           />
 
           <div class="d-flex justify-content-end gap-2">
@@ -110,6 +111,7 @@ import FormInput from '../Components/FormInput.vue'
 import { useForm, router } from '@inertiajs/vue3'
 import { ref, watch } from 'vue'
 import { useFlash } from '../Composables/Flash'
+import { useSanitizeInput } from '../Composables/Formatter'
 
 const search = ref('')
 const showModal = ref(false)
@@ -129,6 +131,9 @@ const props = defineProps({
 })
 
 const { successMessage } = useFlash(props)
+
+const { sanitizeDecimalInput } = useSanitizeInput()
+const handleRateInput = (e, f) => sanitizeDecimalInput(e, f, 'rate_per_day')
 
 function openEditModal(designation) {
   isEditMode.value = true
