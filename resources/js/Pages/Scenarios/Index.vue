@@ -87,7 +87,7 @@
             <select v-model="selectedScenario1" class="form-select">
               <option disabled value="">Select Scenario 1</option>
               <option v-for="scenario in scenarios" :key="scenario.id" :value="scenario">
-                {{ scenario.name || 'Scenario ' + scenario.id }}
+                {{ 'Scenario ' + scenario.id }}
               </option>
             </select>
           </div>
@@ -96,7 +96,7 @@
             <select v-model="selectedScenario2" class="form-select">
               <option disabled value="">Select Scenario 2</option>
               <option v-for="scenario in scenarios" :key="scenario.id + '-2'" :value="scenario">
-                {{ scenario.name || 'Scenario ' + scenario.id }}
+                {{ 'Scenario ' + scenario.id }}
               </option>
             </select>
           </div>
@@ -108,8 +108,8 @@
               <thead class="table-dark">
                 <tr>
                   <th></th>
-                <th>{{ selectedScenario1?.name || 'Scenario ' + selectedScenario1?.id }}</th>
-                <th>{{ selectedScenario2?.name || 'Scenario ' + selectedScenario2?.id }}</th>
+                <th>{{ 'Scenario ' + selectedScenario1?.id }}</th>
+                <th>{{ 'Scenario ' + selectedScenario2?.id }}</th>
                 </tr>
               </thead>
               <tbody>
