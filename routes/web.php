@@ -1,13 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ScenarioController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DesignationController;
 
-// Public routes
 Route::get('/', function () {
-    return Inertia::render('Home');
+    return redirect()->route('login');
 });
 
 Route::middleware('guest')->group(function () {
@@ -19,8 +20,10 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::resource('designations', DesignationController::class)->except('create', 'edit', 'show');
+    Route::resource('projects', ProjectController::class);
+    Route::resource('projects.scenarios', ScenarioController::class);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    // Protected API routes
 });

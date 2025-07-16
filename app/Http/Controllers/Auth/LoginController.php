@@ -17,7 +17,7 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        return Inertia::render('Login');
+        return Inertia::render('Auth/Login');
     }
 
     public function login(AuthLoginRequest $request)
@@ -30,7 +30,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Incorrect username or password.',
         ])->withInput();
     }
 
