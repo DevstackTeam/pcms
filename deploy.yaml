@@ -36,17 +36,13 @@ hosts:
     keep_releases: 2
 
 tasks:
-  npm:install:
-    - script:
-      - cd {{release_path}}
-      - npm install
+   npm:install:
+    - run: cd {{release_path}} && npm install
 
-  npm:build:
-    - script:
-      - cd {{release_path}}
-      - npm run build
+   npm:build:
+    - run: cd {{release_path}} && npm run build
 
-  deploy:
+   deploy:
     - deploy:prepare
     - deploy:vendors
     - artisan:storage:link
@@ -55,7 +51,7 @@ tasks:
     - npm:build
     - deploy:publish
 
-  migrate:
+   migrate:
     - artisan:migrate
 
 after:
