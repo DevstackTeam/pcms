@@ -198,7 +198,7 @@
 </template>
 
 <script setup>
-import SidebarLayout from '@/Layouts/SideBarLayout.vue';
+import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import Header from '@/Components/Header.vue';
 import CardBox from '@/Components/CardBox.vue';
 import TabLink from '../../Components/TabLink.vue';
