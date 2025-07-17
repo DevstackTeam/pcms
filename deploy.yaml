@@ -1,0 +1,50 @@
+import:
+  - recipe/laravel.php
+
+config:
+  application: pcms
+  repository: https://github.com/DevstackTeam/pcms.git
+  php_fpm_service: php8.2-fpm
+  ssh_multiplexing: false
+  shared_files:
+    - .env
+  shared_dirs:
+    - storage
+  writable_dirs:
+    - storage
+    - bootstrap/cache
+
+hosts:
+  dev:
+    hostname: 35.240.144.142
+    remote_user: ahmadfaizzulkefli
+    deploy_path: /var/www/devpcms
+    port: 22
+    forward_agent: false
+    branch: feature/main
+    stage: dev
+    keep_releases: 2
+
+  production:
+    hostname: 35.240.144.142
+    remote_user: balqissrozii
+    deploy_path: /var/www/pcms
+    port: 22
+    forward_agent: true
+    branch: feature/main
+    stage: production
+    keep_releases: 2
+
+tasks:
+  deploy:
+    - deploy:prepare
+    - deploy:vendors
+    - artisan:storage:link
+    - artisan:view:cache
+    - deploy:publish
+
+  migrate:
+    - artisan:migrate
+
+after:
+  deploy:failed: deploy:unlock
