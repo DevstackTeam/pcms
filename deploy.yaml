@@ -3,7 +3,7 @@ import:
 
 config:
   application: pcms
-  repository: https://github.com/DevstackTeam/pcms.git
+  repository: git@github.com:DevstackTeam/pcms.git
   php_fpm_service: php8.2-fpm
   ssh_multiplexing: false
   shared_files:
@@ -36,11 +36,23 @@ hosts:
     keep_releases: 2
 
 tasks:
+  npm:install:
+    - script:
+      - cd {{release_path}}
+      - npm install
+
+  npm:build:
+    - script:
+      - cd {{release_path}}
+      - npm run build
+
   deploy:
     - deploy:prepare
     - deploy:vendors
     - artisan:storage:link
     - artisan:view:cache
+    - npm:install
+    - npm:build
     - deploy:publish
 
   migrate:
