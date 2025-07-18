@@ -1,4 +1,8 @@
 <template>
+  <Head>
+    <title> - Dashboard</title>
+  </Head>
+  
   <div class="container-fluid">
     <Header iconClass="bi-house-door" title="Dashboard"></Header>
 

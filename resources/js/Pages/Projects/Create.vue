@@ -1,4 +1,8 @@
 <template>
+  <Head>
+    <title> - Projects</title>
+  </Head>
+
   <div class="container-fluid">
     <Header iconClass="bi-kanban" title="Project"></Header>
 

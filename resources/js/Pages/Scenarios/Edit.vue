@@ -1,4 +1,8 @@
 <template>
+  <Head>
+    <title> - Project | {{ project.name }} | {{ scenario.id }}</title>
+  </Head>
+
   <div class="container-fluid">
     <Header iconClass="bi-kanban" title="Project" :subtitle="`${project.name} | Scenario ${scenario.id}`"></Header>
 

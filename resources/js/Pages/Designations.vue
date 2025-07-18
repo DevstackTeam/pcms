@@ -1,4 +1,8 @@
 <template>
+  <Head>
+    <title> - Designations</title>
+  </Head>
+  
   <div class="container-fluid">
     <Header iconClass="bi-people" title="Designations"></Header>
 

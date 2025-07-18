@@ -1,4 +1,8 @@
 <template>
+  <Head>
+    <title> - Project | {{ project.name }}</title>
+  </Head>
+  
   <div class="container-fluid">
     <Header iconClass="bi-file-earmark-text" title="Project" :subtitle="project.name"></Header>
 
