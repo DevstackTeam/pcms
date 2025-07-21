@@ -7,7 +7,7 @@
       :style="{
         width: '260px',
         position: windowWidth < 768 ? 'fixed' : 'fixed',
-        height: '100vh',
+        height: '100%',
         left: isSidebarVisible ? '0' : windowWidth < 768 ? '-260px' : '0',
         top: '0',
         zIndex: 1030,
@@ -124,11 +124,20 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
 
-  @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
+* {
+  font-family: 'Nunito Sans', sans-serif;
+}
 
-  * {
-    font-family: 'Nunito Sans', sans-serif;
+.sidebar {
+  transition: all 0.3s ease;
+}
+
+/* On large screens, sidebar is always visible */
+@media (min-width: 768px) {
+  .sidebar {
+    display: flex !important;
   }
-
+}
 </style>
