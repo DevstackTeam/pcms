@@ -21,10 +21,10 @@ class RoleAndUserSeeder extends Seeder
 
         // Create permissions
         $permissions = [
-            'view_dashboard',
-            'manage_users',
-            'manage_roles',
-            'manage_permissions'
+            'can_view',
+            'can_create',
+            'can_edit',
+            'can_delete',
         ];
 
         foreach ($permissions as $permission) {
