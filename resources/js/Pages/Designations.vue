@@ -9,7 +9,7 @@
 
     <CardBox 
       title="Designation's List" 
-      :showButton="true" 
+      :showButton="canCreate" 
       buttonText="Add Designation" 
       @button-click="showModal = true"
     >
@@ -31,14 +31,14 @@
             <tr>
               <th scope="col" style="width: 40%;">Designation Name</th>
               <th scope="col" style="width: 30%;">Rate/Day</th>
-              <th scope="col" style="width: 30%;">Actions</th>
+              <th v-if="isAdmin" scope="col" style="width: 30%;">Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="d in props.designations.data" :key="d.id">
               <td style="padding: 8px 10px; text-align: left;">{{ d.name }}</td>
               <td>RM {{ d.rate_per_day }}</td>
-              <td class="space-x-2">
+              <td v-if="isAdmin" class="space-x-2">
                 <button class="btn p-0 text-primary me-2" @click.prevent="openEditModal(d)" title="Edit">
                   <i class="bi bi-pencil"></i>
                 </button>
@@ -113,11 +113,19 @@ import CardBox from '../Components/CardBox.vue'
 import Modal from '../Components/Modal.vue'
 import PaginationLink from '../Components/PaginationLink.vue'
 import FormInput from '../Components/FormInput.vue'
-import { useForm, router } from '@inertiajs/vue3'
-import { ref, watch } from 'vue'
+import { useForm, router, usePage } from '@inertiajs/vue3'
+import { ref, watch, computed } from 'vue'
 import { useFlash } from '../Composables/Flash'
 import { useSanitizeInput } from '../Composables/Formatter'
 
+const props = defineProps({
+  designations: Object,
+  flash: Object
+})
+
+const page = usePage()
+const canCreate = computed(() => page.props.auth.user?.permissions.includes('can_create'))
+const isAdmin = computed(() => page.props.auth.user?.roles.includes('admin'))
 const search = ref('')
 const showModal = ref(false)
 const isEditMode = ref(false)
@@ -128,11 +136,6 @@ const confirmDeleteId = ref(null)
 const form = useForm({
   name: '',
   rate_per_day: ''
-})
-
-const props = defineProps({
-  designations: Object,
-  flash: Object
 })
 
 const { successMessage } = useFlash(props)

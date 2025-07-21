@@ -9,7 +9,7 @@
 
     <TabLink :projectId="project.id"/>
 
-    <CardBox title="Project's Scenario" :showButton="true" buttonText="Add Scenario" @button-click="goToCreate">
+    <CardBox title="Project's Scenario" :showButton="canCreate" buttonText="Add Scenario" @button-click="goToCreate">
       <div class="table-responsive">
         <table
           class="table table-hover table-bordered table-striped align-middle text-center"
@@ -57,11 +57,12 @@
                   <i class="bi bi-eye me-2"></i>
                 </Link>
 
-                <Link :href='`/projects/${project.id}/scenarios/${scenario.id}/edit`' class="text-primary me-3">
+                <Link v-if="canEdit" :href='`/projects/${project.id}/scenarios/${scenario.id}/edit`' class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
 
                 <button
+                  v-if="canDelete"
                   type="button"
                   class="btn btn-link text-danger p-0"
                   title="Delete"
@@ -204,13 +205,17 @@ import CardBox from '@/Components/CardBox.vue';
 import TabLink from '../../Components/TabLink.vue';
 import Modal from '../../Components/Modal.vue';
 import { useFlash } from '../../Composables/Flash';
-import { router, Link } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { router, Link, usePage } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
 
 defineOptions({
   layout: SidebarLayout
 });
 
+const page = usePage()
+const canCreate = computed(() => page.props.auth.user?.permissions.includes('can_create'))
+const canEdit = computed(() => page.props.auth.user?.permissions.includes('can_edit'))
+const canDelete = computed(() => page.props.auth.user?.permissions.includes('can_delete'))
 const selectedScenario1 = ref(null)
 const selectedScenario2 = ref(null)
 const confirmDeleteId = ref(null)
