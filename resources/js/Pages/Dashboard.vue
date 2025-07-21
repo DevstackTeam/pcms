@@ -36,11 +36,11 @@
 
         <!-- Recent Projects Table -->
         <div class="card border shadow-sm">
-          <div class="card-body">
-            <h5 class="fw-semibold border-bottom pb-2 mb-4">Recent Projects</h5>
+          <div class="card-body p-3 p-sm-4">
+            <h5 class="fw-semibold border-bottom pb-2 mb-3 mb-sm-4 fs-6 fs-sm-5">Recent Projects</h5>
 
-            <div class="table-responsive overflow-x-auto">
-              <table class="table table-hover table-bordered table-striped align-middle text-center" style="table-layout: fixed; width: 100%;">
+            <div class="table-responsive">
+              <table class="table table-hover table-bordered table-striped align-middle text-center " style=" width: 100%; font-size: 0.85rem;">
                 <thead class="table-light">
                   <tr>
                     <th style="width: 40%;">Project Name</th>
@@ -51,7 +51,7 @@
                 </thead>
                 <tbody>
                   <tr v-for="project in latestProjects" :key="project.id">
-                    <td class="text-start px-3">{{ project.name }}</td>
+                    <td class="text-start px-2 px-sm-3">{{ project.name }}</td>
                     <td>{{ formatDate(project.created_at) }}</td>
                     <td>{{ project.scenarios_count }}</td>
                     <td>

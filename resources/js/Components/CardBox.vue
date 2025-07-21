@@ -11,7 +11,8 @@
           {{ buttonText }}
         </a>
       </div>
-      <slot/>
+
+      <slot />
     </div>
   </div>
 </template>
