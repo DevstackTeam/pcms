@@ -7,7 +7,7 @@
       :style="{
         width: '260px',
         position: windowWidth < 768 ? 'fixed' : 'fixed',
-        height: '100%',
+        height: '100vh',
         left: isSidebarVisible ? '0' : windowWidth < 768 ? '-260px' : '0',
         top: '0',
         zIndex: 1030,
