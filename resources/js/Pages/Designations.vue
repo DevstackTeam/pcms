@@ -7,12 +7,12 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <CardBox 
-      title="Designation's List" 
-      :showButton="true" 
-      buttonText="Add Designation" 
-      @button-click="showModal = true"
-    >
+        <CardBox
+        title="Designation's List"
+        :showButton="true"
+        buttonText="Add Designation"
+        @button-click="showModal = true"
+        >
 
       <div class="mb-3 d-flex justify-content-start">
         <input
@@ -26,7 +26,7 @@
       </div>
 
       <div class="table-responsive">
-        <table class="table table-hover table-bordered table-striped align-middle text-center" style=" table-layout: fixed; width: 100%;">
+        <table class="table table-hover table-bordered table-striped align-middle text-center" style=" width: 100%;">
           <thead class="table-light">
             <tr>
               <th scope="col" style="width: 40%;">Designation Name</th>
