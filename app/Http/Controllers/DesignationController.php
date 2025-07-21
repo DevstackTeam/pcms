@@ -5,6 +5,7 @@ use App\Http\Requests\DesignationRequest;
 use App\Models\Designation;
 use App\Services\DesignationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class DesignationController extends Controller
@@ -31,6 +32,8 @@ class DesignationController extends Controller
 
     public function store(DesignationRequest $request)
     {
+        Gate::authorize('can_create');
+
         $designation = $this->designationService->store($request->only('name', 'rate_per_day'));
 
         return redirect()
@@ -40,6 +43,8 @@ class DesignationController extends Controller
 
     public function update(DesignationRequest $request, Designation $designation)
     {
+        Gate::authorize('can_edit');
+
         $this->designationService->update($designation, $request->only('name', 'rate_per_day'));
 
         return redirect()->route('designations.index')
@@ -48,6 +53,8 @@ class DesignationController extends Controller
 
     public function destroy(Designation $designation)
     {
+        Gate::authorize('can_delete');
+
         $this->designationService->delete($designation);
 
         return redirect()->route('designations.index')

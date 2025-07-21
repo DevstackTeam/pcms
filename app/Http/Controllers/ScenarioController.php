@@ -10,6 +10,7 @@ use App\Models\Project;
 use App\Services\ManpowerService;
 use App\Services\ScenarioService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class ScenarioController extends Controller
@@ -35,6 +36,8 @@ class ScenarioController extends Controller
 
     public function create(Project $project)
     {
+        Gate::authorize('can_create');
+
         $designations = Designation::orderBy('name')->get();
 
         return Inertia::render('Scenarios/Create', [
@@ -45,6 +48,8 @@ class ScenarioController extends Controller
 
     public function store(Project $project, ScenarioRequest $scenario_request, ManpowerRequest $mp_request)
     {
+        Gate::authorize('can_create');
+
         $scenario = $this->scenarioService->store($scenario_request->validated(), $project);
 
         $this->manpowerService->storeMany($mp_request->validated()['manpower'], $scenario);
@@ -67,6 +72,8 @@ class ScenarioController extends Controller
 
     public function edit(Project $project, Scenario $scenario)
     {
+        Gate::authorize('can_edit');
+
         $designations = Designation::orderBy('name')->get();
         $manpowers = $scenario->manpowers()->get();
 
@@ -85,6 +92,8 @@ class ScenarioController extends Controller
         ManpowerRequest $mp_request,
     )
     {
+        Gate::authorize('can_edit');
+
         $scenario = $this->scenarioService->update($scenario_request->validated(), $scenario);
 
         $scenario->manpowers()->delete();
@@ -98,6 +107,8 @@ class ScenarioController extends Controller
 
     public function destroy(Project $project, Scenario $scenario)
     {
+        Gate::authorize('can_delete');
+
         $this->scenarioService->delete($scenario);
 
         return redirect()

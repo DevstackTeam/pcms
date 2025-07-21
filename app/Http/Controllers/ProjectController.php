@@ -7,6 +7,7 @@ use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
 use App\Services\ProjectService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class ProjectController extends Controller
@@ -34,6 +35,8 @@ class ProjectController extends Controller
 
     public function create()
     {
+        Gate::authorize('can_create');
+
         return Inertia::render('Projects/Create', [
             'status' => ProjectStatus::cases(),
         ]);
@@ -41,6 +44,8 @@ class ProjectController extends Controller
 
     public function store(ProjectRequest $request)
     {
+        Gate::authorize('can_create');
+
         $project = $this->projectService->store($request->validated());
 
         return redirect()
@@ -57,6 +62,8 @@ class ProjectController extends Controller
 
     public function edit(Project $project)
     {
+        Gate::authorize('can_edit');
+
         return Inertia::render('Projects/Edit', [
             'project' => $project,
             'status' => ProjectStatus::cases(),
@@ -65,6 +72,8 @@ class ProjectController extends Controller
 
     public function update(ProjectRequest $request, Project $project)
     {
+        Gate::authorize('can_edit');
+
         $project = $this->projectService->update($project, $request->validated());
 
         return redirect()
@@ -74,6 +83,8 @@ class ProjectController extends Controller
 
     public function destroy(Project $project)
     {
+        Gate::authorize('can_delete');
+
         $project->delete();
 
         return redirect()
