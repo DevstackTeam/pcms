@@ -1,64 +1,65 @@
 <template>
-  <div class="container-fluid">
-    <Header iconClass="bi-house-door" title="Dashboard"></Header>
+  <div class="container-fluid px-3 px-sm-4">
+    <Header iconClass="bi-house-door" title="Dashboard" />
 
     <div class="row">
       <div class="col-12">
+        <!-- Summary Cards -->
         <div class="card border shadow-sm mb-4">
           <div class="card-body">
             <h5 class="fw-semibold border-bottom pb-2 mb-4">Summary</h5>
-            <div class="row g-4">
 
+            <div class="row g-3 justify-content-center">
               <Card
                 title="Total Projects"
                 :count="projectCount"
                 icon="bi bi-kanban"
               />
-
               <Card
                 title="Upcoming Projects"
                 :count="notstartedCount"
                 icon="bi bi-clock-history"
               />
-
-               <Card
+              <Card
                 title="Active Projects"
                 :count="activeCount"
                 icon="bi bi-bar-chart-line"
-               />
-
+              />
               <Card
                 title="Completed Projects"
                 :count="completedCount"
                 icon="bi bi-clipboard-check"
-               />
+              />
             </div>
           </div>
         </div>
-        
+
+        <!-- Recent Projects Table -->
         <div class="card border shadow-sm">
-          <div class="card-body">
-            <h5 class="fw-semibold border-bottom pb-2 mb-4">Recent Projects</h5>
+          <div class="card-body p-3 p-sm-4">
+            <h5 class="fw-semibold border-bottom pb-2 mb-3 mb-sm-4 fs-6 fs-sm-5">Recent Projects</h5>
 
             <div class="table-responsive">
-              <table class="table table-hover table-bordered table-striped align-middle text-center" style=" table-layout: fixed; width: 100%;">
+              <table class="table table-hover table-bordered table-striped align-middle text-center " style=" table-layout: fixed; min-width: 600px; font-size: 0.9rem; ">
                 <thead class="table-light">
                   <tr>
-                    <th scope="col" style="width: 40%;">Project Name</th>
-                    <th scope="col" style="width: 25%;">Created Date</th>
-                    <th scope="col" style="width: 20%;">Total Scenarios</th>
-                    <th scope="col" style="width: 15%;">Status</th>
+                    <th style="min-width: 200px;">Project Name</th>
+                    <th style="min-width: 130px;">Created Date</th>
+                    <th style="min-width: 100px;">Total Scenarios</th>
+                    <th style="min-width: 110px;">Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="project in latestProjects" :key="project.id">
-                    <td style="padding: 8px 10px; text-align: left;">{{ project.name }}</td>
+                    <td class="text-start px-2 px-sm-3">{{ project.name }}</td>
                     <td>{{ formatDate(project.created_at) }}</td>
                     <td>{{ project.scenarios_count }}</td>
                     <td>
                       <span
                         class="badge"
-                        :style="{ width: '100px',
+                        :style="{
+                          maxWidth: '100px',
+                          width: '100px',
                           backgroundColor:
                             project.status === 'Active' ? '#48C7741A' :
                             project.status === 'Completed' ? '#209CEE1A' :
@@ -73,21 +74,19 @@
                       </span>
                     </td>
                   </tr>
-
                   <tr v-if="latestProjects.length === 0">
-                    <td colspan="6" class="text-center text-muted">No recent projects found</td>
+                    <td colspan="4" class="text-center text-muted">No recent projects found</td>
                   </tr>
-
                 </tbody>
               </table>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
 </template>
-
 
 <script setup>
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
@@ -105,21 +104,18 @@ defineProps({
   activeCount: Number,
   completedCount: Number,
   notstartedCount: Number
-});
+})
 
 function formatDate(date) {
-  return new Date(date).toISOString().split('T')[0];}
+  return new Date(date).toISOString().split('T')[0]
+}
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
 
-  @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
+* {
+  font-family: 'Nunito Sans', sans-serif;
+}
 
-  * {
-    font-family: 'Nunito Sans', sans-serif;
-  }
-
-  .bg-success {
-    background-color: #FFB800;
-  }
 </style>

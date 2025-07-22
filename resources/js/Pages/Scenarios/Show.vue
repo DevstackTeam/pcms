@@ -19,29 +19,31 @@
         </div>
 
         <h6>Manpower</h6>
-        <table class="table table-bordered text-center">
-          <thead>
-            <tr>
-              <th scope="col" style="width: 25%;">Designation</th>
-              <th scope="col" style="width: 13%;">Rate/Day</th>
-              <th scope="col" style="width: 15%;">No. of People</th>
-              <th scope="col" style="width: 12%;">Total Day</th>
-              <th scope="col" style="width: 15%;">Remark</th>
-              <th scope="col" style="width: 15%;">Cost</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(manpower, index) in manpowers" :key="index">
-              <td>{{ manpower.designation.name }}</td>
-              <td>
-                {{ parseFloat(manpower.rate_per_day).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
-              <td>{{ manpower.no_of_people }}</td>
-              <td>{{ manpower.total_day }}</td>
-              <td style="text-align: left;">{{ manpower.remark }}</td>
-              <td>{{ parseFloat(manpower.total_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                <th scope="col" style="width: 25%;">Designation</th>
+                <th scope="col" style="width: 13%;">Rate/Day</th>
+                <th scope="col" style="width: 15%;">No. of People</th>
+                <th scope="col" style="width: 12%;">Total Day</th>
+                <th scope="col" style="width: 15%;">Remark</th>
+                <th scope="col" style="width: 15%;">Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(manpower, index) in manpowers" :key="index">
+                <td>{{ manpower.designation.name }}</td>
+                <td>
+                    {{ parseFloat(manpower.rate_per_day).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
+                <td>{{ manpower.no_of_people }}</td>
+                <td>{{ manpower.total_day }}</td>
+                <td style="text-align: left;">{{ manpower.remark }}</td>
+                <td>{{ parseFloat(manpower.total_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
 
         <div class="row mb-3">
           <div class="col">
@@ -55,7 +57,7 @@
               {{ scenario.markup }}%
             </FormDetail>
           </div>
-          
+
           <div class="col">
             <FormDetail label="Final Cost">
               {{ parseFloat(scenario.final_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}

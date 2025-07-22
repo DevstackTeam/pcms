@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-people" title="Designations"></Header>
 
     <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -26,7 +26,7 @@
       </div>
 
       <div class="table-responsive">
-        <table class="table table-hover table-bordered table-striped align-middle text-center" style=" table-layout: fixed; width: 100%;">
+        <table class="table table-hover table-bordered table-striped align-middle text-center" style=" width: 100%;">
           <thead class="table-light">
             <tr>
               <th scope="col" style="width: 40%;">Designation Name</th>

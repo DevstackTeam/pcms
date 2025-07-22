@@ -16,7 +16,7 @@
       <form @submit.prevent="submit">
         <div class="row mb-4">
           <div class="col">
-            <FormInput 
+            <FormInput
               v-model="form.duration"
               label="Duration"
               id="duration"
@@ -26,7 +26,7 @@
           </div>
 
           <div class="col">
-            <FormInput 
+            <FormInput
               v-model="form.remark"
               label="Remark"
               id="remark"
@@ -37,9 +37,10 @@
         </div>
 
         <h6>Manpower</h6>
-        <table class="table table-bordered text-center">
+        <div class="table-responsive">
+          <table class="table table-bordered text-center">
           <thead>
-            <tr>
+              <tr>
               <th scope="col" style="width: 25%;">Designation</th>
               <th scope="col" style="width: 13%;">Rate/Day</th>
               <th scope="col" style="width: 15%;">No. of People</th>
@@ -47,12 +48,12 @@
               <th scope="col" style="width: 15%;">Remark</th>
               <th scope="col" style="width: 15%;">Cost</th>
               <th scope="col" style="width: 5%;">Action</th>
-            </tr>
+              </tr>
           </thead>
           <tbody>
-            <tr v-for="(manpower, index) in form.manpower" :key="index">
+              <tr v-for="(manpower, index) in form.manpower" :key="index">
               <td>
-                <v-autocomplete
+                  <v-autocomplete
                   v-model="manpower.designation_id"
                   :items="designations"
                   item-title="name"
@@ -62,13 +63,13 @@
                   density="compact"
                   hide-details="auto"
                   :error="!!form.errors?.[`manpower.${index}.designation_id`]"
-                  :error-messages="form.errors?.[`manpower.${index}.designation_id`] ? 
-                    [form.errors[`manpower.${index}.designation_id`]] : []"
-                ></v-autocomplete>
+                  :error-messages="form.errors?.[`manpower.${index}.designation_id`] ?
+                      [form.errors[`manpower.${index}.designation_id`]] : []"
+                  ></v-autocomplete>
               </td>
 
               <td>
-                <v-text-field
+                  <v-text-field
                   v-model="manpower.rate_per_day"
                   type="text"
                   variant="outlined"
@@ -77,11 +78,11 @@
                   :error="!!form.errors?.[`manpower.${index}.rate_per_day`]"
                   :error-messages="form.errors?.[`manpower.${index}.rate_per_day`] ? [form.errors[`manpower.${index}.rate_per_day`]] : []"
                   @input="e => handleRateInput(e, manpower)"
-                />
+                  />
               </td>
 
               <td>
-                <v-text-field
+                  <v-text-field
                   v-model.number="manpower.no_of_people"
                   type="number"
                   variant="outlined"
@@ -89,11 +90,11 @@
                   hide-details="auto"
                   :error="!!form.errors?.[`manpower.${index}.no_of_people`]"
                   :error-messages="form.errors?.[`manpower.${index}.no_of_people`] ? [form.errors[`manpower.${index}.no_of_people`]] : []"
-                />
+                  />
               </td>
 
               <td>
-                <v-text-field
+                  <v-text-field
                   v-model.number="manpower.total_day"
                   type="number"
                   variant="outlined"
@@ -101,11 +102,11 @@
                   hide-details="auto"
                   :error="!!form.errors?.[`manpower.${index}.total_day`]"
                   :error-messages="form.errors?.[`manpower.${index}.total_day`] ? [form.errors[`manpower.${index}.total_day`]] : []"
-                />
+                  />
               </td>
 
               <td>
-                <v-textarea
+                  <v-textarea
                   v-model="manpower.remark"
                   type="text"
                   variant="outlined"
@@ -115,28 +116,29 @@
                   auto-grow
                   :error="!!form.errors?.[`manpower.${index}.remark`]"
                   :error-messages="form.errors?.[`manpower.${index}.remark`] ? [form.errors[`manpower.${index}.remark`]] : []"
-                />
+                  />
               </td>
 
               <td>{{ (manpower.total_cost || 0).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
-              
+
               <td>
-                <button type="button" class="btn btn-sm btn-danger" @click="removeManpower(index)">
+                  <button type="button" class="btn btn-sm btn-danger" @click="removeManpower(index)">
                   <i class="bi bi-trash"></i>
-                </button>
+                  </button>
               </td>
-            </tr>
+              </tr>
           </tbody>
-        </table>
+          </table>
+        </div>
 
         <button type="button" class="btn btn-primary mb-3" @click="addManpower">Add Manpower</button>
 
         <div class="row mb-3">
           <div class="col">
             <FormDetail label="Total Cost">
-              {{ parseFloat(form.total_cost).toLocaleString('ms-MY', { 
-                  style: 'currency', 
-                  currency: 'MYR' 
+              {{ parseFloat(form.total_cost).toLocaleString('ms-MY', {
+                  style: 'currency',
+                  currency: 'MYR'
                 })
               }}
             </FormDetail>
@@ -154,11 +156,11 @@
 
           <div class="col">
             <FormDetail label="Final Cost">
-              {{ 
-                form.final_cost 
-                  ? parseFloat(form.final_cost).toLocaleString('ms-MY', { 
-                    style: 'currency', 
-                    currency: 'MYR' 
+              {{
+                form.final_cost
+                  ? parseFloat(form.final_cost).toLocaleString('ms-MY', {
+                    style: 'currency',
+                    currency: 'MYR'
                   })
                   : '-'
               }}
@@ -203,7 +205,7 @@ const form = useForm({
   markup: props.scenario.markup,
   total_cost: props.scenario.total_cost,
   final_cost: props.scenario.final_cost,
-  
+
   manpower: props.manpowers.map(mp => ({
     designation_id: mp.designation_id,
     rate_per_day: mp.rate_per_day,
@@ -220,11 +222,11 @@ const submit = () => {
 }
 
 const addManpower = () => {
-  form.manpower.push({ 
-    designation_id: null, 
-    rate_per_day:null, 
-    no_of_people: null, 
-    total_day: null, 
+  form.manpower.push({
+    designation_id: null,
+    rate_per_day:null,
+    no_of_people: null,
+    total_day: null,
     remark: null,
     total_cost:null,
     rate_locked: false,
