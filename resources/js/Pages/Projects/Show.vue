@@ -44,14 +44,10 @@
         </div>
       </div>
 
-
       <div class="d-flex justify-content-end gap-2">
-        <Link :href="`/projects`" class="btn btn-outline-secondary">Back
-       </Link>
-      <Link :href="`/projects/${project.id}/edit`" class="btn btn-primary">
-      Edit
-    </Link>
-    </div>
+        <Link :href="`/projects`" class="btn btn-outline-secondary">Back</Link>
+        <Link v-if="canEdit" :href="`/projects/${project.id}/edit`" class="btn btn-primary">Edit</Link>
+      </div>
     </CardBox>
   </div>
 </template>
@@ -61,14 +57,15 @@ import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import TabLink from '../../Components/TabLink.vue'
-import { Link } from '@inertiajs/vue3'
-import { usePage } from '@inertiajs/vue3'
-import { ref, watchEffect } from 'vue'
+import { Link, usePage } from '@inertiajs/vue3'
+import { ref, watchEffect, computed } from 'vue'
 import FormDetail from '../../Components/FormDetail.vue'
 
 defineOptions({ layout: SidebarLayout })
 
 const successMessage = ref(null)
+const page = usePage()
+const canEdit = computed(() => page.props.auth.user?.permissions.includes('can_edit'))
 
 const props = defineProps({
   project: Object,
