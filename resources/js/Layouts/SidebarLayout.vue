@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex">
+  <div>
     <!-- Sidebar -->
     <nav
       class="d-flex flex-column bg-light border-end p-3 sidebar"
