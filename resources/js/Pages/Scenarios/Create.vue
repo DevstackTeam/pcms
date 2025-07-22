@@ -37,6 +37,7 @@
         </div>
 
         <h6>Manpower</h6>
+        <div class="table-responsive">
         <table class="table table-bordered text-center">
           <thead>
             <tr>
@@ -128,6 +129,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
 
         <button type="button" class="btn btn-primary mb-3" @click="addManpower">Add Manpower</button>
 
