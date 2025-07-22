@@ -9,20 +9,20 @@
 
     <CardBox title="Project List" :showButton="true" buttonText="Add Project" @button-click="goToCreate">
       <div class="row mb-3">
-        <div class="d-flex justify-content-start align-items-center gap-2">
+        <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center gap-2">
           <input
             id="search"
             v-model="search"
             type="search"
             class="form-control"
-            style="max-width: 300px;"
+            style="max-width: 100%;"
             placeholder="Search project name..."
           />
 
-          <div class="dropdown" style="max-width: 200px; position: relative;">
+          <div class="dropdown w-100 w-md-auto" style="position: relative;">
             <button
               class="form-select text-start"
-              style="min-width: 200px; max-width: 100%; padding: 6px 12px;"
+              style="min-width: 100%; max-width: 100%; padding: 6px 12px;"
               @click.prevent="isOpen = !isOpen"
             >
               {{ selectedStatus || 'All Status' }}
