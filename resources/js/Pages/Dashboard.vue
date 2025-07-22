@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-house-door" title="Dashboard" />
 
     <div class="row">
@@ -9,7 +9,7 @@
           <div class="card-body">
             <h5 class="fw-semibold border-bottom pb-2 mb-4">Summary</h5>
 
-            <div class="row g-3">
+            <div class="row g-3 justify-content-center">
               <Card
                 title="Total Projects"
                 :count="projectCount"
@@ -40,13 +40,13 @@
             <h5 class="fw-semibold border-bottom pb-2 mb-3 mb-sm-4 fs-6 fs-sm-5">Recent Projects</h5>
 
             <div class="table-responsive">
-              <table class="table table-hover table-bordered table-striped align-middle text-center " style=" width: 100%; font-size: 0.85rem;">
+              <table class="table table-hover table-bordered table-striped align-middle text-center " style=" table-layout: fixed; min-width: 600px; font-size: 0.9rem; ">
                 <thead class="table-light">
                   <tr>
-                    <th style="width: 40%;">Project Name</th>
-                    <th style="width: 25%;">Created Date</th>
-                    <th style="width: 20%;">Total Scenarios</th>
-                    <th style="width: 15%;">Status</th>
+                    <th style="min-width: 200px;">Project Name</th>
+                    <th style="min-width: 130px;">Created Date</th>
+                    <th style="min-width: 100px;">Total Scenarios</th>
+                    <th style="min-width: 110px;">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -58,6 +58,7 @@
                       <span
                         class="badge"
                         :style="{
+                          maxWidth: '100px',
                           width: '100px',
                           backgroundColor:
                             project.status === 'Active' ? '#48C7741A' :
@@ -116,4 +117,5 @@ function formatDate(date) {
 * {
   font-family: 'Nunito Sans', sans-serif;
 }
+
 </style>

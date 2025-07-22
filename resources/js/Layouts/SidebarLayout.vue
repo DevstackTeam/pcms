@@ -1,10 +1,18 @@
 <template>
-  <div class="d-flex">
+  <div>
     <!-- Sidebar -->
     <nav
-      class="d-flex flex-column bg-light border-end vh-100 p-3 sidebar"
-      :class="{ 'd-none d-md-flex': !isSidebarVisible }"
-      style="width: 260px; position: fixed; z-index: 1030;"
+      class="d-flex flex-column bg-light border-end p-3 sidebar"
+      :class="{ 'd-none d-md-flex': !isSidebarVisible && windowWidth >= 768 }"
+      :style="{
+        width: '260px',
+        position: windowWidth < 768 ? 'fixed' : 'fixed',
+        height: '100vh',
+        left: isSidebarVisible ? '0' : windowWidth < 768 ? '-260px' : '0',
+        top: '0',
+        zIndex: 1030,
+        transition: 'left 0.3s ease',
+      }"
     >
       <img src="/images/pcms-logo.png" alt="Login Image" style="max-width: 80px;" />
       <hr class="my-1" />
@@ -41,11 +49,19 @@
       </form>
     </nav>
 
-    <!-- Main Content Area -->
+    <!-- Backdrop (only on mobile) -->
+    <div
+      v-if="isSidebarVisible && windowWidth < 768"
+      class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-25"
+      style="z-index: 1025"
+      @click="toggleSidebar"
+    ></div>
+
+    <!-- Main Content -->
     <div
       class="flex-grow-1"
       :style="{
-        marginLeft: isSidebarVisible || windowWidth >= 768 ? '260px' : '0px',
+        marginLeft: windowWidth >= 768 ? '260px' : '0',
         transition: 'margin-left 0.3s ease'
       }"
     >
@@ -54,7 +70,7 @@
         <button @click="toggleSidebar" class="btn btn-light me-3 d-md-none">
           <i class="bi bi-list fs-3"></i>
         </button>
-        <h5 class="mb-0">Dashboard</h5>
+        <h3 class="fw-bold">Project Consting Management System</h3>
       </div>
 
       <!-- Page content -->
@@ -83,7 +99,7 @@ function isActive(path) {
     : 'text-dark'
 }
 
-const isSidebarVisible = ref(true)
+const isSidebarVisible = ref(false)
 const windowWidth = ref(window.innerWidth)
 
 function toggleSidebar() {
@@ -92,8 +108,6 @@ function toggleSidebar() {
 
 function updateWindowWidth() {
   windowWidth.value = window.innerWidth
-
-  // Auto-show sidebar on md and above
   if (windowWidth.value >= 768) {
     isSidebarVisible.value = true
   }

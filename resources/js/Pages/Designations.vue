@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-people" title="Designations"></Header>
 
     <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
