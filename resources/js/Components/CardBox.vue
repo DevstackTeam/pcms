@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-4">
         <h5 class="fw-semibold mb-0">{{ title }}</h5>
-        <a 
+        <a
           v-if="showButton"
           @click.prevent="$emit('button-click')"
           class="btn btn-primary btn-sm"

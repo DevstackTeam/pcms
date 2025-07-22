@@ -12,8 +12,8 @@
     <CardBox title="Project's Scenario" :showButton="true" buttonText="Add Scenario" @button-click="goToCreate">
       <div class="table-responsive">
         <table
-          class="table table-hover table-bordered table-striped align-middle text-center"
-          style="table-layout: fixed; width: 100%;">
+           class="table table-hover table-bordered table-striped align-middle text-center "
+          style="table-layout: fixed; min-width: 700px;">
           <thead class="table-light">
             <tr>
               <th scope="col" style="width: 7%;">No</th>
@@ -32,11 +32,11 @@
 
               <td class="text-center">
                 <div class="d-inline-block text-start" style="width: 150px;">
-                  {{ 
+                  {{
                     parseFloat(scenario.total_cost).toLocaleString('ms-MY', {
                       style: 'currency',
                       currency: 'MYR'
-                    }) 
+                    })
                   }}
                 </div>
               </td>
