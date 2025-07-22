@@ -58,7 +58,7 @@
       </div>
 
       <div class="table-responsive">
-        <table class="table table-hover table-bordered table-striped align-middle text-center" style="table-layout: fixed; width: 100%;">
+        <table class="table table-hover table-bordered table-striped align-middle text-center" style="min-width: 650px; table-layout: fixed;">
           <thead class="table-light">
             <tr>
               <th scope="col" style="width: 30%;">Project Name</th>
