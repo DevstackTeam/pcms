@@ -70,7 +70,7 @@
         <button @click="toggleSidebar" class="btn btn-light me-3 d-md-none">
           <i class="bi bi-list fs-3"></i>
         </button>
-        <h5 class="mb-0">Dashboard</h5>
+        <h3 class="fw-bold">Project Consting Management System</h3>
       </div>
 
       <!-- Page content -->

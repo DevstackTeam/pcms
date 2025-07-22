@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-kanban" title="Projects" />
 
     <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">

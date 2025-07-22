@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-6 col-xl-3">
+  <div class="col-12 col-sm-6 col-lg-6 col-xl-3">
     <div :class="`card shadow-sm border-0 h-100 ${bgColor} text-white`">
       <div class="card-body d-flex align-items-center">
         <div class="me-3">
