@@ -61,6 +61,8 @@ class ScenarioController extends Controller
 
     public function show(Project $project, Scenario $scenario)
     {
+        Gate::authorize('can_view');
+
         $manpowers = $scenario->manpowers()->with('designation')->get();
 
         return Inertia::render('Scenarios/Show', [

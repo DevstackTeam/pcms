@@ -53,7 +53,7 @@
               </td>
 
               <td class="space-x-2">
-                <Link :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-warning me-2">
+                <Link v-if="canView" :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
 
@@ -216,6 +216,7 @@ const page = usePage()
 const canCreate = computed(() => page.props.auth.user?.permissions.includes('can_create'))
 const canEdit = computed(() => page.props.auth.user?.permissions.includes('can_edit'))
 const canDelete = computed(() => page.props.auth.user?.permissions.includes('can_delete'))
+const canView = computed(() => page.props.auth.user?.permissions.includes('can_view'))
 const selectedScenario1 = ref(null)
 const selectedScenario2 = ref(null)
 const confirmDeleteId = ref(null)

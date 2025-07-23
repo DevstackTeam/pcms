@@ -90,7 +90,7 @@
                 </span>
               </td>
               <td class="justify-content-center">
-                <Link :href="`/projects/${project.id}`" class="text-warning me-2">
+                <Link v-if="canView" :href="`/projects/${project.id}`" class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
                 <Link v-if="canEdit" :href="`/projects/${project.id}/edit`" class="text-primary me-3">
@@ -148,6 +148,7 @@ const page = usePage()
 const canCreate = computed(() => page.props.auth.user?.permissions.includes('can_create'))
 const canEdit = computed(() => page.props.auth.user?.permissions.includes('can_edit'))
 const canDelete = computed(() => page.props.auth.user?.permissions.includes('can_delete'))
+const canView = computed(() => page.props.auth.user?.permissions.includes('can_view'))
 const search = ref(props.filters?.search || '')
 const selectedStatus = ref(props.filters?.status || '')
 const isOpen = ref(false)
