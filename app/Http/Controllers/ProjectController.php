@@ -55,6 +55,8 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
+        Gate::authorize('can_view');
+
         return Inertia::render('Projects/Show', [
             'project' => $project
         ]);
