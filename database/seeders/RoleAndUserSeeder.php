@@ -35,6 +35,9 @@ class RoleAndUserSeeder extends Seeder
         $adminRole = Role::create(['name' => 'admin']);
         $adminRole->givePermissionTo($permissions);
 
+        $userRole = Role::create(['name' => 'user']);
+        $userRole->givePermissionTo(['can_view']);
+
         // Create admin user
         $admin = User::create([
             'name' => 'Admin User',
@@ -51,5 +54,7 @@ class RoleAndUserSeeder extends Seeder
             'email' => 'user@example.com',
             'password' => Hash::make('password'),
         ]);
+
+        $user->assignRole('user');
     }
 }
