@@ -37,12 +37,14 @@
           <tbody>
             <tr v-for="d in props.designations.data" :key="d.id">
               <td style="padding: 8px 10px; text-align: left;">{{ d.name }}</td>
-              <td>RM {{ d.rate_per_day }}</td>
+              <td>
+                {{ parseFloat(d.rate_per_day).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}
+              </td>
               <td class="space-x-2">
                 <button 
                   v-if="can('view-designation')" 
                   class="btn p-0 text-warning me-2" 
-                  @click.prevent="openEditModal(d)" 
+                  @click.prevent="openViewModal(d)" 
                   title="View"
                 >
                   <i class="bi bi-eye"></i>
@@ -111,6 +113,32 @@
       </template>
     </Modal>
 
+    <Modal v-if="showViewModal" @close="closeModal">
+      <template #title>
+        View Designation
+      </template>
+
+      <template #body>
+        <div class="pt-2">
+          <div class="mb-3">
+            <FormDetail label="Designation Name">
+              {{ form.name }}
+            </FormDetail>
+          </div>
+
+          <div class="mb-3">
+            <FormDetail label="Rate/Day">
+              {{ parseFloat(form.rate_per_day).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}
+            </FormDetail>
+          </div>
+
+          <div class="d-flex justify-content-end mt-4">
+            <button type="button" class="btn btn-secondary" @click="closeModal">Close</button>
+          </div>
+        </div>
+      </template>
+    </Modal>
+
     <Modal v-if="showConfirmModal" @close="showConfirmModal = false">
       <template #title>
         Confirm Deletion
@@ -133,6 +161,7 @@ import CardBox from '../Components/CardBox.vue'
 import Modal from '../Components/Modal.vue'
 import PaginationLink from '../Components/PaginationLink.vue'
 import FormInput from '../Components/FormInput.vue'
+import FormDetail from '../Components/FormDetail.vue'
 import { useForm, router, usePage } from '@inertiajs/vue3'
 import { ref, watch } from 'vue'
 import { useFlash } from '../Composables/Flash'
@@ -146,6 +175,7 @@ const props = defineProps({
 const page = usePage()
 const search = ref('')
 const showModal = ref(false)
+const showViewModal = ref(false)
 const isEditMode = ref(false)
 const editId = ref(null)
 const showConfirmModal = ref(false)
@@ -173,6 +203,12 @@ function openEditModal(designation) {
   showModal.value = true
 }
 
+function openViewModal(designation) {
+  form.name = designation.name
+  form.rate_per_day = designation.rate_per_day
+  showViewModal.value = true
+}
+
 function performDelete() {
   if (!confirmDeleteId.value) return
 
@@ -191,6 +227,7 @@ function confirmDelete(id) {
 
 function closeModal() {
   showModal.value = false
+  showViewModal.value = false
   isEditMode.value = false
   form.reset()
   form.clearErrors()
