@@ -162,7 +162,7 @@ const can = (permission) => {
 }
 
 const goToCreate = () => {
-  router.visit('/projects/create')
+  router.get('/projects/create')
 }
 
 const selectStatus = (selected) => {
