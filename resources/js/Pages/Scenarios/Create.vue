@@ -122,7 +122,12 @@
               <td>{{ (manpower.total_cost || 0).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
 
               <td>
-                <button type="button" class="btn btn-sm btn-danger" @click="removeManpower(index)">
+                <button 
+                  v-if="can('delete-manpower')" 
+                  type="button" 
+                  class="btn btn-sm btn-danger" 
+                  @click="removeManpower(index)"
+                >
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
@@ -131,7 +136,14 @@
         </table>
         </div>
 
-        <button type="button" class="btn btn-primary mb-3" @click="addManpower">Add Manpower</button>
+        <button 
+          v-if="can('create-manpower')" 
+          type="button" 
+          class="btn btn-primary mb-3" 
+          @click="addManpower"
+        >
+          Add Manpower
+        </button>
 
         <div class="row mb-3">
           <div class="col">
@@ -167,7 +179,7 @@
 
         <div class="d-flex justify-content-end">
           <Link :href="`/projects/${project.id}/scenarios`" class="btn btn-outline-secondary">Cancel</Link>
-          <button type="submit" class="btn btn-primary ms-2">Submit</button>
+          <button v-if="can('create-scenario')" type="submit" class="btn btn-primary ms-2">Submit</button>
         </div>
       </form>
     </CardBox>
@@ -180,7 +192,7 @@ import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormInput from '../../Components/FormInput.vue'
 import FormDetail from '../../Components/FormDetail.vue'
-import { Link, useForm } from '@inertiajs/vue3'
+import { Link, useForm, usePage } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import { useSanitizeInput } from '../../Composables/Formatter'
 import { useCostCalculator } from '../../Composables/Calculation'
@@ -188,6 +200,8 @@ import { useCostCalculator } from '../../Composables/Calculation'
 defineOptions({
   layout: SidebarLayout,
 })
+
+const page = usePage()
 
 const props = defineProps({
   project: Object,
@@ -212,6 +226,10 @@ const form = useForm({
     },
   ],
 })
+
+const can = (permission) => {
+  return page.props.auth.user?.permissions.includes(permission)
+}
 
 const submit = () => {
   form.post(`/projects/${props.project.id}/scenarios`)

@@ -39,7 +39,7 @@
         <h6>Manpower</h6>
         <div class="table-responsive">
           <table class="table table-bordered text-center">
-          <thead>
+            <thead>
               <tr>
               <th scope="col" style="width: 25%;">Designation</th>
               <th scope="col" style="width: 13%;">Rate/Day</th>
@@ -49,10 +49,10 @@
               <th scope="col" style="width: 15%;">Cost</th>
               <th scope="col" style="width: 5%;">Action</th>
               </tr>
-          </thead>
-          <tbody>
+            </thead>
+            <tbody>
               <tr v-for="(manpower, index) in form.manpower" :key="index">
-              <td>
+                <td>
                   <v-autocomplete
                   v-model="manpower.designation_id"
                   :items="designations"
@@ -66,9 +66,9 @@
                   :error-messages="form.errors?.[`manpower.${index}.designation_id`] ?
                       [form.errors[`manpower.${index}.designation_id`]] : []"
                   ></v-autocomplete>
-              </td>
+                </td>
 
-              <td>
+                <td>
                   <v-text-field
                   v-model="manpower.rate_per_day"
                   type="text"
@@ -79,9 +79,9 @@
                   :error-messages="form.errors?.[`manpower.${index}.rate_per_day`] ? [form.errors[`manpower.${index}.rate_per_day`]] : []"
                   @input="e => handleRateInput(e, manpower)"
                   />
-              </td>
+                </td>
 
-              <td>
+                <td>
                   <v-text-field
                   v-model.number="manpower.no_of_people"
                   type="number"
@@ -91,47 +91,61 @@
                   :error="!!form.errors?.[`manpower.${index}.no_of_people`]"
                   :error-messages="form.errors?.[`manpower.${index}.no_of_people`] ? [form.errors[`manpower.${index}.no_of_people`]] : []"
                   />
-              </td>
+                </td>
 
-              <td>
+                <td>
                   <v-text-field
-                  v-model.number="manpower.total_day"
-                  type="number"
-                  variant="outlined"
-                  density="compact"
-                  hide-details="auto"
-                  :error="!!form.errors?.[`manpower.${index}.total_day`]"
-                  :error-messages="form.errors?.[`manpower.${index}.total_day`] ? [form.errors[`manpower.${index}.total_day`]] : []"
+                    v-model.number="manpower.total_day"
+                    type="number"
+                    variant="outlined"
+                    density="compact"
+                    hide-details="auto"
+                    :error="!!form.errors?.[`manpower.${index}.total_day`]"
+                    :error-messages="form.errors?.[`manpower.${index}.total_day`] ? [form.errors[`manpower.${index}.total_day`]] : []"
                   />
-              </td>
+                </td>
 
-              <td>
+                <td>
                   <v-textarea
-                  v-model="manpower.remark"
-                  type="text"
-                  variant="outlined"
-                  density="compact"
-                  hide-details="auto"
-                  rows="1"
-                  auto-grow
-                  :error="!!form.errors?.[`manpower.${index}.remark`]"
-                  :error-messages="form.errors?.[`manpower.${index}.remark`] ? [form.errors[`manpower.${index}.remark`]] : []"
+                    v-model="manpower.remark"
+                    type="text"
+                    variant="outlined"
+                    density="compact"
+                    hide-details="auto"
+                    rows="1"
+                    auto-grow
+                    :error="!!form.errors?.[`manpower.${index}.remark`]"
+                    :error-messages="form.errors?.[`manpower.${index}.remark`] ? [form.errors[`manpower.${index}.remark`]] : []"
                   />
-              </td>
+                </td>
 
-              <td>{{ (manpower.total_cost || 0).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
+                <td>
+                  {{ (manpower.total_cost || 0).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}
+                </td>
 
-              <td>
-                  <button type="button" class="btn btn-sm btn-danger" @click="removeManpower(index)">
-                  <i class="bi bi-trash"></i>
+                <td>
+                  <button 
+                    v-if="can('delete-manpower')" 
+                    type="button" 
+                    class="btn btn-sm btn-danger" 
+                    @click="removeManpower(index)"
+                  >
+                    <i class="bi bi-trash"></i>
                   </button>
-              </td>
+                </td>
               </tr>
-          </tbody>
+            </tbody>
           </table>
         </div>
 
-        <button type="button" class="btn btn-primary mb-3" @click="addManpower">Add Manpower</button>
+        <button 
+          v-if="can('create-manpower')" 
+          type="button" 
+          class="btn btn-primary mb-3" 
+          @click="addManpower"
+        >
+          Add Manpower
+        </button>
 
         <div class="row mb-3">
           <div class="col">
@@ -170,7 +184,7 @@
 
         <div class="d-flex justify-content-end">
           <Link :href="`/projects/${project.id}/scenarios`" class="btn btn-outline-secondary">Cancel</Link>
-          <button type="submit" class="btn btn-primary ms-2">Save</button>
+          <button v-if="can('create-scenario')" type="submit" class="btn btn-primary ms-2">Save</button>
         </div>
       </form>
     </CardBox>
@@ -178,7 +192,7 @@
 </template>
 
 <script setup>
-import { Link, useForm } from '@inertiajs/vue3'
+import { Link, useForm, usePage } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import { useSanitizeInput } from '../../Composables/Formatter'
 import { useCostCalculator } from '../../Composables/Calculation'
@@ -191,6 +205,8 @@ import FormDetail from '../../Components/FormDetail.vue'
 defineOptions({
   layout: SidebarLayout,
 })
+
+const page = usePage()
 
 const props = defineProps({
   project: Object,
@@ -216,6 +232,10 @@ const form = useForm({
     rate_locked: false,
   })),
 })
+
+const can = (permission) => {
+  return page.props.auth.user?.permissions.includes(permission)
+}
 
 const submit = () => {
   form.patch(`/projects/${props.project.id}/scenarios/${props.scenario.id}`)

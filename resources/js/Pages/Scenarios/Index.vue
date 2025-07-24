@@ -9,7 +9,12 @@
 
     <TabLink :projectId="project.id"/>
 
-    <CardBox title="Project's Scenario" :showButton="canCreate" buttonText="Add Scenario" @button-click="goToCreate">
+    <CardBox 
+      title="Project's Scenario" 
+      :showButton="can('create-scenario')" 
+      buttonText="Add Scenario" 
+      @button-click="goToCreate"
+    >
       <div class="table-responsive">
         <table
            class="table table-hover table-bordered table-striped align-middle text-center "
@@ -53,16 +58,16 @@
               </td>
 
               <td class="space-x-2">
-                <Link v-if="canView" :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-warning me-2">
+                <Link v-if="can('view-scenario')" :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
 
-                <Link v-if="canEdit" :href='`/projects/${project.id}/scenarios/${scenario.id}/edit`' class="text-primary me-3">
+                <Link v-if="can('edit-scenario')" :href='`/projects/${project.id}/scenarios/${scenario.id}/edit`' class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
 
                 <button
-                  v-if="canDelete"
+                  v-if="can('delete-scenario')"
                   type="button"
                   class="btn btn-link text-danger p-0"
                   title="Delete"
@@ -206,17 +211,13 @@ import TabLink from '../../Components/TabLink.vue';
 import Modal from '../../Components/Modal.vue';
 import { useFlash } from '../../Composables/Flash';
 import { router, Link, usePage } from '@inertiajs/vue3';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 
 defineOptions({
   layout: SidebarLayout
 });
 
 const page = usePage()
-const canCreate = computed(() => page.props.auth.user?.permissions.includes('can_create'))
-const canEdit = computed(() => page.props.auth.user?.permissions.includes('can_edit'))
-const canDelete = computed(() => page.props.auth.user?.permissions.includes('can_delete'))
-const canView = computed(() => page.props.auth.user?.permissions.includes('can_view'))
 const selectedScenario1 = ref(null)
 const selectedScenario2 = ref(null)
 const confirmDeleteId = ref(null)
@@ -227,6 +228,10 @@ const props = defineProps({
   scenarios: Array,
   flash: Object,
 })
+
+const can = (permission) => {
+  return page.props.auth.user?.permissions.includes(permission)
+}
 
 const { successMessage } = useFlash(props)
 

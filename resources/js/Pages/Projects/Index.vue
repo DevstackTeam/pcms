@@ -7,7 +7,12 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <CardBox title="Project List" :showButton="canCreate" buttonText="Add Project" @button-click="goToCreate">
+    <CardBox
+      title="Project List" 
+      :showButton="can('create-project')" 
+      buttonText="Add Project" 
+      @button-click="goToCreate"
+    >
       <div class="row mb-3">
         <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center gap-2">
           <input
@@ -90,13 +95,13 @@
                 </span>
               </td>
               <td class="justify-content-center">
-                <Link v-if="canView" :href="`/projects/${project.id}`" class="text-warning me-2">
+                <Link v-if="can('view-project')" :href="`/projects/${project.id}`" class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
-                <Link v-if="canEdit" :href="`/projects/${project.id}/edit`" class="text-primary me-3">
+                <Link v-if="can('edit-project')" :href="`/projects/${project.id}/edit`" class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
-                <button v-if="canDelete" class="btn p-0 text-danger" @click="confirmDelete(project.id)">
+                <button v-if="can('delete-project')" class="btn p-0 text-danger" @click="confirmDelete(project.id)">
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
@@ -126,7 +131,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue'
+import { ref, watch } from 'vue'
 import { router, Link, usePage } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
@@ -145,17 +150,16 @@ const props = defineProps({
 })
 
 const page = usePage()
-const canCreate = computed(() => page.props.auth.user?.permissions.includes('can_create'))
-const canEdit = computed(() => page.props.auth.user?.permissions.includes('can_edit'))
-const canDelete = computed(() => page.props.auth.user?.permissions.includes('can_delete'))
-const canView = computed(() => page.props.auth.user?.permissions.includes('can_view'))
 const search = ref(props.filters?.search || '')
 const selectedStatus = ref(props.filters?.status || '')
 const isOpen = ref(false)
 const hover = ref(null)
-
 const showConfirmModal = ref(false)
 const confirmDeleteId = ref(null)
+
+const can = (permission) => {
+  return page.props.auth.user?.permissions.includes(permission)
+}
 
 const goToCreate = () => {
   router.visit('/projects/create')

@@ -46,7 +46,7 @@
 
       <div class="d-flex justify-content-end gap-2">
         <Link :href="`/projects`" class="btn btn-outline-secondary">Back</Link>
-        <Link v-if="canEdit" :href="`/projects/${project.id}/edit`" class="btn btn-primary">Edit</Link>
+        <Link v-if="can('edit-project')" :href="`/projects/${project.id}/edit`" class="btn btn-primary">Edit</Link>
       </div>
     </CardBox>
   </div>
@@ -65,12 +65,15 @@ defineOptions({ layout: SidebarLayout })
 
 const successMessage = ref(null)
 const page = usePage()
-const canEdit = computed(() => page.props.auth.user?.permissions.includes('can_edit'))
 
 const props = defineProps({
   project: Object,
   flash: Object
 })
+
+const can = (permission) => {
+  return page.props.auth.user?.permissions.includes(permission)
+}
 
 watchEffect(() => {
   if (props.flash?.success) {

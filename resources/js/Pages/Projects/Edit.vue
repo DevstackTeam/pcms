@@ -73,7 +73,7 @@
 
         <div class="d-flex justify-content-end gap-2">
        <Link :href="`/projects/${project.id}`" class="btn btn-outline-secondary">Cancel
-       </Link><button type="submit" class="btn btn-primary">Save</button>
+       </Link><button v-if="can('edit-project')" type="submit" class="btn btn-primary">Save</button>
       </div>
 
       </form>
@@ -86,16 +86,21 @@ import { useForm } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
-import { Link } from '@inertiajs/vue3'
+import { Link, usePage } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import FormInput from '../../Components/FormInput.vue'
-
-const hover = ref(null)
-const isOpen = ref(false)
 
 defineOptions({
     layout: SidebarLayout
 })
+
+const hover = ref(null)
+const isOpen = ref(false)
+const page = usePage()
+
+const can = (permission) => {
+  return page.props.auth.user?.permissions.includes(permission)
+}
 
 const props = defineProps({
   project: Object,

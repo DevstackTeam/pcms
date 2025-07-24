@@ -73,7 +73,7 @@
 
         <div class="d-flex justify-content-end">
           <Link href="/projects" class="btn btn-outline-secondary">Cancel</Link>
-          <button type="submit" class="btn btn-primary ms-2">Create</button>
+          <button v-if="can('create-project')" type="submit" class="btn btn-primary ms-2">Create</button>
         </div>
       </form>
     </CardBox>
@@ -82,21 +82,25 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useForm, Link } from '@inertiajs/vue3'
+import { useForm, Link, usePage } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormInput from '../../Components/FormInput.vue'
 
+defineOptions({ layout: SidebarLayout })
+
 const hover = ref(null)
+const isOpen = ref(false)
+const page = usePage()
 
 const props = defineProps({
   status: Array
 })
 
-defineOptions({ layout: SidebarLayout })
-
-const isOpen = ref(false)
+const can = (permission) => {
+  return page.props.auth.user?.permissions.includes(permission)
+}
 
 const form = useForm({
   name: '',

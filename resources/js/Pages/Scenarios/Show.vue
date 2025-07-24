@@ -68,7 +68,7 @@
         <div class="d-flex justify-content-end">
           <Link :href="`/projects/${project.id}/scenarios`" class="btn btn-outline-secondary">Close</Link>
           <Link 
-            v-if="canEdit" 
+            v-if="can('edit-scenario')" 
             :href="`/projects/${project.id}/scenarios/${scenario.id}/edit`" 
             class="btn btn-primary ms-2"
           >
@@ -82,7 +82,6 @@
 
 <script setup>
 import { Link, usePage } from '@inertiajs/vue3'
-import { computed } from 'vue'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
@@ -93,11 +92,14 @@ defineOptions({
 })
 
 const page = usePage()
-const canEdit = computed(() => page.props.auth.user?.permissions.includes('can_edit'))
 
 const props = defineProps({
   project: Object,
   scenario: Object,
   manpowers: Object,
 })
+
+const can = (permission) => {
+  return page.props.auth.user?.permissions.includes(permission)
+}
 </script>
