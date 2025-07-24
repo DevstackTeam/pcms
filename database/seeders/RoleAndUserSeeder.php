@@ -21,10 +21,21 @@ class RoleAndUserSeeder extends Seeder
 
         // Create permissions
         $permissions = [
-            'can_view',
-            'can_create',
-            'can_edit',
-            'can_delete',
+            'view-designation',
+            'create-designation',
+            'edit-designation',
+            'delete-designation',
+            'view-project',
+            'create-project',
+            'edit-project',
+            'delete-project',
+            'view-scenario',
+            'create-scenario',
+            'edit-scenario',
+            'delete-scenario',
+            'view-manpower',
+            'create-manpower',
+            'delete-manpower',
         ];
 
         foreach ($permissions as $permission) {
@@ -36,7 +47,7 @@ class RoleAndUserSeeder extends Seeder
         $adminRole->givePermissionTo($permissions);
 
         $userRole = Role::create(['name' => 'user']);
-        $userRole->givePermissionTo(['can_view']);
+        $userRole->givePermissionTo(['view-designation', 'view-project', 'view-scenario', 'view-manpower']);
 
         // Create admin user
         $admin = User::create([
