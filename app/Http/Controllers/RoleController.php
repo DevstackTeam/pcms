@@ -15,7 +15,7 @@ class RoleController extends Controller
     public function index()
     {
         return Inertia::render('Roles/Index', [
-            'roles' => Role::all()
+            'roles' => Role::with('permissions')->get()
         ]);
     }
 
@@ -48,7 +48,7 @@ class RoleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Role $role)
     {
         return Inertia::render('Roles/Show', [
             'role' => $role,
@@ -59,24 +59,38 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Role $role)
     {
-        return Inertia::render('Roles/Edit');
+        return Inertia::render('Roles/Edit', [
+            'role' => $role,
+            'rolePermissions' => $role->permissions()->pluck('name')->all(),
+            'permissions' => Permission::pluck('name')->all()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Role $role)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'permissions' => 'required',
+        ]);
+
+        $role->update(['name' => $request->name]);
+        $role->syncPermissions($request->permissions);
+
+        return redirect()->route('roles.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Role $role)
     {
-        //
+        $role->delete();
+
+        return redirect()->route('roles.index');
     }
 }
