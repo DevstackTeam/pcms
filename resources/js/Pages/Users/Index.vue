@@ -17,7 +17,8 @@
           <thead class="table-light">
             <tr>
               <th scope="col" style="width: 20%;">Name</th>
-              <th scope="col" style="width: 60%;">Email</th>
+              <th scope="col" style="width: 30%;">Email</th>
+              <th scope="col" style="width: 30%;">Role</th>
               <th scope="col" style="width: 20%;">Action</th>
             </tr>
           </thead>
@@ -25,14 +26,22 @@
             <tr v-for="user in users">
               <td style="padding: 8px 10px; text-align: left;">{{ user.name }}</td>
               <td style="padding: 8px 10px; text-align: left;">{{ user.email }}</td>
+              <td>
+                <span
+                  v-for="role in user.roles"
+                  class="badge bg-primary me-1"
+                >
+                  {{ role.name }}
+                </span>
+              </td>
               <td class="justify-content-center">
-                <Link class="text-warning me-2">
+                <Link :href="`/users/${user.id}`" class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
-                <Link class="text-primary me-3">
+                <Link :href="`/users/${user.id}/edit`" class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
-                <button class="btn p-0 text-danger" title="Delete">
+                <button class="btn p-0 text-danger" title="Delete" @click="confirmDelete(user.id)">
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
@@ -41,6 +50,19 @@
         </table>
       </div>
     </CardBox>
+
+    <Modal v-if="showConfirmModal" @close="showConfirmModal = false">
+      <template #title>
+        Confirm Deletion
+      </template>
+      <template #body>
+        <p>Are you sure you want to delete this role?</p>
+        <div class="d-flex justify-content-end gap-2 mt-3">
+          <button class="btn btn-secondary" @click="showConfirmModal = false">Cancel</button>
+          <button class="btn btn-danger" @click="performDelete">Yes, Delete</button>
+        </div>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -48,8 +70,38 @@
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
+import Modal from '@/Components/Modal.vue'
+import { Link, router } from '@inertiajs/vue3'
+import { ref } from 'vue'
 
 defineOptions({
   layout: SidebarLayout
 })
+
+defineProps({
+  users: Array
+})
+
+const confirmDeleteId = ref(null)
+const showConfirmModal = ref(false)
+
+const goToCreate = () => {
+  router.get('/users/create')
+}
+
+function confirmDelete(id) {
+  confirmDeleteId.value = id
+  showConfirmModal.value = true
+}
+
+function performDelete() {
+  if (!confirmDeleteId.value) return
+
+  router.delete(`/users/${confirmDeleteId.value}`, {
+    onSuccess: () => {
+      showConfirmModal.value = false
+      confirmDeleteId.value = null
+    }
+  })
+}
 </script>
