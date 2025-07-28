@@ -34,6 +34,16 @@
             <i class="bi bi-people me-2"></i> Designations
           </Link>
         </li>
+        <li v-if="can('manage-users')" class="nav-item mb-2">
+          <Link :href="'/users'" class="nav-link" :class="isActive('/users')">
+            <i class="bi bi-person-badge me-2"></i> Users
+          </Link>
+        </li>
+        <li v-if="can('manage-roles')" class="nav-item mb-2">
+          <Link :href="'/roles'" class="nav-link" :class="isActive('/roles')">
+            <i class="bi bi-shield-lock me-2"></i> Roles
+          </Link>
+        </li>
         <li class="nav-item mb-2">
           <Link :href="'/settings'" class="nav-link" :class="isActive('/settings')">
             <i class="bi bi-gear me-2"></i> Settings
@@ -91,6 +101,10 @@ function logout() {
 }
 
 const page = usePage()
+
+const can = (permission) => {
+  return page.props.auth.user?.permissions.includes(permission)
+}
 
 function isActive(path) {
   const currentPath = page.url.split('?')[0]
