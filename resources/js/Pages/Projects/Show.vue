@@ -57,23 +57,19 @@ import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import TabLink from '../../Components/TabLink.vue'
-import { Link, usePage } from '@inertiajs/vue3'
+import { Link } from '@inertiajs/vue3'
 import { ref, watchEffect, computed } from 'vue'
 import FormDetail from '../../Components/FormDetail.vue'
+import { can } from '@/Composables/Can'
 
 defineOptions({ layout: SidebarLayout })
 
 const successMessage = ref(null)
-const page = usePage()
 
 const props = defineProps({
   project: Object,
   flash: Object
 })
-
-const can = (permission) => {
-  return page.props.auth.user?.permissions.includes(permission)
-}
 
 watchEffect(() => {
   if (props.flash?.success) {

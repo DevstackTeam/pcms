@@ -86,9 +86,10 @@ import { useForm } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
-import { Link, usePage } from '@inertiajs/vue3'
+import { Link } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import FormInput from '../../Components/FormInput.vue'
+import { can } from '@/Composables/Can'
 
 defineOptions({
     layout: SidebarLayout
@@ -96,11 +97,6 @@ defineOptions({
 
 const hover = ref(null)
 const isOpen = ref(false)
-const page = usePage()
-
-const can = (permission) => {
-  return page.props.auth.user?.permissions.includes(permission)
-}
 
 const props = defineProps({
   project: Object,

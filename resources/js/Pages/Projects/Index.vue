@@ -139,6 +139,7 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import PaginationLink from '@/Components/PaginationLink.vue'
 import Modal from '@/Components/Modal.vue'
 import { useFlash } from '@/Composables/Flash'
+import { can } from '@/Composables/Can'
 
 defineOptions({ layout: SidebarLayout })
 
@@ -149,17 +150,12 @@ const props = defineProps({
   status: Array,
 })
 
-const page = usePage()
 const search = ref(props.filters?.search || '')
 const selectedStatus = ref(props.filters?.status || '')
 const isOpen = ref(false)
 const hover = ref(null)
 const showConfirmModal = ref(false)
 const confirmDeleteId = ref(null)
-
-const can = (permission) => {
-  return page.props.auth.user?.permissions.includes(permission)
-}
 
 const goToCreate = () => {
   router.get('/projects/create')

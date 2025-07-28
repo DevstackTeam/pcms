@@ -192,16 +192,15 @@ import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormInput from '../../Components/FormInput.vue'
 import FormDetail from '../../Components/FormDetail.vue'
-import { Link, useForm, usePage } from '@inertiajs/vue3'
+import { Link, useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import { useSanitizeInput } from '../../Composables/Formatter'
 import { useCostCalculator } from '../../Composables/Calculation'
+import { can } from '@/Composables/Can'
 
 defineOptions({
   layout: SidebarLayout,
 })
-
-const page = usePage()
 
 const props = defineProps({
   project: Object,
@@ -226,10 +225,6 @@ const form = useForm({
     },
   ],
 })
-
-const can = (permission) => {
-  return page.props.auth.user?.permissions.includes(permission)
-}
 
 const submit = () => {
   form.post(`/projects/${props.project.id}/scenarios`)

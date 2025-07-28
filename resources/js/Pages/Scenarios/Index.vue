@@ -210,14 +210,14 @@ import CardBox from '@/Components/CardBox.vue';
 import TabLink from '../../Components/TabLink.vue';
 import Modal from '../../Components/Modal.vue';
 import { useFlash } from '../../Composables/Flash';
-import { router, Link, usePage } from '@inertiajs/vue3';
+import { router, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { can } from '@/Composables/Can'
 
 defineOptions({
   layout: SidebarLayout
 });
 
-const page = usePage()
 const selectedScenario1 = ref(null)
 const selectedScenario2 = ref(null)
 const confirmDeleteId = ref(null)
@@ -228,10 +228,6 @@ const props = defineProps({
   scenarios: Array,
   flash: Object,
 })
-
-const can = (permission) => {
-  return page.props.auth.user?.permissions.includes(permission)
-}
 
 const { successMessage } = useFlash(props)
 

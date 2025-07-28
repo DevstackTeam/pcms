@@ -82,25 +82,21 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useForm, Link, usePage } from '@inertiajs/vue3'
+import { useForm, Link } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormInput from '../../Components/FormInput.vue'
+import { can } from '@/Composables/Can'
 
 defineOptions({ layout: SidebarLayout })
 
 const hover = ref(null)
 const isOpen = ref(false)
-const page = usePage()
 
 const props = defineProps({
   status: Array
 })
-
-const can = (permission) => {
-  return page.props.auth.user?.permissions.includes(permission)
-}
 
 const form = useForm({
   name: '',

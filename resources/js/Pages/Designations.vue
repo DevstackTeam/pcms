@@ -162,7 +162,8 @@ import Modal from '../Components/Modal.vue'
 import PaginationLink from '../Components/PaginationLink.vue'
 import FormInput from '../Components/FormInput.vue'
 import FormDetail from '../Components/FormDetail.vue'
-import { useForm, router, usePage } from '@inertiajs/vue3'
+import { can } from '@/Composables/Can'
+import { useForm, router } from '@inertiajs/vue3'
 import { ref, watch } from 'vue'
 import { useFlash } from '../Composables/Flash'
 import { useSanitizeInput } from '../Composables/Formatter'
@@ -172,7 +173,6 @@ const props = defineProps({
   flash: Object
 })
 
-const page = usePage()
 const search = ref('')
 const showModal = ref(false)
 const showViewModal = ref(false)
@@ -180,10 +180,6 @@ const isEditMode = ref(false)
 const editId = ref(null)
 const showConfirmModal = ref(false)
 const confirmDeleteId = ref(null)
-
-const can = (permission) => {
-  return page.props.auth.user?.permissions.includes(permission)
-}
 
 const form = useForm({
   name: '',
