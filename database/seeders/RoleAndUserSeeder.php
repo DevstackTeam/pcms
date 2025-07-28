@@ -36,6 +36,8 @@ class RoleAndUserSeeder extends Seeder
             'view-manpower',
             'create-manpower',
             'delete-manpower',
+            'manage-users',
+            'manage-roles',
         ];
 
         foreach ($permissions as $permission) {
@@ -44,10 +46,14 @@ class RoleAndUserSeeder extends Seeder
 
         // Create admin role and assign permissions
         $adminRole = Role::create(['name' => 'admin']);
-        $adminRole->givePermissionTo($permissions);
+        $filteredPermissions = array_diff($permissions, ['manage-users', 'manage-roles']);
+        $adminRole->givePermissionTo($filteredPermissions);
 
         $userRole = Role::create(['name' => 'user']);
         $userRole->givePermissionTo(['view-designation', 'view-project', 'view-scenario', 'view-manpower']);
+
+        $superAdminRole = Role::create(['name' => 'super admin']);
+        $superAdminRole->givePermissionTo(['manage-users', 'manage-roles']);
 
         // Create admin user
         $admin = User::create([
@@ -67,5 +73,14 @@ class RoleAndUserSeeder extends Seeder
         ]);
 
         $user->assignRole('user');
+
+        $superAdmin = User::create([
+            'name' => 'Super Admin',
+            'username' => 'superadmin',
+            'email' => 'superadmin@example.com',
+            'password' => Hash::make('password'),
+        ]);
+        
+        $superAdmin->assignRole('super admin');
     }
 }
