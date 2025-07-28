@@ -19,27 +19,38 @@
 
       <!-- Navigation Links -->
       <ul class="nav flex-column mb-auto mt-3">
-        <li class="nav-item mb-2">
+        <li v-if="can('view-dashboard')" class="nav-item mb-2">
           <Link :href="'/dashboard'" class="nav-link" :class="isActive('/dashboard')">
             <i class="bi bi-house-door me-2"></i> Dashboard
           </Link>
         </li>
-        <li class="nav-item mb-2">
+        <li 
+          v-if="can('view-project') || can('edit-project') || can('create-project') || can('delete-project')" class="nav-item mb-2"
+        >
           <Link :href="'/projects'" class="nav-link" :class="isActive('/projects')">
             <i class="bi bi-kanban me-2"></i> Projects
           </Link>
         </li>
-        <li class="nav-item mb-2">
+        <li
+          v-if="can('view-designation') || can('edit-designation') || can('create-designation') || can('delete-designation')" 
+          class="nav-item mb-2"
+        >
           <Link :href="'/designations'" class="nav-link" :class="isActive('/designations')">
             <i class="bi bi-people me-2"></i> Designations
           </Link>
         </li>
-        <li v-if="can('manage-users')" class="nav-item mb-2">
+        <li 
+          v-if="can('view-user') || can('edit-user') || can('create-user') || can('delete-user')" 
+          class="nav-item mb-2"
+        >
           <Link :href="'/users'" class="nav-link" :class="isActive('/users')">
             <i class="bi bi-person-badge me-2"></i> Users
           </Link>
         </li>
-        <li v-if="can('manage-roles')" class="nav-item mb-2">
+        <li 
+          v-if="can('view-role') || can('edit-role') || can('create-role') || can('delete-role')"
+          class="nav-item mb-2"
+        >
           <Link :href="'/roles'" class="nav-link" :class="isActive('/roles')">
             <i class="bi bi-shield-lock me-2"></i> Roles
           </Link>
@@ -94,6 +105,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { Link, useForm, usePage } from '@inertiajs/vue3'
+import { can } from '@/Composables/Can'
 
 const form = useForm({})
 function logout() {
@@ -101,10 +113,6 @@ function logout() {
 }
 
 const page = usePage()
-
-const can = (permission) => {
-  return page.props.auth.user?.permissions.includes(permission)
-}
 
 function isActive(path) {
   const currentPath = page.url.split('?')[0]
