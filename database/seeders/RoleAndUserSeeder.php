@@ -21,6 +21,7 @@ class RoleAndUserSeeder extends Seeder
 
         // Create permissions
         $permissions = [
+            'view-dashboard',
             'view-designation',
             'create-designation',
             'edit-designation',
@@ -36,8 +37,14 @@ class RoleAndUserSeeder extends Seeder
             'view-manpower',
             'create-manpower',
             'delete-manpower',
-            'manage-users',
-            'manage-roles',
+            'view-user',
+            'create-user',
+            'edit-user',
+            'delete-user',
+            'view-role',
+            'create-role',
+            'edit-role',
+            'delete-role',
         ];
 
         foreach ($permissions as $permission) {
@@ -46,14 +53,39 @@ class RoleAndUserSeeder extends Seeder
 
         // Create admin role and assign permissions
         $adminRole = Role::create(['name' => 'admin']);
-        $filteredPermissions = array_diff($permissions, ['manage-users', 'manage-roles']);
+        $filteredPermissions = array_diff($permissions, [
+            'view-user',
+            'create-user',
+            'edit-user',
+            'delete-user',
+            'view-role',
+            'create-role',
+            'edit-role',
+            'delete-role',
+        ]);
         $adminRole->givePermissionTo($filteredPermissions);
 
         $userRole = Role::create(['name' => 'user']);
-        $userRole->givePermissionTo(['view-designation', 'view-project', 'view-scenario', 'view-manpower']);
+        $userRole->givePermissionTo([
+            'view-designation', 
+            'view-project', 
+            'view-scenario', 
+            'view-manpower', 
+            'view-dashboard'
+        ]);
 
         $superAdminRole = Role::create(['name' => 'super admin']);
-        $superAdminRole->givePermissionTo(['manage-users', 'manage-roles']);
+        $superAdminRole->givePermissionTo([
+            'view-dashboard',
+            'view-user',
+            'create-user',
+            'edit-user',
+            'delete-user',
+            'view-role',
+            'create-role',
+            'edit-role',
+            'delete-role',
+        ]);
 
         // Create admin user
         $admin = User::create([
