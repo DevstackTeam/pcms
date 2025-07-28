@@ -16,16 +16,26 @@
         >
           <thead class="table-light">
             <tr>
-              <th scope="col" style="width: 30%;">Name</th>
-              <th scope="col" style="width: 20%;">Email</th>
-              <th scope="col" style="width: 30%;">Actions</th>
+              <th scope="col" style="width: 20%;">Name</th>
+              <th scope="col" style="width: 60%;">Email</th>
+              <th scope="col" style="width: 20%;">Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
+            <tr v-for="user in users">
+              <td style="padding: 8px 10px; text-align: left;">{{ user.name }}</td>
+              <td style="padding: 8px 10px; text-align: left;">{{ user.email }}</td>
+              <td class="justify-content-center">
+                <Link class="text-warning me-2">
+                  <i class="bi bi-eye me-2"></i>
+                </Link>
+                <Link class="text-primary me-3">
+                  <i class="bi bi-pencil"></i>
+                </Link>
+                <button class="btn p-0 text-danger" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
