@@ -58,7 +58,7 @@ import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import TabLink from '../../Components/TabLink.vue'
 import { Link } from '@inertiajs/vue3'
-import { ref, watchEffect, computed } from 'vue'
+import { ref, watchEffect } from 'vue'
 import FormDetail from '../../Components/FormDetail.vue'
 import { can } from '@/Composables/Can'
 
