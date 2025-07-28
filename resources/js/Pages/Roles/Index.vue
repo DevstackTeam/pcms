@@ -25,8 +25,13 @@
             <tr v-for="role in roles">
               <td style="padding: 8px 10px; text-align: left;">{{ role.name }}</td>
 
-              <td>
-
+              <td class="text-start">
+                <span
+                  v-for="permission in role.permissions"
+                  class="badge bg-primary me-1"
+                >
+                  {{ permission.name }}
+                </span>
               </td>
 
               <td class="justify-content-center">
@@ -36,7 +41,7 @@
                 <Link :href="`/roles/${role.id}/edit`" class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
-                <button >
+                <button @click="confirmDelete(role.id)">
                   <i class="bi bi-trash text-danger"></i>
                 </button>
               </td>
@@ -45,6 +50,19 @@
         </table>
       </div>
     </CardBox>
+
+    <Modal v-if="showConfirmModal" @close="showConfirmModal = false">
+      <template #title>
+        Confirm Deletion
+      </template>
+      <template #body>
+        <p>Are you sure you want to delete this role?</p>
+        <div class="d-flex justify-content-end gap-2 mt-3">
+          <button class="btn btn-secondary" @click="showConfirmModal = false">Cancel</button>
+          <button class="btn btn-danger" @click="performDelete">Yes, Delete</button>
+        </div>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -52,7 +70,9 @@
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
+import Modal from '@/Components/Modal.vue'
 import { router, Link } from '@inertiajs/vue3'
+import { ref } from 'vue'
 
 defineOptions({
   layout: SidebarLayout
@@ -62,7 +82,26 @@ defineProps({
   roles: Array
 })
 
+const confirmDeleteId = ref(null)
+const showConfirmModal = ref(false)
+
 const goToCreate = () => {
   router.get('/roles/create')
+}
+
+function confirmDelete(id) {
+  confirmDeleteId.value = id
+  showConfirmModal.value = true
+}
+
+function performDelete() {
+  if (!confirmDeleteId.value) return
+
+  router.delete(`/roles/${confirmDeleteId.value}`, {
+    onSuccess: () => {
+      showConfirmModal.value = false
+      confirmDeleteId.value = null
+    }
+  })
 }
 </script>
