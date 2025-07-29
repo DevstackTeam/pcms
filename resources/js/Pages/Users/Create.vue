@@ -19,7 +19,6 @@
               v-model="form.email"
               label="Email"
               id="email"
-              type="email"
               :error="form.errors.email"
             />
           </div>
