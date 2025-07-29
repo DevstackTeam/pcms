@@ -1,11 +1,13 @@
 <?php
 
+use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ScenarioController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 
@@ -31,3 +33,11 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
 });
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings/email', [SettingController::class, 'updateEmail'])->name('settings.updateEmail');
+    Route::post('/settings/password', [SettingController::class, 'changePassword'])->name('settings.changePassword');
+});
+
