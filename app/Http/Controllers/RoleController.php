@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -14,6 +15,13 @@ class RoleController extends Controller
      */
     public function index()
     {
+        /** @disregard P1013 Undefined method 'user'.intelephense */
+        $user = auth()->user();
+
+        if (! $user->hasAnyPermission(['view-role', 'create-role', 'edit-role', 'delete-role'])) {
+            abort(403);
+        }
+
         return Inertia::render('Roles/Index', [
             'roles' => Role::with('permissions')->get()
         ]);
@@ -24,6 +32,8 @@ class RoleController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create-role');
+
         return Inertia::render('Roles/Create', [
             'permissions' => Permission::pluck('name')->all()
         ]);
@@ -34,6 +44,8 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create-role');
+
         $request->validate([
             'name' => 'required',
             'permissions' => 'required',
@@ -50,6 +62,8 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
+        Gate::authorize('view-role');
+
         return Inertia::render('Roles/Show', [
             'role' => $role,
             'rolePermissions' => $role->permissions()->pluck('name')->all(),
@@ -61,6 +75,8 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        Gate::authorize('edit-role');
+
         return Inertia::render('Roles/Edit', [
             'role' => $role,
             'rolePermissions' => $role->permissions()->pluck('name')->all(),
@@ -73,6 +89,8 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        Gate::authorize('edit-role');
+
         $request->validate([
             'name' => 'required',
             'permissions' => 'required',
@@ -89,6 +107,8 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        Gate::authorize('delete-role');
+
         $role->delete();
 
         return redirect()->route('roles.index');

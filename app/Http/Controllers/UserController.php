@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
@@ -15,6 +16,13 @@ class UserController extends Controller
      */
     public function index()
     {
+        /** @disregard P1013 Undefined method 'user'.intelephense */
+        $user = auth()->user();
+
+        if (! $user->hasAnyPermission(['view-user', 'create-user', 'edit-user', 'delete-user'])) {
+            abort(403);
+        }
+
         return Inertia::render('Users/Index', [
             'users' => User::with('roles')->get() 
         ]);
@@ -25,6 +33,8 @@ class UserController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create-user');
+
         return Inertia::render('Users/Create', [
             'roles' => Role::pluck('name')->all()
         ]);
@@ -35,6 +45,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create-user');
+
         $request->validate([
             'name' => 'required',
             'email' => 'required',
@@ -57,6 +69,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        Gate::authorize('view-user');
+
         return Inertia::render('Users/Show', [
             'user' => $user
         ]);
@@ -67,6 +81,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        Gate::authorize('edit-user');
+
         return Inertia::render('Users/Edit', [
             'user' => $user,
             'userRoles' => $user->roles()->pluck('name')->all(),
@@ -79,6 +95,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        Gate::authorize('edit-user');
+
         $request->validate([
             'name' => 'required',
             'email' => 'required',
@@ -103,6 +121,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        Gate::authorize('delete-user');
+
         $user->delete();
 
         return redirect()->route('users.index');
