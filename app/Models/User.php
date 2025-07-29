@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -13,7 +14,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'username',
     ];
 
     /**
@@ -57,5 +59,23 @@ class User extends Authenticatable
     public function designations(): HasMany
     {
         return $this->hasMany(Designation::class);
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($user) {
+            if ($user->isForceDeleting()) {
+                $user->projects()->forceDelete();
+                $user->designations()->forceDelete();
+            } else {
+                $user->projects()->delete();
+                $user->designations()->delete();
+            }
+        });
+
+        static::restoring(function ($user) {
+            $user->projects()->withTrashed()->restore();
+            $user->designations()->withTrashed()->restore();
+        });
     }
 }

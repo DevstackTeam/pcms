@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-kanban" title="Project" :subtitle="`${project.name} | Scenario ${scenario.id}`"></Header>
 
     <CardBox title="Scenario's Detail">
@@ -68,7 +68,7 @@
         <div class="d-flex justify-content-end">
           <Link :href="`/projects/${project.id}/scenarios`" class="btn btn-outline-secondary">Close</Link>
           <Link 
-            v-if="canEdit" 
+            v-if="can('edit-scenario')" 
             :href="`/projects/${project.id}/scenarios/${scenario.id}/edit`" 
             class="btn btn-primary ms-2"
           >
@@ -81,19 +81,16 @@
 </template>
 
 <script setup>
-import { Link, usePage } from '@inertiajs/vue3'
-import { computed } from 'vue'
+import { Link } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormDetail from '../../Components/FormDetail.vue'
+import { can } from '@/Composables/Can'
 
 defineOptions({
   layout: SidebarLayout,
 })
-
-const page = usePage()
-const canEdit = computed(() => page.props.auth.user?.permissions.includes('can_edit'))
 
 const props = defineProps({
   project: Object,

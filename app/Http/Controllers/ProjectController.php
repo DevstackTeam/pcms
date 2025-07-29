@@ -21,6 +21,13 @@ class ProjectController extends Controller
 
     public function index(Request $request)
     {
+        /** @disregard P1013 Undefined method 'user'.intelephense */
+        $user = auth()->user();
+
+        if (! $user->hasAnyPermission(['view-project', 'create-project', 'edit-project', 'delete-project'])) {
+            abort(403);
+        }
+
         $search = $request->input('search');
         $status = $request->input('status');
 
@@ -35,7 +42,7 @@ class ProjectController extends Controller
 
     public function create()
     {
-        Gate::authorize('can_create');
+        Gate::authorize('create-project');
 
         return Inertia::render('Projects/Create', [
             'status' => ProjectStatus::cases(),
@@ -44,7 +51,7 @@ class ProjectController extends Controller
 
     public function store(ProjectRequest $request)
     {
-        Gate::authorize('can_create');
+        Gate::authorize('create-project');
 
         $project = $this->projectService->store($request->validated());
 
@@ -55,6 +62,8 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
+        Gate::authorize('view-project');
+
         return Inertia::render('Projects/Show', [
             'project' => $project
         ]);
@@ -62,7 +71,7 @@ class ProjectController extends Controller
 
     public function edit(Project $project)
     {
-        Gate::authorize('can_edit');
+        Gate::authorize('edit-project');
 
         return Inertia::render('Projects/Edit', [
             'project' => $project,
@@ -72,7 +81,7 @@ class ProjectController extends Controller
 
     public function update(ProjectRequest $request, Project $project)
     {
-        Gate::authorize('can_edit');
+        Gate::authorize('edit-project');
 
         $project = $this->projectService->update($project, $request->validated());
 
@@ -83,7 +92,7 @@ class ProjectController extends Controller
 
     public function destroy(Project $project)
     {
-        Gate::authorize('can_delete');
+        Gate::authorize('delete-project');
 
         $project->delete();
 

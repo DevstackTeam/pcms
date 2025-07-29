@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-kanban" title="Project" :subtitle="project.name"></Header>
 
     <div v-if="form.errors.total_cost" class="alert alert-danger d-flex align-items-center gap-2 p-2 small mb-3">
@@ -122,7 +122,12 @@
               <td>{{ (manpower.total_cost || 0).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
 
               <td>
-                <button type="button" class="btn btn-sm btn-danger" @click="removeManpower(index)">
+                <button 
+                  v-if="can('delete-manpower')" 
+                  type="button" 
+                  class="btn btn-sm btn-danger" 
+                  @click="removeManpower(index)"
+                >
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
@@ -131,7 +136,14 @@
         </table>
         </div>
 
-        <button type="button" class="btn btn-primary mb-3" @click="addManpower">Add Manpower</button>
+        <button 
+          v-if="can('create-manpower')" 
+          type="button" 
+          class="btn btn-primary mb-3" 
+          @click="addManpower"
+        >
+          Add Manpower
+        </button>
 
         <div class="row mb-3">
           <div class="col">
@@ -167,7 +179,7 @@
 
         <div class="d-flex justify-content-end">
           <Link :href="`/projects/${project.id}/scenarios`" class="btn btn-outline-secondary">Cancel</Link>
-          <button type="submit" class="btn btn-primary ms-2">Submit</button>
+          <button v-if="can('create-scenario')" type="submit" class="btn btn-primary ms-2">Submit</button>
         </div>
       </form>
     </CardBox>
@@ -184,6 +196,7 @@ import { Link, useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import { useSanitizeInput } from '../../Composables/Formatter'
 import { useCostCalculator } from '../../Composables/Calculation'
+import { can } from '@/Composables/Can'
 
 defineOptions({
   layout: SidebarLayout,

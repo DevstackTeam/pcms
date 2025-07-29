@@ -9,7 +9,7 @@
 
     <CardBox 
       title="Designation's List" 
-      :showButton="canCreate" 
+      :showButton="can('create-designation')" 
       buttonText="Add Designation" 
       @button-click="showModal = true"
     >
@@ -31,18 +31,46 @@
             <tr>
               <th scope="col" style="width: 40%;">Designation Name</th>
               <th scope="col" style="width: 30%;">Rate/Day</th>
-              <th v-if="isAdmin" scope="col" style="width: 30%;">Actions</th>
+              <th 
+                v-if="can('view-designation') || can('edit-designation') || can('delete-designation')" scope="col" style="width: 30%;"
+              >
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="d in props.designations.data" :key="d.id">
               <td style="padding: 8px 10px; text-align: left;">{{ d.name }}</td>
-              <td>RM {{ d.rate_per_day }}</td>
-              <td v-if="isAdmin" class="space-x-2">
-                <button class="btn p-0 text-primary me-2" @click.prevent="openEditModal(d)" title="Edit">
+              <td>
+                {{ parseFloat(d.rate_per_day).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}
+              </td>
+              <td 
+                v-if="can('view-designation') || can('edit-designation') || can('delete-designation')" class="space-x-2"
+              >
+                <button 
+                  v-if="can('view-designation')" 
+                  class="btn p-0 text-warning me-2" 
+                  @click.prevent="openViewModal(d)" 
+                  title="View"
+                >
+                  <i class="bi bi-eye"></i>
+                </button>
+
+                <button
+                  v-if="can('edit-designation')" 
+                  class="btn p-0 text-primary me-2" 
+                  @click.prevent="openEditModal(d)" 
+                  title="Edit"
+                >
                   <i class="bi bi-pencil"></i>
                 </button>
-                <button class="btn p-0 text-danger" @click="confirmDelete(d.id)" title="Delete">
+
+                <button 
+                  v-if="can('delete-designation')" 
+                  class="btn p-0 text-danger" 
+                  @click="confirmDelete(d.id)" 
+                  title="Delete"
+                >
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
@@ -91,6 +119,32 @@
       </template>
     </Modal>
 
+    <Modal v-if="showViewModal" @close="closeModal">
+      <template #title>
+        View Designation
+      </template>
+
+      <template #body>
+        <div class="pt-2">
+          <div class="mb-3">
+            <FormDetail label="Designation Name">
+              {{ form.name }}
+            </FormDetail>
+          </div>
+
+          <div class="mb-3">
+            <FormDetail label="Rate/Day">
+              {{ parseFloat(form.rate_per_day).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}
+            </FormDetail>
+          </div>
+
+          <div class="d-flex justify-content-end mt-4">
+            <button type="button" class="btn btn-secondary" @click="closeModal">Close</button>
+          </div>
+        </div>
+      </template>
+    </Modal>
+
     <Modal v-if="showConfirmModal" @close="showConfirmModal = false">
       <template #title>
         Confirm Deletion
@@ -113,8 +167,10 @@ import CardBox from '../Components/CardBox.vue'
 import Modal from '../Components/Modal.vue'
 import PaginationLink from '../Components/PaginationLink.vue'
 import FormInput from '../Components/FormInput.vue'
-import { useForm, router, usePage } from '@inertiajs/vue3'
-import { ref, watch, computed } from 'vue'
+import FormDetail from '../Components/FormDetail.vue'
+import { can } from '@/Composables/Can'
+import { useForm, router } from '@inertiajs/vue3'
+import { ref, watch } from 'vue'
 import { useFlash } from '../Composables/Flash'
 import { useSanitizeInput } from '../Composables/Formatter'
 
@@ -123,11 +179,9 @@ const props = defineProps({
   flash: Object
 })
 
-const page = usePage()
-const canCreate = computed(() => page.props.auth.user?.permissions.includes('can_create'))
-const isAdmin = computed(() => page.props.auth.user?.roles.includes('admin'))
 const search = ref('')
 const showModal = ref(false)
+const showViewModal = ref(false)
 const isEditMode = ref(false)
 const editId = ref(null)
 const showConfirmModal = ref(false)
@@ -151,6 +205,12 @@ function openEditModal(designation) {
   showModal.value = true
 }
 
+function openViewModal(designation) {
+  form.name = designation.name
+  form.rate_per_day = designation.rate_per_day
+  showViewModal.value = true
+}
+
 function performDelete() {
   if (!confirmDeleteId.value) return
 
@@ -169,6 +229,7 @@ function confirmDelete(id) {
 
 function closeModal() {
   showModal.value = false
+  showViewModal.value = false
   isEditMode.value = false
   form.reset()
   form.clearErrors()

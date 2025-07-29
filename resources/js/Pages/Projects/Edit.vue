@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header
       iconClass="bi-pencil-square" title="Project" :subtitle="project.name"></Header>
 
@@ -73,7 +73,7 @@
 
         <div class="d-flex justify-content-end gap-2">
        <Link :href="`/projects/${project.id}`" class="btn btn-outline-secondary">Cancel
-       </Link><button type="submit" class="btn btn-primary">Save</button>
+       </Link><button v-if="can('edit-project')" type="submit" class="btn btn-primary">Save</button>
       </div>
 
       </form>
@@ -89,13 +89,14 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import { Link } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import FormInput from '../../Components/FormInput.vue'
-
-const hover = ref(null)
-const isOpen = ref(false)
+import { can } from '@/Composables/Can'
 
 defineOptions({
     layout: SidebarLayout
 })
+
+const hover = ref(null)
+const isOpen = ref(false)
 
 const props = defineProps({
   project: Object,

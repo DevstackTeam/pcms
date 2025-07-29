@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-kanban" title="Project"></Header>
 
     <CardBox title="Create New Project">
@@ -73,7 +73,7 @@
 
         <div class="d-flex justify-content-end">
           <Link href="/projects" class="btn btn-outline-secondary">Cancel</Link>
-          <button type="submit" class="btn btn-primary ms-2">Create</button>
+          <button v-if="can('create-project')" type="submit" class="btn btn-primary ms-2">Create</button>
         </div>
       </form>
     </CardBox>
@@ -87,16 +87,16 @@ import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormInput from '../../Components/FormInput.vue'
+import { can } from '@/Composables/Can'
+
+defineOptions({ layout: SidebarLayout })
 
 const hover = ref(null)
+const isOpen = ref(false)
 
 const props = defineProps({
   status: Array
 })
-
-defineOptions({ layout: SidebarLayout })
-
-const isOpen = ref(false)
 
 const form = useForm({
   name: '',

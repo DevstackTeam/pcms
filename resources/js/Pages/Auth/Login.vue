@@ -74,7 +74,7 @@
   const form = useForm({
     email: '',
     password: '',
-    remember: false,
+    remember: null,
   })
 
   function submit() {

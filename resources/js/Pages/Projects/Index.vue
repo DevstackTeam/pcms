@@ -7,7 +7,12 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <CardBox title="Project List" :showButton="canCreate" buttonText="Add Project" @button-click="goToCreate">
+    <CardBox
+      title="Project List" 
+      :showButton="can('create-project')" 
+      buttonText="Add Project" 
+      @button-click="goToCreate"
+    >
       <div class="row mb-3">
         <div class="d-flex flex-column flex-md-row align-items-stretch align-items-md-center gap-2">
           <input
@@ -64,7 +69,13 @@
               <th scope="col" style="width: 30%;">Project Name</th>
               <th scope="col" style="width: 20%;">Total Scenarios</th>
               <th scope="col" style="width: 20%;">Status</th>
-              <th scope="col" style="width: 30%;">Actions</th>
+              <th 
+                v-if="can('view-project') || can('edit-project') || can('delete-project')"
+                scope="col" 
+                style="width: 30%;"
+              >
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -89,14 +100,17 @@
                   {{ project.status }}
                 </span>
               </td>
-              <td class="justify-content-center">
-                <Link :href="`/projects/${project.id}`" class="text-warning me-2">
+              <td 
+                v-if="can('view-project') || can('edit-project') || can('delete-project')"
+                class="justify-content-center"
+              >
+                <Link v-if="can('view-project')" :href="`/projects/${project.id}`" class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
-                <Link v-if="canEdit" :href="`/projects/${project.id}/edit`" class="text-primary me-3">
+                <Link v-if="can('edit-project')" :href="`/projects/${project.id}/edit`" class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
-                <button v-if="canDelete" class="btn p-0 text-danger" @click="confirmDelete(project.id)">
+                <button v-if="can('delete-project')" class="btn p-0 text-danger" @click="confirmDelete(project.id)">
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
@@ -126,14 +140,15 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue'
-import { router, Link, usePage } from '@inertiajs/vue3'
+import { ref, watch } from 'vue'
+import { router, Link } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import PaginationLink from '@/Components/PaginationLink.vue'
 import Modal from '@/Components/Modal.vue'
 import { useFlash } from '@/Composables/Flash'
+import { can } from '@/Composables/Can'
 
 defineOptions({ layout: SidebarLayout })
 
@@ -144,20 +159,15 @@ const props = defineProps({
   status: Array,
 })
 
-const page = usePage()
-const canCreate = computed(() => page.props.auth.user?.permissions.includes('can_create'))
-const canEdit = computed(() => page.props.auth.user?.permissions.includes('can_edit'))
-const canDelete = computed(() => page.props.auth.user?.permissions.includes('can_delete'))
 const search = ref(props.filters?.search || '')
 const selectedStatus = ref(props.filters?.status || '')
 const isOpen = ref(false)
 const hover = ref(null)
-
 const showConfirmModal = ref(false)
 const confirmDeleteId = ref(null)
 
 const goToCreate = () => {
-  router.visit('/projects/create')
+  router.get('/projects/create')
 }
 
 const selectStatus = (selected) => {

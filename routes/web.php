@@ -8,6 +8,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -25,6 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('designations', DesignationController::class)->except('create', 'edit', 'show');
     Route::resource('projects', ProjectController::class);
     Route::resource('projects.scenarios', ScenarioController::class);
+    Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
