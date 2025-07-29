@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
@@ -43,16 +43,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         Gate::authorize('create-user');
-
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'username' => 'required',
-            'password' => 'required',
-        ]);
 
         $user = User::create(
             $request->only(['name', 'email', 'username']) +
@@ -95,15 +88,9 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
         Gate::authorize('edit-user');
-
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'username' => 'required',
-        ]);
 
         $data = $request->only(['name', 'email', 'username']);
 
