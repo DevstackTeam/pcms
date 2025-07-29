@@ -25,6 +25,7 @@
 
         <div class="d-flex justify-content-end">
           <Link href="/roles" class="btn btn-outline-secondary">Close</Link>
+          <Link :href="`/roles/${role.id}/edit`" class="btn btn-primary ms-2">Edit</Link>
         </div>
       </div>
     </CardBox>
