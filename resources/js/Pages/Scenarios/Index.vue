@@ -26,7 +26,13 @@
               <th scope="col" style="width: 15%;">Markup</th>
               <th scope="col" style="width: 24%;">Total Cost</th>
               <th scope="col" style="width: 24%;">Final Cost</th>
-              <th scope="col" style="width: 15%;">Actions</th>
+              <th 
+                v-if="can('view-scenario') || can('edit-scenario') || can('delete-scenario')"
+                scope="col" 
+                style="width: 15%;"
+              >
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -57,7 +63,10 @@
                 </div>
               </td>
 
-              <td class="space-x-2">
+              <td 
+                v-if="can('view-scenario') || can('edit-scenario') || can('delete-scenario')"
+                class="space-x-2"
+              >
                 <Link v-if="can('view-scenario')" :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
