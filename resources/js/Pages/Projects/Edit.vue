@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header
       iconClass="bi-pencil-square" title="Project" :subtitle="project.name"></Header>
 
