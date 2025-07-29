@@ -34,7 +34,7 @@
     <CardBox title="Role">
         <p class="mb-0">
         <strong>Role:</strong>
-          {{ user.name }}
+           {{ $page.props.user.roles.map(r => r.name).join(', ') }}
         </p>
     </CardBox>
 
@@ -114,7 +114,7 @@ defineOptions({ layout: SidebarLayout })
 const props = defineProps({
   auth: Object,
   errors: Object,
-  user: Object
+  roles: Array
 })
 
 const showSuccess = ref(false)
