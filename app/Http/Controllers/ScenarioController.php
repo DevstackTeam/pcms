@@ -26,7 +26,14 @@ class ScenarioController extends Controller
 
     public function index(Project $project)
     {
-       $scenarios = $project->scenarios()->latest()->get();
+        /** @disregard P1013 Undefined method 'user'.intelephense */
+        $user = auth()->user();
+
+        if (! $user->hasAnyPermission(['view-scenario', 'create-scenario', 'edit-scenario', 'delete-scenario'])) {
+            abort(403);
+        }
+        
+        $scenarios = $project->scenarios()->latest()->get();
 
         return Inertia::render('Scenarios/Index', [
             'project' => $project,

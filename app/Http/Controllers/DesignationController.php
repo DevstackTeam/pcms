@@ -19,6 +19,13 @@ class DesignationController extends Controller
 
     public function index(Request $request)
     {
+        /** @disregard P1013 Undefined method 'user'.intelephense */
+        $user = auth()->user();
+
+        if (! $user->hasAnyPermission(['view-designation', 'create-designation', 'edit-designation', 'delete-designation'])) {
+            abort(403);
+        }
+
         $search = $request->input('search');
 
         $designations = $this->designationService->getFilteredDesignations($search);

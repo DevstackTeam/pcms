@@ -21,6 +21,13 @@ class ProjectController extends Controller
 
     public function index(Request $request)
     {
+        /** @disregard P1013 Undefined method 'user'.intelephense */
+        $user = auth()->user();
+
+        if (! $user->hasAnyPermission(['view-project', 'create-project', 'edit-project', 'delete-project'])) {
+            abort(403);
+        }
+
         $search = $request->input('search');
         $status = $request->input('status');
 
