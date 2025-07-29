@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RoleRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -42,14 +43,9 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
         Gate::authorize('create-role');
-
-        $request->validate([
-            'name' => 'required',
-            'permissions' => 'required',
-        ]);
 
         $role = Role::create(['name' => $request->name]);
         $role->syncPermissions($request->permissions);
@@ -89,14 +85,9 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Role $role)
+    public function update(RoleRequest $request, Role $role)
     {
         Gate::authorize('edit-role');
-
-        $request->validate([
-            'name' => 'required',
-            'permissions' => 'required',
-        ]);
 
         $role->update(['name' => $request->name]);
         $role->syncPermissions($request->permissions);
