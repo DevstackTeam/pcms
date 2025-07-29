@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\RoleRequest;
+use App\Services\RoleService;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Permission;
@@ -10,6 +11,13 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
+    protected $roleService;
+
+    public function __construct(RoleService $roleService)
+    {
+        $this->roleService = $roleService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -42,16 +50,11 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
         Gate::authorize('create-role');
 
-        $request->validate([
-            'name' => 'required',
-            'permissions' => 'required',
-        ]);
-
-        $role = Role::create(['name' => $request->name]);
+        $role = $this->roleService->store($request->validated());
         $role->syncPermissions($request->permissions);
 
         return redirect()
@@ -89,16 +92,11 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Role $role)
+    public function update(RoleRequest $request, Role $role)
     {
         Gate::authorize('edit-role');
 
-        $request->validate([
-            'name' => 'required',
-            'permissions' => 'required',
-        ]);
-
-        $role->update(['name' => $request->name]);
+        $role = $this->roleService->update($role, $request->validated());
         $role->syncPermissions($request->permissions);
 
         return redirect()
@@ -113,7 +111,7 @@ class RoleController extends Controller
     {
         Gate::authorize('delete-role');
 
-        $role->delete();
+        $this->roleService->delete($role);
 
         return redirect()
             ->route('roles.index')
