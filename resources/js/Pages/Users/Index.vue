@@ -70,7 +70,7 @@
         Confirm Deletion
       </template>
       <template #body>
-        <p>Are you sure you want to delete this role?</p>
+        <p>Are you sure you want to delete this user?</p>
         <div class="d-flex justify-content-end gap-2 mt-3">
           <button class="btn btn-secondary" @click="showConfirmModal = false">Cancel</button>
           <button class="btn btn-danger" @click="performDelete">Yes, Delete</button>
