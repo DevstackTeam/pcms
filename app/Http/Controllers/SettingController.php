@@ -10,6 +10,7 @@ use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\UpdatePasswordRequest;
 use Illuminate\Validation\ValidationException;
 
+
 class SettingController extends Controller
 {
     protected SettingService $settingService;
@@ -21,7 +22,7 @@ class SettingController extends Controller
 
 public function index()
 {
-    $user = auth()->user()->load('roles');
+    $user = auth()->user()->load('roles'); // 'roles' must be a relationship
 
     return Inertia::render('Settings', [
         'user' => $user
