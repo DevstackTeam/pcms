@@ -31,7 +31,11 @@
             <tr>
               <th scope="col" style="width: 40%;">Designation Name</th>
               <th scope="col" style="width: 30%;">Rate/Day</th>
-              <th scope="col" style="width: 30%;">Actions</th>
+              <th 
+                v-if="can('view-designation') || can('edit-designation') || can('delete-designation')" scope="col" style="width: 30%;"
+              >
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -40,7 +44,9 @@
               <td>
                 {{ parseFloat(d.rate_per_day).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}
               </td>
-              <td class="space-x-2">
+              <td 
+                v-if="can('view-designation') || can('edit-designation') || can('delete-designation')" class="space-x-2"
+              >
                 <button 
                   v-if="can('view-designation')" 
                   class="btn p-0 text-warning me-2" 
