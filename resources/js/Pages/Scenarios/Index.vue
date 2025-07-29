@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-file-earmark-text" title="Project" :subtitle="project.name"></Header>
 
     <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -9,7 +9,12 @@
 
     <TabLink :projectId="project.id"/>
 
-    <CardBox title="Project's Scenario" :showButton="canCreate" buttonText="Add Scenario" @button-click="goToCreate">
+    <CardBox 
+      title="Project's Scenario" 
+      :showButton="can('create-scenario')" 
+      buttonText="Add Scenario" 
+      @button-click="goToCreate"
+    >
       <div class="table-responsive">
         <table
            class="table table-hover table-bordered table-striped align-middle text-center "
@@ -21,7 +26,13 @@
               <th scope="col" style="width: 15%;">Markup</th>
               <th scope="col" style="width: 24%;">Total Cost</th>
               <th scope="col" style="width: 24%;">Final Cost</th>
-              <th scope="col" style="width: 15%;">Actions</th>
+              <th 
+                v-if="can('view-scenario') || can('edit-scenario') || can('delete-scenario')"
+                scope="col" 
+                style="width: 15%;"
+              >
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -52,17 +63,20 @@
                 </div>
               </td>
 
-              <td class="space-x-2">
-                <Link v-if="canView" :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-warning me-2">
+              <td 
+                v-if="can('view-scenario') || can('edit-scenario') || can('delete-scenario')"
+                class="space-x-2"
+              >
+                <Link v-if="can('view-scenario')" :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
 
-                <Link v-if="canEdit" :href='`/projects/${project.id}/scenarios/${scenario.id}/edit`' class="text-primary me-3">
+                <Link v-if="can('edit-scenario')" :href='`/projects/${project.id}/scenarios/${scenario.id}/edit`' class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
 
                 <button
-                  v-if="canDelete"
+                  v-if="can('delete-scenario')"
                   type="button"
                   class="btn btn-link text-danger p-0"
                   title="Delete"
@@ -205,18 +219,14 @@ import CardBox from '@/Components/CardBox.vue';
 import TabLink from '../../Components/TabLink.vue';
 import Modal from '../../Components/Modal.vue';
 import { useFlash } from '../../Composables/Flash';
-import { router, Link, usePage } from '@inertiajs/vue3';
-import { ref, computed } from 'vue';
+import { router, Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import { can } from '@/Composables/Can'
 
 defineOptions({
   layout: SidebarLayout
 });
 
-const page = usePage()
-const canCreate = computed(() => page.props.auth.user?.permissions.includes('can_create'))
-const canEdit = computed(() => page.props.auth.user?.permissions.includes('can_edit'))
-const canDelete = computed(() => page.props.auth.user?.permissions.includes('can_delete'))
-const canView = computed(() => page.props.auth.user?.permissions.includes('can_view'))
 const selectedScenario1 = ref(null)
 const selectedScenario2 = ref(null)
 const confirmDeleteId = ref(null)

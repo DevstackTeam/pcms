@@ -19,6 +19,13 @@ class DesignationController extends Controller
 
     public function index(Request $request)
     {
+        /** @disregard P1013 Undefined method 'user'.intelephense */
+        $user = auth()->user();
+
+        if (! $user->hasAnyPermission(['view-designation', 'create-designation', 'edit-designation', 'delete-designation'])) {
+            abort(403);
+        }
+
         $search = $request->input('search');
 
         $designations = $this->designationService->getFilteredDesignations($search);
@@ -32,7 +39,7 @@ class DesignationController extends Controller
 
     public function store(DesignationRequest $request)
     {
-        Gate::authorize('can_create');
+        Gate::authorize('create-designation');
 
         $designation = $this->designationService->store($request->only('name', 'rate_per_day'));
 
@@ -43,7 +50,7 @@ class DesignationController extends Controller
 
     public function update(DesignationRequest $request, Designation $designation)
     {
-        Gate::authorize('can_edit');
+        Gate::authorize('edit-designation');
 
         $this->designationService->update($designation, $request->only('name', 'rate_per_day'));
 
@@ -53,7 +60,7 @@ class DesignationController extends Controller
 
     public function destroy(Designation $designation)
     {
-        Gate::authorize('can_delete');
+        Gate::authorize('delete-designation');
 
         $this->designationService->delete($designation);
 
