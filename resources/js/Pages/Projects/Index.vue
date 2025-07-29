@@ -141,7 +141,7 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import { router, Link, usePage } from '@inertiajs/vue3'
+import { router, Link } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
