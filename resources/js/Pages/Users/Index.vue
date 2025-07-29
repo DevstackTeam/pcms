@@ -2,6 +2,11 @@
   <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-person-badge" title="Users" />
 
+    <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ successMessage }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <CardBox
       title="User List" 
       :showButton="can('create-user')" 
@@ -81,20 +86,22 @@ import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import Modal from '@/Components/Modal.vue'
 import { can } from '@/Composables/Can'
+import { useFlash } from '@/Composables/Flash'
 import { Link, router } from '@inertiajs/vue3'
 import { ref } from 'vue'
-import { ca } from 'vuetify/locale'
 
 defineOptions({
   layout: SidebarLayout
 })
 
-defineProps({
-  users: Array
+const props = defineProps({
+  users: Array,
+  flash: Object,
 })
 
 const confirmDeleteId = ref(null)
 const showConfirmModal = ref(false)
+const { successMessage } = useFlash(props)
 
 const goToCreate = () => {
   router.get('/users/create')

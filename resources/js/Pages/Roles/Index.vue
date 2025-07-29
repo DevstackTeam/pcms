@@ -2,6 +2,11 @@
   <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-shield-lock" title="Roles" />
 
+    <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ successMessage }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <CardBox
       title="Role's List"
       :showButton="can('create-role')"
@@ -81,6 +86,7 @@ import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import Modal from '@/Components/Modal.vue'
 import { can } from '@/Composables/Can'
+import { useFlash } from '@/Composables/Flash'
 import { router, Link } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
@@ -88,12 +94,14 @@ defineOptions({
   layout: SidebarLayout
 })
 
-defineProps({
-  roles: Array
+const props = defineProps({
+  roles: Array,
+  flash: Object,
 })
 
 const confirmDeleteId = ref(null)
 const showConfirmModal = ref(false)
+const { successMessage } = useFlash(props)
 
 const goToCreate = () => {
   router.get('/roles/create')
