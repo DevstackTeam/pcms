@@ -74,7 +74,7 @@
 
         <div class="d-flex justify-content-end">
           <Link href="/users" class="btn btn-outline-secondary">Cancel</Link>
-          <button type="submit" class="btn btn-primary ms-2">Create</button>
+          <button v-if="can('create-user')" type="submit" class="btn btn-primary ms-2">Create</button>
         </div>
       </form>
     </CardBox>
@@ -86,6 +86,7 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import FormInput from '@/Components/FormInput.vue'
+import { can } from '@/Composables/Can'
 import { useForm, Link } from '@inertiajs/vue3';
 
 defineOptions({

@@ -25,7 +25,7 @@
 
         <div class="d-flex justify-content-end">
           <Link href="/roles" class="btn btn-outline-secondary">Close</Link>
-          <Link :href="`/roles/${role.id}/edit`" class="btn btn-primary ms-2">Edit</Link>
+          <Link v-if="can('edit-role')" :href="`/roles/${role.id}/edit`" class="btn btn-primary ms-2">Edit</Link>
         </div>
       </div>
     </CardBox>
@@ -37,7 +37,8 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import FormDetail from '@/Components/FormDetail.vue'
-import { Link, useForm } from '@inertiajs/vue3'
+import { can } from '@/Composables/Can'
+import { Link } from '@inertiajs/vue3'
 
 defineOptions({
   layout: SidebarLayout

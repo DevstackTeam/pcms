@@ -4,7 +4,7 @@
 
     <CardBox
       title="User List" 
-      :showButton="true" 
+      :showButton="can('create-user')" 
       buttonText="Add User" 
       @button-click="goToCreate"
     >
@@ -19,7 +19,13 @@
               <th scope="col" style="width: 20%;">Name</th>
               <th scope="col" style="width: 30%;">Email</th>
               <th scope="col" style="width: 30%;">Role</th>
-              <th scope="col" style="width: 20%;">Action</th>
+              <th 
+                v-if="can('view-user') || can('edit-user') || can('delete-user')"
+                scope="col" 
+                style="width: 20%;"
+              >
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -34,14 +40,17 @@
                   {{ role.name }}
                 </span>
               </td>
-              <td class="justify-content-center">
-                <Link :href="`/users/${user.id}`" class="text-warning me-2">
+              <td
+                v-if="can('view-user') || can('edit-user') || can('delete-user')" 
+                class="justify-content-center"
+              >
+                <Link v-if="can('view-user')" :href="`/users/${user.id}`" class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
-                <Link :href="`/users/${user.id}/edit`" class="text-primary me-3">
+                <Link v-if="can('edit-user')" :href="`/users/${user.id}/edit`" class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
-                <button class="btn p-0 text-danger" title="Delete" @click="confirmDelete(user.id)">
+                <button v-if="can('delete-user')" class="btn p-0 text-danger" title="Delete" @click="confirmDelete(user.id)">
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
@@ -71,8 +80,10 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import Modal from '@/Components/Modal.vue'
+import { can } from '@/Composables/Can'
 import { Link, router } from '@inertiajs/vue3'
 import { ref } from 'vue'
+import { ca } from 'vuetify/locale'
 
 defineOptions({
   layout: SidebarLayout

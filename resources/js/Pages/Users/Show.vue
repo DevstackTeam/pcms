@@ -25,7 +25,7 @@
 
       <div class="d-flex justify-content-end">
         <Link href="/users" class="btn btn-outline-secondary">Close</Link>
-        <Link :href="`/users/${user.id}/edit`" class="btn btn-primary ms-2">Edit</Link>
+        <Link v-if="can('edit-user')" :href="`/users/${user.id}/edit`" class="btn btn-primary ms-2">Edit</Link>
       </div>
     </CardBox>
   </div>
@@ -36,6 +36,7 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import FormDetail from '@/Components/FormDetail.vue'
+import { can } from '@/Composables/Can'
 import { Link } from '@inertiajs/vue3';
 
 defineOptions({

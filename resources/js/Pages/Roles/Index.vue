@@ -4,7 +4,7 @@
 
     <CardBox
       title="Role's List"
-      :showButton="true"
+      :showButton="can('create-role')"
       buttonText="Add Role"
       @button-click="goToCreate"
     >
@@ -18,7 +18,13 @@
             <tr>
               <th scope="col" style="width: 25%;">Role Name</th>
               <th scope="col" style="width: 50%;">Permission</th>
-              <th scope="col" style="width: 25%;">Action</th>
+              <th 
+                v-if="can('view-role') || can('edit-role') || can('delete-role')" 
+                scope="col" 
+                style="width: 25%;"
+              >
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -34,14 +40,17 @@
                 </span>
               </td>
 
-              <td class="justify-content-center">
-                <Link :href="`/roles/${role.id}`" class="text-warning me-2">
+              <td
+                v-if="can('view-role') || can('edit-role') || can('delete-role')" 
+                class="justify-content-center"
+              >
+                <Link v-if="can('view-role')" :href="`/roles/${role.id}`" class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
-                <Link :href="`/roles/${role.id}/edit`" class="text-primary me-3">
+                <Link v-if="can('edit-role')" :href="`/roles/${role.id}/edit`" class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
-                <button @click="confirmDelete(role.id)">
+                <button v-if="can('delete-role')" @click="confirmDelete(role.id)">
                   <i class="bi bi-trash text-danger"></i>
                 </button>
               </td>
@@ -71,6 +80,7 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import Modal from '@/Components/Modal.vue'
+import { can } from '@/Composables/Can'
 import { router, Link } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
