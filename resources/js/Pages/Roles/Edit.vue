@@ -41,6 +41,10 @@
               </div>
             </div>
           </div>
+          
+          <div v-if="form.errors.permissions" class="text-danger mt-1">
+            {{ form.errors.permissions }}
+          </div>
         </div>
 
         <div class="d-flex justify-content-end">
