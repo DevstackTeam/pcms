@@ -71,6 +71,10 @@
           </div>
         </div>
 
+        <div v-if="form.errors.roles" class="text-danger mt-1">
+          {{ form.errors.roles }}
+        </div>
+
         <div class="d-flex justify-content-end">
           <Link href="/users" class="btn btn-outline-secondary">Cancel</Link>
           <button v-if="can('create-user')" type="submit" class="btn btn-primary ms-2">Create</button>
