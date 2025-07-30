@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
@@ -11,6 +12,13 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -47,10 +55,7 @@ class UserController extends Controller
     {
         Gate::authorize('create-user');
 
-        $user = User::create(
-            $request->only(['name', 'email', 'username']) +
-            ['password' => Hash::make($request->password)]
-        );
+        $user = $this->userService->store($request->validated());
 
         $user->syncRoles($request->roles);
 
@@ -92,13 +97,7 @@ class UserController extends Controller
     {
         Gate::authorize('edit-user');
 
-        $data = $request->only(['name', 'email', 'username']);
-
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
-        }
-
-        $user->update($data);
+        $user = $this->userService->update($user, $request->validated());
 
         $user->syncRoles($request->roles);
 
@@ -114,7 +113,7 @@ class UserController extends Controller
     {
         Gate::authorize('delete-user');
 
-        $user->delete();
+        $this->userService->delete($user);
 
         return redirect()
             ->route('users.index')
