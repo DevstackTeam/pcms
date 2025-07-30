@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -22,10 +23,23 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'username' => 'required|string|unique:users,username',
-            'password' => 'required',
+            'name' => ['required', 'string'],
+
+            'email' => [
+                'required', 
+                'email', 
+                Rule::unique('users', 'email')->ignore($this->route('user')),
+            ],
+
+            'username' => [
+                'required', 
+                'string',
+                Rule::unique('users', 'username')->ignore($this->route('user')),
+            ],
+            
+            'password' => $this->isMethod('post') ? ['required'] : ['nullable'],
+            'roles' => ['array', 'min:1'],
+            'roles.*' => ['exists:roles,name'],
         ];
     }
 }
