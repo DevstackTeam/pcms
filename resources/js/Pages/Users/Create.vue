@@ -19,7 +19,6 @@
               v-model="form.email"
               label="Email"
               id="email"
-              type="email"
               :error="form.errors.email"
             />
           </div>
@@ -70,6 +69,10 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <div v-if="form.errors.roles" class="text-danger mt-1">
+          {{ form.errors.roles }}
         </div>
 
         <div class="d-flex justify-content-end">
