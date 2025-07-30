@@ -6,7 +6,6 @@ use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 
