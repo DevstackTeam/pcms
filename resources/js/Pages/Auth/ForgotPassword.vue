@@ -8,10 +8,7 @@
         <img src="/images/pcms-logo.png" alt="Logo" style="max-width: 120px;" />
       </div>
 
-      <div v-if="status" class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ status }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
+      <SuccessAlert :message="status" />
 
       <h4 class="mb-3 text-center fw-bold" style="color: #525252;">Reset Your Password</h4>
       <p class="text-muted text-center mb-4">
@@ -47,6 +44,7 @@
 <script setup>
 import { useForm, Head, Link } from '@inertiajs/vue3'
 import FormInput from '../../Components/FormInput.vue'
+import SuccessAlert from '@/Components/SuccessAlert.vue'
 
 defineProps({
   status: String,

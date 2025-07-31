@@ -4,10 +4,7 @@
 
     <TabLink :projectId="project.id" />
 
-    <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ successMessage }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+    <SuccessAlert :message="successMessage" />
 
     <CardBox title="Project's Details">
       <div class="row">
@@ -57,26 +54,18 @@ import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import TabLink from '../../Components/TabLink.vue'
+import SuccessAlert from '@/Components/SuccessAlert.vue'
 import { Link } from '@inertiajs/vue3'
-import { ref, watchEffect } from 'vue'
 import FormDetail from '../../Components/FormDetail.vue'
 import { can } from '@/Composables/Can'
+import { useFlash } from '@/Composables/Flash'
 
 defineOptions({ layout: SidebarLayout })
-
-const successMessage = ref(null)
 
 const props = defineProps({
   project: Object,
   flash: Object
 })
 
-watchEffect(() => {
-  if (props.flash?.success) {
-    successMessage.value = props.flash.success
-    setTimeout(() => {
-      successMessage.value = null
-    }, 4000)
-  }
-})
+const { successMessage } = useFlash(props)
 </script>

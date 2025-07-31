@@ -17,10 +17,7 @@
           <img src="/images/pcms-logo.png" alt="Login Image" style="max-width: 120px;" />
         </div>
 
-        <div v-if="status" class="alert alert-success alert-dismissible fade show" role="alert">
-          {{ status }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+        <SuccessAlert :message="status" />
 
         <div v-if="form.errors.credential" class="alert alert-danger">
           <ul class="mb-0">
@@ -82,6 +79,7 @@
 <script setup>
 import { Link, useForm } from '@inertiajs/vue3'
 import FormInput from '../../Components/FormInput.vue'
+import SuccessAlert from '@/Components/SuccessAlert.vue'
 
 defineProps({
   status: String

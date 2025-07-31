@@ -2,10 +2,7 @@
   <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-gear" title="Settings" />
 
-    <div v-if="showSuccess" class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-      Settings saved successfully!
-      <button type="button" class="btn-close" @click="showSuccess = false" aria-label="Close"></button>
-    </div>
+    <SuccessAlert :message="successMessage" />
 
     <CardBox title="Account Details">
       <div class="border rounded shadow-sm overflow-hidden">
@@ -105,6 +102,8 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import Modal from '@/Components/Modal.vue'
+import SuccessAlert from '@/Components/SuccessAlert.vue'
+import { useFlash } from '@/Composables/Flash'
 import { ref, watch, } from 'vue'
 import { defineProps, defineOptions } from 'vue'
 import { useForm } from '@inertiajs/vue3'
@@ -114,13 +113,14 @@ defineOptions({ layout: SidebarLayout })
 const props = defineProps({
   auth: Object,
   errors: Object,
-  roles: Array
+  roles: Array,
+  flash: Object,
 })
 
-const showSuccess = ref(false)
 const showEditEmailModal = ref(false)
 const showChangePasswordModal = ref(false)
 const darkMode = ref(false)
+const { successMessage } = useFlash(props)
 
 const emailForm = useForm({
   email: ''
@@ -157,9 +157,7 @@ function updateEmail() {
   emailForm.clearErrors()
   emailForm.post('/settings/email', {
     onSuccess: () => {
-      showSuccess.value = true
       showEditEmailModal.value = false
-      setTimeout(() => (showSuccess.value = false), 3000)
     }
   })
 }
@@ -168,9 +166,7 @@ function changePassword() {
   passwordForm.clearErrors()
   passwordForm.post('/settings/password', {
     onSuccess: () => {
-      showSuccess.value = true
       showChangePasswordModal.value = false
-      setTimeout(() => (showSuccess.value = false), 3000)
     }
   })
 }
