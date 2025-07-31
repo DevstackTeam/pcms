@@ -16,6 +16,18 @@
         <div class="text-center mb-3">
           <img src="/images/pcms-logo.png" alt="Login Image" style="max-width: 120px;" />
         </div>
+
+        <div v-if="status" class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ status }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div v-if="form.errors.credential" class="alert alert-danger">
+          <ul class="mb-0">
+            <li v-if="form.errors.credential">{{ form.errors.credential }}</li>
+          </ul>
+        </div>
+
         <h4 class="mb-3 text-center fw-bold" style="color: #525252;">Login to your Account</h4>
 
         <form @submit.prevent="submit">
@@ -51,7 +63,7 @@
                 Remember Me
               </label>
             </div>
-            <a href="#" class="text-decoration-none small text-muted">Forgot Password?</a>
+            <Link href="/forgot-password" class="text-decoration-none small text-muted">Forgot Password?</Link>
           </div>
 
           <button
@@ -68,28 +80,32 @@
 </template>
 
 <script setup>
-  import { useForm } from '@inertiajs/vue3'
-  import FormInput from '../../Components/FormInput.vue'
+import { Link, useForm } from '@inertiajs/vue3'
+import FormInput from '../../Components/FormInput.vue'
 
-  const form = useForm({
-    email: '',
-    password: '',
-    remember: null,
-  })
+defineProps({
+  status: String
+})
 
-  function submit() {
-    form.post('/login')
-  }
+const form = useForm({
+  email: '',
+  password: '',
+  remember: null,
+})
+
+function submit() {
+  form.post('/login')
+}
 </script>
 
 <style scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
-  
-  * {
-    font-family: 'Nunito Sans', sans-serif;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
 
-  body {
-    background-color: #f8f9fa;
-  }
+* {
+  font-family: 'Nunito Sans', sans-serif;
+}
+
+body {
+  background-color: #f8f9fa;
+}
 </style>
