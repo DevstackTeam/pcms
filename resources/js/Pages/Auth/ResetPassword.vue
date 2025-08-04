@@ -13,14 +13,11 @@
       </p>
 
       <form @submit.prevent="submit">
-        <FormInput
-          id="email"
-          label="Email"
-          v-model="form.email"
-          type="email"
-          placeholder="Enter your email"
-          :error="form.errors.email"
-        />
+        <div class="mb-3">
+          <FormDetail label="Email">
+            {{ email }}
+          </FormDetail>
+        </div>
 
         <FormInput
           id="password"
