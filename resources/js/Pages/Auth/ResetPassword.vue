@@ -12,6 +12,8 @@
         Enter your new password to reset access to your account.
       </p>
 
+      <ErrorAlert :error="form.errors.email" />
+
       <form @submit.prevent="submit">
         <div class="mb-3">
           <FormDetail label="Email">
@@ -58,6 +60,8 @@
 <script setup>
 import { useForm, Head, Link } from '@inertiajs/vue3'
 import FormInput from '../../Components/FormInput.vue'
+import FormDetail from '../../Components/FormDetail.vue'
+import ErrorAlert from '../../Components/ErrorAlert.vue'
 
 const props = defineProps({
   token: String,
