@@ -12,12 +12,17 @@
           <div class="col-12 mb-3">
             <div class="form-label">Permissions:</div>
             <div class="row">
-              <div
-                class="col-md-4 mb-2"
-                v-for="(permission, index) in rolePermissions"
-                :key="index"
-              >
-                <span class="badge bg-primary">{{ permission }}</span>
+              <div v-for="(permissions, module) in rolePermissions" :key="module" class="col-md-4 mb-4">
+                <h6 class="fw-semibold mb-2">{{ module }}</h6>
+                <div class="d-flex flex-wrap gap-2">
+                  <span
+                    v-for="permission in permissions"
+                    :key="permission"
+                    class="badge bg-primary fw-medium"
+                  >
+                    {{ permission }}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -46,6 +51,6 @@ defineOptions({
 
 const props = defineProps({
   role: Object,
-  rolePermissions: Array,
+  rolePermissions: Object,
 })
 </script>

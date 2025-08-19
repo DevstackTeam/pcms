@@ -42,8 +42,14 @@ class RoleController extends Controller
     {
         Gate::authorize('Create Role');
 
+        $permissions = Permission::all()->groupBy(function ($permission) {
+            return explode(' ', $permission->name)[1];
+        })->map(function ($group) {
+            return $group->pluck('name', 'name');
+        });
+
         return Inertia::render('Roles/Create', [
-            'permissions' => Permission::pluck('name')->all()
+            'permissions' => $permissions
         ]);
     }
 
@@ -69,9 +75,15 @@ class RoleController extends Controller
     {
         Gate::authorize('View Role');
 
+        $rolePermissions = $role->permissions()->get()->groupBy(function ($permission) {
+            return explode(' ', $permission->name)[1];
+        })->map(function ($group) {
+            return $group->pluck('name', 'name');
+        });
+
         return Inertia::render('Roles/Show', [
             'role' => $role,
-            'rolePermissions' => $role->permissions()->pluck('name')->all(),
+            'rolePermissions' => $rolePermissions,
         ]);
     }
 
@@ -82,10 +94,16 @@ class RoleController extends Controller
     {
         Gate::authorize('Update Role');
 
+        $permissions = Permission::all()->groupBy(function ($permission) {
+            return explode(' ', $permission->name)[1];
+        })->map(function ($group) {
+            return $group->pluck('name', 'name');
+        });
+
         return Inertia::render('Roles/Edit', [
             'role' => $role,
             'rolePermissions' => $role->permissions()->pluck('name')->all(),
-            'permissions' => Permission::pluck('name')->all()
+            'permissions' => $permissions,
         ]);
     }
 
