@@ -68,7 +68,7 @@
         <div class="d-flex justify-content-end">
           <Link :href="`/projects/${project.id}/scenarios`" class="btn btn-outline-secondary">Close</Link>
           <Link 
-            v-if="can('edit-scenario')" 
+            v-if="can('Update Scenario')" 
             :href="`/projects/${project.id}/scenarios/${scenario.id}/edit`" 
             class="btn btn-primary ms-2"
           >

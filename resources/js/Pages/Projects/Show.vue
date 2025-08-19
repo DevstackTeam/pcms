@@ -46,7 +46,7 @@
 
       <div class="d-flex justify-content-end gap-2">
         <Link :href="`/projects`" class="btn btn-outline-secondary">Back</Link>
-        <Link v-if="can('edit-project')" :href="`/projects/${project.id}/edit`" class="btn btn-primary">Edit</Link>
+        <Link v-if="can('Update Project')" :href="`/projects/${project.id}/edit`" class="btn btn-primary">Edit</Link>
       </div>
     </CardBox>
   </div>

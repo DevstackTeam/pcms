@@ -73,7 +73,7 @@
 
         <div class="d-flex justify-content-end gap-2">
        <Link :href="`/projects/${project.id}`" class="btn btn-outline-secondary">Cancel
-       </Link><button v-if="can('edit-project')" type="submit" class="btn btn-primary">Save</button>
+       </Link><button v-if="can('Update Project')" type="submit" class="btn btn-primary">Save</button>
       </div>
 
       </form>

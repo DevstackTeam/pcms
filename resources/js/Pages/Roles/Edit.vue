@@ -49,7 +49,7 @@
 
         <div class="d-flex justify-content-end">
           <Link href="/roles" class="btn btn-outline-secondary">Cancel</Link>
-          <button v-if="can('edit-role')" type="submit" class="btn btn-primary ms-2">Save</button>
+          <button v-if="can('Update Role')" type="submit" class="btn btn-primary ms-2">Save</button>
         </div>
       </form>
     </CardBox>

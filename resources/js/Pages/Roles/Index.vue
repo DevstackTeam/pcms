@@ -9,7 +9,7 @@
 
     <CardBox
       title="Role's List"
-      :showButton="can('create-role')"
+      :showButton="can('Create Role')"
       buttonText="Add Role"
       @button-click="goToCreate"
     >
@@ -24,7 +24,7 @@
               <th scope="col" style="width: 25%;">Role Name</th>
               <th scope="col" style="width: 50%;">Permission</th>
               <th 
-                v-if="can('view-role') || can('edit-role') || can('delete-role')" 
+                v-if="can('View Role') || can('Update Role') || can('Delete Role')" 
                 scope="col" 
                 style="width: 25%;"
               >
@@ -46,16 +46,16 @@
               </td>
 
               <td
-                v-if="can('view-role') || can('edit-role') || can('delete-role')" 
+                v-if="can('View Role') || can('Update Role') || can('Delete Role')" 
                 class="justify-content-center"
               >
-                <Link v-if="can('view-role')" :href="`/roles/${role.id}`" class="text-warning me-2">
+                <Link v-if="can('View Role')" :href="`/roles/${role.id}`" class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
-                <Link v-if="can('edit-role')" :href="`/roles/${role.id}/edit`" class="text-primary me-3">
+                <Link v-if="can('Update Role')" :href="`/roles/${role.id}/edit`" class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
-                <button v-if="can('delete-role')" @click="confirmDelete(role.id)">
+                <button v-if="can('Delete Role')" @click="confirmDelete(role.id)">
                   <i class="bi bi-trash text-danger"></i>
                 </button>
               </td>

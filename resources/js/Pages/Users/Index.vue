@@ -9,7 +9,7 @@
 
     <CardBox
       title="User List" 
-      :showButton="can('create-user')" 
+      :showButton="can('Create User')" 
       buttonText="Add User" 
       @button-click="goToCreate"
     >
@@ -25,7 +25,7 @@
               <th scope="col" style="width: 30%;">Email</th>
               <th scope="col" style="width: 30%;">Role</th>
               <th 
-                v-if="can('view-user') || can('edit-user') || can('delete-user')"
+                v-if="can('View User') || can('Update User') || can('Delete User')"
                 scope="col" 
                 style="width: 20%;"
               >
@@ -46,16 +46,16 @@
                 </span>
               </td>
               <td
-                v-if="can('view-user') || can('edit-user') || can('delete-user')" 
+                v-if="can('View User') || can('Update User') || can('Delete User')" 
                 class="justify-content-center"
               >
-                <Link v-if="can('view-user')" :href="`/users/${user.id}`" class="text-warning me-2">
+                <Link v-if="can('View User')" :href="`/users/${user.id}`" class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
-                <Link v-if="can('edit-user')" :href="`/users/${user.id}/edit`" class="text-primary me-3">
+                <Link v-if="can('Update User')" :href="`/users/${user.id}/edit`" class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
-                <button v-if="can('delete-user')" class="btn p-0 text-danger" title="Delete" @click="confirmDelete(user.id)">
+                <button v-if="can('Delete User')" class="btn p-0 text-danger" title="Delete" @click="confirmDelete(user.id)">
                   <i class="bi bi-trash"></i>
                 </button>
               </td>

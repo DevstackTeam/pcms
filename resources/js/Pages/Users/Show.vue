@@ -25,7 +25,7 @@
 
       <div class="d-flex justify-content-end">
         <Link href="/users" class="btn btn-outline-secondary">Close</Link>
-        <Link v-if="can('edit-user')" :href="`/users/${user.id}/edit`" class="btn btn-primary ms-2">Edit</Link>
+        <Link v-if="can('Update User')" :href="`/users/${user.id}/edit`" class="btn btn-primary ms-2">Edit</Link>
       </div>
     </CardBox>
   </div>

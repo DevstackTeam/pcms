@@ -19,20 +19,20 @@
 
       <!-- Navigation Links -->
       <ul class="nav flex-column mb-auto mt-3">
-        <li v-if="can('view-dashboard')" class="nav-item mb-2">
+        <li class="nav-item mb-2">
           <Link :href="'/dashboard'" class="nav-link" :class="isActive('/dashboard')">
             <i class="bi bi-house-door me-2"></i> Dashboard
           </Link>
         </li>
         <li 
-          v-if="can('view-project') || can('edit-project') || can('create-project') || can('delete-project')" class="nav-item mb-2"
+          v-if="can('Create Project') || can('View Project') || can('Update Project') || can('Delete Project')" class="nav-item mb-2"
         >
           <Link :href="'/projects'" class="nav-link" :class="isActive('/projects')">
             <i class="bi bi-kanban me-2"></i> Projects
           </Link>
         </li>
         <li
-          v-if="can('view-designation') || can('edit-designation') || can('create-designation') || can('delete-designation')" 
+          v-if="can('Create Designation') || can('View Designation') || can('Update Designation') || can('Delete Designation')" 
           class="nav-item mb-2"
         >
           <Link :href="'/designations'" class="nav-link" :class="isActive('/designations')">
@@ -40,7 +40,7 @@
           </Link>
         </li>
         <li 
-          v-if="can('view-user') || can('edit-user') || can('create-user') || can('delete-user')" 
+          v-if="can('Create User') || can('View User') || can('Update User') || can('Delete User')" 
           class="nav-item mb-2"
         >
           <Link :href="'/users'" class="nav-link" :class="isActive('/users')">
@@ -48,7 +48,7 @@
           </Link>
         </li>
         <li 
-          v-if="can('view-role') || can('edit-role') || can('create-role') || can('delete-role')"
+          v-if="can('Create Role') || can('View Role') || can('Update Role') || can('Delete Role')"
           class="nav-item mb-2"
         >
           <Link :href="'/roles'" class="nav-link" :class="isActive('/roles')">

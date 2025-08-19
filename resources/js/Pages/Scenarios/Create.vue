@@ -123,7 +123,7 @@
 
               <td>
                 <button 
-                  v-if="can('delete-manpower')" 
+                  v-if="can('Delete Manpower')" 
                   type="button" 
                   class="btn btn-sm btn-danger" 
                   @click="removeManpower(index)"
@@ -137,7 +137,7 @@
         </div>
 
         <button 
-          v-if="can('create-manpower')" 
+          v-if="can('Create Manpower')" 
           type="button" 
           class="btn btn-primary mb-3" 
           @click="addManpower"
@@ -179,7 +179,7 @@
 
         <div class="d-flex justify-content-end">
           <Link :href="`/projects/${project.id}/scenarios`" class="btn btn-outline-secondary">Cancel</Link>
-          <button v-if="can('create-scenario')" type="submit" class="btn btn-primary ms-2">Submit</button>
+          <button v-if="can('Create Scenario')" type="submit" class="btn btn-primary ms-2">Submit</button>
         </div>
       </form>
     </CardBox>

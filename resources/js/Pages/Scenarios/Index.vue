@@ -11,7 +11,7 @@
 
     <CardBox 
       title="Project's Scenario" 
-      :showButton="can('create-scenario')" 
+      :showButton="can('Create Scenario')" 
       buttonText="Add Scenario" 
       @button-click="goToCreate"
     >
@@ -27,7 +27,7 @@
               <th scope="col" style="width: 24%;">Total Cost</th>
               <th scope="col" style="width: 24%;">Final Cost</th>
               <th 
-                v-if="can('view-scenario') || can('edit-scenario') || can('delete-scenario')"
+                v-if="can('View Scenario') || can('Update Scenario') || can('Delete Scenario')"
                 scope="col" 
                 style="width: 15%;"
               >
@@ -64,19 +64,19 @@
               </td>
 
               <td 
-                v-if="can('view-scenario') || can('edit-scenario') || can('delete-scenario')"
+                v-if="can('View Scenario') || can('Update Scenario') || can('Delete Scenario')"
                 class="space-x-2"
               >
-                <Link v-if="can('view-scenario')" :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-warning me-2">
+                <Link v-if="can('View Scenario')" :href='`/projects/${project.id}/scenarios/${scenario.id}`' class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
 
-                <Link v-if="can('edit-scenario')" :href='`/projects/${project.id}/scenarios/${scenario.id}/edit`' class="text-primary me-3">
+                <Link v-if="can('Update Scenario')" :href='`/projects/${project.id}/scenarios/${scenario.id}/edit`' class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
 
                 <button
-                  v-if="can('delete-scenario')"
+                  v-if="can('Delete Scenario')"
                   type="button"
                   class="btn btn-link text-danger p-0"
                   title="Delete"
