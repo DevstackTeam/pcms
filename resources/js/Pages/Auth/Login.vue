@@ -19,13 +19,9 @@
 
         <SuccessAlert :message="status" />
 
-        <div v-if="form.errors.credential" class="alert alert-danger">
-          <ul class="mb-0">
-            <li v-if="form.errors.credential">{{ form.errors.credential }}</li>
-          </ul>
-        </div>
-
         <h4 class="mb-3 text-center fw-bold" style="color: #525252;">Login to your Account</h4>
+
+        <ErrorAlert :error="form.errors.credential" />
 
         <form @submit.prevent="submit">
           <FormInput
@@ -80,6 +76,7 @@
 import { Link, useForm } from '@inertiajs/vue3'
 import FormInput from '../../Components/FormInput.vue'
 import SuccessAlert from '@/Components/SuccessAlert.vue'
+import ErrorAlert from '../../Components/ErrorAlert.vue'
 
 defineProps({
   status: String
