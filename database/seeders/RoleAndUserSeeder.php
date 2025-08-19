@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\User;
+use App\Services\PermissionSeederService;
 use Illuminate\Support\Facades\Hash;
 
 class RoleAndUserSeeder extends Seeder
@@ -19,92 +20,20 @@ class RoleAndUserSeeder extends Seeder
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Create permissions
-        $permissions = [
-            'view-dashboard',
-            'view-designation',
-            'create-designation',
-            'edit-designation',
-            'delete-designation',
-            'view-project',
-            'create-project',
-            'edit-project',
-            'delete-project',
-            'view-scenario',
-            'create-scenario',
-            'edit-scenario',
-            'delete-scenario',
-            'view-manpower',
-            'create-manpower',
-            'delete-manpower',
-            'view-user',
-            'create-user',
-            'edit-user',
-            'delete-user',
-            'view-role',
-            'create-role',
-            'edit-role',
-            'delete-role',
-        ];
-
-        foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+        foreach (PermissionSeederService::permissions() as $module) {
+            foreach ($module as $name) {
+                Permission::create(['name' => $name]);
+            }
         }
+        
+        $superAdminRole = Role::create(['name' => User::TYPE_SUPER_ADMIN]);
+        $superAdminRole->givePermissionTo(PermissionSeederService::super_admin());
 
-        // Create admin role and assign permissions
-        $adminRole = Role::create(['name' => 'admin']);
-        $filteredPermissions = array_diff($permissions, [
-            'view-user',
-            'create-user',
-            'edit-user',
-            'delete-user',
-            'view-role',
-            'create-role',
-            'edit-role',
-            'delete-role',
-        ]);
-        $adminRole->givePermissionTo($filteredPermissions);
+        $adminRole = Role::create(['name' => User::TYPE_ADMIN]);
+        $adminRole->givePermissionTo(PermissionSeederService::admin());
 
-        $userRole = Role::create(['name' => 'user']);
-        $userRole->givePermissionTo([
-            'view-designation', 
-            'view-project', 
-            'view-scenario', 
-            'view-manpower', 
-            'view-dashboard'
-        ]);
-
-        $superAdminRole = Role::create(['name' => 'super admin']);
-        $superAdminRole->givePermissionTo([
-            'view-dashboard',
-            'view-user',
-            'create-user',
-            'edit-user',
-            'delete-user',
-            'view-role',
-            'create-role',
-            'edit-role',
-            'delete-role',
-        ]);
-
-        // Create admin user
-        $admin = User::create([
-            'name' => 'Admin User',
-            'username' => 'admin',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('password'),
-        ]);
-        $admin->assignRole('admin');
-
-        // Create regular user
-        $user = User::create([
-            'name' => 'Regular User',
-            'username' => 'user',
-            'email' => 'user@example.com',
-            'password' => Hash::make('password'),
-        ]);
-
-        $user->assignRole('user');
+        $userRole = Role::create(['name' => User::TYPE_USER]);
+        $userRole->givePermissionTo(PermissionSeederService::user());
 
         $superAdmin = User::create([
             'name' => 'Super Admin',
@@ -113,6 +42,24 @@ class RoleAndUserSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
         
-        $superAdmin->assignRole('super admin');
+        $superAdmin->assignRole(User::TYPE_SUPER_ADMIN);
+
+        $admin = User::create([
+            'name' => 'Admin User',
+            'username' => 'admin',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password'),
+        ]);
+
+        $admin->assignRole(User::TYPE_ADMIN);
+
+        $user = User::create([
+            'name' => 'Regular User',
+            'username' => 'user',
+            'email' => 'user@example.com',
+            'password' => Hash::make('password'),
+        ]);
+
+        $user->assignRole(User::TYPE_USER);
     }
 }
