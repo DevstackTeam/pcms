@@ -21,4 +21,22 @@ class UpdateEmailRequest extends FormRequest
             ],
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'email.unique' => 'The email has already been taken.',
+            'email.email' => 'The email must be a valid email address.',
+        ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            // Check if the input email is the same as the current user's
+            if ($this->email === $this->user()->email) {
+                $validator->errors()->add('email', 'Enter a new email different from your current one.');
+            }
+        });
+    }
+
 }
