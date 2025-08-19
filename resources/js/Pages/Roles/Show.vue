@@ -30,7 +30,7 @@
 
         <div class="d-flex justify-content-end">
           <Link href="/roles" class="btn btn-outline-secondary">Close</Link>
-          <Link v-if="can('Update Role')" :href="`/roles/${role.id}/edit`" class="btn btn-primary ms-2">Edit</Link>
+          <Link v-if="can('Update Role') && role.name != SUPER_ADMIN" :href="`/roles/${role.id}/edit`" class="btn btn-primary ms-2">Edit</Link>
         </div>
       </div>
     </CardBox>
@@ -52,5 +52,6 @@ defineOptions({
 const props = defineProps({
   role: Object,
   rolePermissions: Object,
+  SUPER_ADMIN: String,
 })
 </script>

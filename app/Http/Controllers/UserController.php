@@ -31,7 +31,8 @@ class UserController extends Controller
         }
 
         return Inertia::render('Users/Index', [
-            'users' => User::with('roles')->get() 
+            'users' => User::with('roles')->get(),
+            'SUPER_ADMIN' => User::TYPE_SUPER_ADMIN,
         ]);
     }
 
@@ -71,7 +72,9 @@ class UserController extends Controller
         Gate::authorize('View User');
 
         return Inertia::render('Users/Show', [
-            'user' => $user
+            'user' => $user,
+            'userRoles' => $user->roles()->pluck('name')->all(),
+            'SUPER_ADMIN' => User::TYPE_SUPER_ADMIN,
         ]);
     }
 
@@ -81,6 +84,10 @@ class UserController extends Controller
     public function edit(User $user)
     {
         Gate::authorize('Update User');
+
+        if ($user->hasRole(User::TYPE_SUPER_ADMIN)) {
+            abort(403);
+        }
 
         return Inertia::render('Users/Edit', [
             'user' => $user,
@@ -95,6 +102,10 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
         Gate::authorize('Update User');
+        
+        if ($user->hasRole(User::TYPE_SUPER_ADMIN)) {
+            abort(403);
+        }
 
         $user = $this->userService->update($user, $request->validated());
 
@@ -111,6 +122,10 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         Gate::authorize('Delete User');
+
+        if ($user->hasRole(User::TYPE_SUPER_ADMIN)) {
+            abort(403);
+        }
 
         $this->userService->delete($user);
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
+use App\Models\User;
 use App\Services\RoleService;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -31,7 +32,8 @@ class RoleController extends Controller
         }
 
         return Inertia::render('Roles/Index', [
-            'roles' => Role::with('permissions')->get()
+            'roles' => Role::with('permissions')->get(),
+            'SUPER_ADMIN' => User::TYPE_SUPER_ADMIN,
         ]);
     }
 
@@ -84,6 +86,7 @@ class RoleController extends Controller
         return Inertia::render('Roles/Show', [
             'role' => $role,
             'rolePermissions' => $rolePermissions,
+            'SUPER_ADMIN' => User::TYPE_SUPER_ADMIN,
         ]);
     }
 
@@ -93,6 +96,10 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         Gate::authorize('Update Role');
+
+        if ($role->name == User::TYPE_SUPER_ADMIN) {
+            abort(403);
+        }
 
         $permissions = Permission::all()->groupBy(function ($permission) {
             return explode(' ', $permission->name)[1];
@@ -114,6 +121,10 @@ class RoleController extends Controller
     {
         Gate::authorize('Update Role');
 
+        if ($role->name == User::TYPE_SUPER_ADMIN) {
+            abort(403);
+        }
+
         $role = $this->roleService->update($role, $request->validated());
         $role->syncPermissions($request->permissions);
 
@@ -128,6 +139,10 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         Gate::authorize('Delete Role');
+
+        if ($role->name == User::TYPE_SUPER_ADMIN) {
+            abort(403);
+        }
 
         $this->roleService->delete($role);
 

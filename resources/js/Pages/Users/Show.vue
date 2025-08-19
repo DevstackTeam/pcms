@@ -23,9 +23,22 @@
         </div>
       </div>
 
+      <div class="col-12 mb-3">
+        <div class="form-label">Roles:</div>
+        <div class="d-flex flex-wrap gap-2">
+          <span
+            v-for="role in userRoles"
+            :key="role.id"
+            class="badge bg-primary"
+          >
+            {{ role }}
+          </span>
+        </div>
+      </div>
+
       <div class="d-flex justify-content-end">
         <Link href="/users" class="btn btn-outline-secondary">Close</Link>
-        <Link v-if="can('Update User')" :href="`/users/${user.id}/edit`" class="btn btn-primary ms-2">Edit</Link>
+        <Link v-if="can('Update User') && !userRoles.includes(SUPER_ADMIN)" :href="`/users/${user.id}/edit`" class="btn btn-primary ms-2">Edit</Link>
       </div>
     </CardBox>
   </div>
@@ -44,6 +57,8 @@ defineOptions({
 })
 
 const props = defineProps({
-  user: Object
+  user: Object,
+  userRoles: Array,
+  SUPER_ADMIN: String,
 })
 </script>
