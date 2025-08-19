@@ -2,10 +2,7 @@
   <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-shield-lock" title="Roles" />
 
-    <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ successMessage }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+    <SuccessAlert :message="successMessage" />
 
     <CardBox
       title="Role's List"
@@ -85,6 +82,7 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import Header from '@/Components/Header.vue'
 import CardBox from '@/Components/CardBox.vue'
 import Modal from '@/Components/Modal.vue'
+import SuccessAlert from '@/Components/SuccessAlert.vue'
 import { can } from '@/Composables/Can'
 import { useFlash } from '@/Composables/Flash'
 import { router, Link } from '@inertiajs/vue3'

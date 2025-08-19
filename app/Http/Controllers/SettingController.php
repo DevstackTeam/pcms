@@ -22,6 +22,7 @@ class SettingController extends Controller
 
 public function index()
 {
+    /** @disregard P1013 Undefined method 'user'.intelephense */
     $user = auth()->user()->load('roles'); // 'roles' must be a relationship
 
     return Inertia::render('Settings', [

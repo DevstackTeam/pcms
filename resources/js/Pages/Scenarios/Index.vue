@@ -2,10 +2,7 @@
   <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-file-earmark-text" title="Project" :subtitle="project.name"></Header>
 
-    <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ successMessage }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+    <SuccessAlert :message="successMessage" />
 
     <TabLink :projectId="project.id"/>
 
@@ -218,6 +215,7 @@ import Header from '@/Components/Header.vue';
 import CardBox from '@/Components/CardBox.vue';
 import TabLink from '../../Components/TabLink.vue';
 import Modal from '../../Components/Modal.vue';
+import SuccessAlert from '@/Components/SuccessAlert.vue'
 import { useFlash } from '../../Composables/Flash';
 import { router, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
