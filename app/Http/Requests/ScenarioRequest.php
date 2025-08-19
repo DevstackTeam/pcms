@@ -11,7 +11,7 @@ class ScenarioRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->hasAnyPermission(['create-scenario', 'edit-scenario']);
+        return $this->user()->hasAnyPermission(['Create Scenario', 'Update Scenario']);
     }
 
     /**

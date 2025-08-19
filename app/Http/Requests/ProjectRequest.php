@@ -13,7 +13,7 @@ class ProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->hasAnyPermission(['create-project', 'edit-project']);
+        return $this->user()->hasAnyPermission(['Create Project', 'Update Project']);
     }
 
     /**

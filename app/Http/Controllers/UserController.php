@@ -26,12 +26,13 @@ class UserController extends Controller
         /** @disregard P1013 Undefined method 'user'.intelephense */
         $user = auth()->user();
 
-        if (! $user->hasAnyPermission(['view-user', 'create-user', 'edit-user', 'delete-user'])) {
+        if (!$user->hasAnyPermission(['Create User', 'View User', 'Update User', 'Delete User'])) {
             abort(403);
         }
 
         return Inertia::render('Users/Index', [
-            'users' => User::with('roles')->get() 
+            'users' => User::with('roles')->get(),
+            'SUPER_ADMIN' => User::TYPE_SUPER_ADMIN,
         ]);
     }
 
@@ -40,7 +41,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        Gate::authorize('create-user');
+        Gate::authorize('Create User');
 
         return Inertia::render('Users/Create', [
             'roles' => Role::pluck('name')->all()
@@ -52,7 +53,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        Gate::authorize('create-user');
+        Gate::authorize('Create User');
 
         $user = $this->userService->store($request->validated());
 
@@ -68,10 +69,12 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        Gate::authorize('view-user');
+        Gate::authorize('View User');
 
         return Inertia::render('Users/Show', [
-            'user' => $user
+            'user' => $user,
+            'userRoles' => $user->roles()->pluck('name')->all(),
+            'SUPER_ADMIN' => User::TYPE_SUPER_ADMIN,
         ]);
     }
 
@@ -80,7 +83,11 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        Gate::authorize('edit-user');
+        Gate::authorize('Update User');
+
+        if ($user->hasRole(User::TYPE_SUPER_ADMIN)) {
+            abort(403);
+        }
 
         return Inertia::render('Users/Edit', [
             'user' => $user,
@@ -94,7 +101,11 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-        Gate::authorize('edit-user');
+        Gate::authorize('Update User');
+        
+        if ($user->hasRole(User::TYPE_SUPER_ADMIN)) {
+            abort(403);
+        }
 
         $user = $this->userService->update($user, $request->validated());
 
@@ -110,7 +121,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        Gate::authorize('delete-user');
+        Gate::authorize('Delete User');
+
+        if ($user->hasRole(User::TYPE_SUPER_ADMIN)) {
+            abort(403);
+        }
 
         $this->userService->delete($user);
 

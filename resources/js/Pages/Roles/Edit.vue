@@ -18,12 +18,9 @@
           <div class="col-12 mb-3">
             <div class="form-label">Permissions:</div>
             <div class="row">
-              <div
-                class="col-md-4"
-                v-for="permission in permissions"
-                :key="permission.id"
-              >
-                <div class="form-check">
+              <div v-for="(actions, module) in permissions" :key="module" class="col-md-4 mb-4">
+                <h6 class="fw-semibold mb-2">{{ module }}</h6>
+                <div v-for="(label, permission) in actions" :key="permission" class="form-check mb-2">
                   <input
                     :id="`permission-${permission}`"
                     class="form-check-input"
@@ -31,11 +28,8 @@
                     :value="permission"
                     v-model="form.permissions"
                   />
-                  <label
-                    :for="`permission-${permission}`"
-                    class="form-check-label"
-                  >
-                    {{ permission }}
+                  <label :for="`permission-${permission}`" class="form-check-label">
+                    {{ label }}
                   </label>
                 </div>
               </div>
@@ -49,7 +43,7 @@
 
         <div class="d-flex justify-content-end">
           <Link href="/roles" class="btn btn-outline-secondary">Cancel</Link>
-          <button v-if="can('edit-role')" type="submit" class="btn btn-primary ms-2">Save</button>
+          <button v-if="can('Update Role')" type="submit" class="btn btn-primary ms-2">Save</button>
         </div>
       </form>
     </CardBox>
@@ -70,7 +64,7 @@ defineOptions({
 
 const props = defineProps({
   role: Object,
-  permissions: Array,
+  permissions: Object,
   rolePermissions: Array,
 })
 

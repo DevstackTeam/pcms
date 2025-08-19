@@ -6,7 +6,7 @@
 
     <CardBox 
       title="Designation's List" 
-      :showButton="can('create-designation')" 
+      :showButton="can('Create Designation')" 
       buttonText="Add Designation" 
       @button-click="showModal = true"
     >
@@ -29,7 +29,7 @@
               <th scope="col" style="width: 40%;">Designation Name</th>
               <th scope="col" style="width: 30%;">Rate/Day</th>
               <th 
-                v-if="can('view-designation') || can('edit-designation') || can('delete-designation')" scope="col" style="width: 30%;"
+                v-if="can('View Designation') || can('Update Designation') || can('Delete Designation')" scope="col" style="width: 30%;"
               >
                 Actions
               </th>
@@ -42,10 +42,10 @@
                 {{ parseFloat(d.rate_per_day).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}
               </td>
               <td 
-                v-if="can('view-designation') || can('edit-designation') || can('delete-designation')" class="space-x-2"
+                v-if="can('View Designation') || can('Update Designation') || can('Delete Designation')" class="space-x-2"
               >
                 <button 
-                  v-if="can('view-designation')" 
+                  v-if="can('View Designation')" 
                   class="btn p-0 text-warning me-2" 
                   @click.prevent="openViewModal(d)" 
                   title="View"
@@ -54,7 +54,7 @@
                 </button>
 
                 <button
-                  v-if="can('edit-designation')" 
+                  v-if="can('Update Designation')" 
                   class="btn p-0 text-primary me-2" 
                   @click.prevent="openEditModal(d)" 
                   title="Edit"
@@ -63,7 +63,7 @@
                 </button>
 
                 <button 
-                  v-if="can('delete-designation')" 
+                  v-if="can('Delete Designation')" 
                   class="btn p-0 text-danger" 
                   @click="confirmDelete(d.id)" 
                   title="Delete"

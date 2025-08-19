@@ -12,7 +12,7 @@ class DesignationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->hasAnyPermission(['create-designation', 'edit-designation']);
+        return $this->user()->hasAnyPermission(['Create Designation', 'Update Designation']);
     }
 
     /**

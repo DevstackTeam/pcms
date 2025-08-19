@@ -78,7 +78,7 @@
 
         <div class="d-flex justify-content-end">
           <Link href="/users" class="btn btn-outline-secondary">Cancel</Link>
-          <button v-if="can('edit-user')" type="submit" class="btn btn-primary ms-2">Save</button>
+          <button v-if="can('Update User')" type="submit" class="btn btn-primary ms-2">Save</button>
         </div>
       </form>
     </CardBox>

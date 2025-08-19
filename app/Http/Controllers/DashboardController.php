@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Services\DashboardService;
-use Illuminate\Support\Facades\Gate;
 
 class DashboardController extends Controller
 {
@@ -21,8 +20,6 @@ class DashboardController extends Controller
 
     public function index()
     {
-        Gate::authorize('view-dashboard');
-
         $data = $this->dashboardService->getProjectStatistics();
 
         return Inertia::render('Dashboard', [

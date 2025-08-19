@@ -16,6 +16,12 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
 
+    public const TYPE_SUPER_ADMIN = 'super admin';
+
+    public const TYPE_ADMIN = 'admin';
+
+    public const TYPE_USER = 'user';
+
     /**
      * The attributes that are mass assignable.
      *

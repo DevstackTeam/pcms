@@ -6,7 +6,7 @@
 
     <CardBox
       title="Project List" 
-      :showButton="can('create-project')" 
+      :showButton="can('Create Project')" 
       buttonText="Add Project" 
       @button-click="goToCreate"
     >
@@ -67,7 +67,7 @@
               <th scope="col" style="width: 20%;">Total Scenarios</th>
               <th scope="col" style="width: 20%;">Status</th>
               <th 
-                v-if="can('view-project') || can('edit-project') || can('delete-project')"
+                v-if="can('View Project') || can('Update Project') || can('Delete Project')"
                 scope="col" 
                 style="width: 30%;"
               >
@@ -98,16 +98,16 @@
                 </span>
               </td>
               <td 
-                v-if="can('view-project') || can('edit-project') || can('delete-project')"
+                v-if="can('View Project') || can('Update Project') || can('Delete Project')"
                 class="justify-content-center"
               >
-                <Link v-if="can('view-project')" :href="`/projects/${project.id}`" class="text-warning me-2">
+                <Link v-if="can('View Project')" :href="`/projects/${project.id}`" class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
-                <Link v-if="can('edit-project')" :href="`/projects/${project.id}/edit`" class="text-primary me-3">
+                <Link v-if="can('Update Project')" :href="`/projects/${project.id}/edit`" class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
-                <button v-if="can('delete-project')" class="btn p-0 text-danger" @click="confirmDelete(project.id)">
+                <button v-if="can('Delete Project')" class="btn p-0 text-danger" @click="confirmDelete(project.id)">
                   <i class="bi bi-trash"></i>
                 </button>
               </td>

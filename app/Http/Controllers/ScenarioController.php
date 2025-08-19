@@ -29,7 +29,7 @@ class ScenarioController extends Controller
         /** @disregard P1013 Undefined method 'user'.intelephense */
         $user = auth()->user();
 
-        if (! $user->hasAnyPermission(['view-scenario', 'create-scenario', 'edit-scenario', 'delete-scenario'])) {
+        if (! $user->hasAnyPermission(['Create Scenario', 'View Scenario', 'Update Scenario', 'Delete Scenario'])) {
             abort(403);
         }
         
@@ -43,7 +43,7 @@ class ScenarioController extends Controller
 
     public function create(Project $project)
     {
-        Gate::authorize('create-scenario');
+        Gate::authorize('Create Scenario');
 
         $designations = Designation::orderBy('name')->get();
 
@@ -55,8 +55,8 @@ class ScenarioController extends Controller
 
     public function store(Project $project, ScenarioRequest $scenario_request, ManpowerRequest $mp_request)
     {
-        Gate::authorize('create-scenario');
-        Gate::authorize('create-manpower');
+        Gate::authorize('Create Scenario');
+        Gate::authorize('Create Manpower');
 
         $scenario = $this->scenarioService->store($scenario_request->validated(), $project);
 
@@ -69,8 +69,8 @@ class ScenarioController extends Controller
 
     public function show(Project $project, Scenario $scenario)
     {
-        Gate::authorize('view-scenario');
-        Gate::authorize('view-manpower');
+        Gate::authorize('View Scenario');
+        Gate::authorize('View Manpower');
 
         $manpowers = $scenario->manpowers()->with('designation')->get();
 
@@ -83,7 +83,7 @@ class ScenarioController extends Controller
 
     public function edit(Project $project, Scenario $scenario)
     {
-        Gate::authorize('edit-scenario');
+        Gate::authorize('Update Scenario');
 
         $designations = Designation::orderBy('name')->get();
         $manpowers = $scenario->manpowers()->get();
@@ -103,8 +103,8 @@ class ScenarioController extends Controller
         ManpowerRequest $mp_request,
     )
     {
-        Gate::authorize('edit-scenario');
-        Gate::authorize('delete-manpower');
+        Gate::authorize('Update Scenario');
+        Gate::authorize('Delete Manpower');
 
         $scenario = $this->scenarioService->update($scenario_request->validated(), $scenario);
 
@@ -119,7 +119,7 @@ class ScenarioController extends Controller
 
     public function destroy(Project $project, Scenario $scenario)
     {
-        Gate::authorize('delete-scenario');
+        Gate::authorize('Delete Scenario');
 
         $this->scenarioService->delete($scenario);
 

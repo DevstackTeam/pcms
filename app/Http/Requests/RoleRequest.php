@@ -12,7 +12,7 @@ class RoleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->hasAnyPermission(['create-role', 'edit-role']);
+        return $this->user()->hasAnyPermission(['Create Role', 'Update Role']);
     }
 
     /**

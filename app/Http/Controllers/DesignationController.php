@@ -22,7 +22,7 @@ class DesignationController extends Controller
         /** @disregard P1013 Undefined method 'user'.intelephense */
         $user = auth()->user();
 
-        if (! $user->hasAnyPermission(['view-designation', 'create-designation', 'edit-designation', 'delete-designation'])) {
+        if (! $user->hasAnyPermission(['Create Designation', 'View Designation', 'Update Designation', 'Delete Designation'])) {
             abort(403);
         }
 
@@ -39,9 +39,9 @@ class DesignationController extends Controller
 
     public function store(DesignationRequest $request)
     {
-        Gate::authorize('create-designation');
+        Gate::authorize('Create Designation');
 
-        $designation = $this->designationService->store($request->only('name', 'rate_per_day'));
+        $this->designationService->store($request->only('name', 'rate_per_day'));
 
         return redirect()
             ->route('designations.index')
@@ -50,7 +50,7 @@ class DesignationController extends Controller
 
     public function update(DesignationRequest $request, Designation $designation)
     {
-        Gate::authorize('edit-designation');
+        Gate::authorize('Update Designation');
 
         $this->designationService->update($designation, $request->only('name', 'rate_per_day'));
 
@@ -60,7 +60,7 @@ class DesignationController extends Controller
 
     public function destroy(Designation $designation)
     {
-        Gate::authorize('delete-designation');
+        Gate::authorize('Delete Designation');
 
         $this->designationService->delete($designation);
 
