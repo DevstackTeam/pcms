@@ -26,7 +26,7 @@ class UserController extends Controller
         /** @disregard P1013 Undefined method 'user'.intelephense */
         $user = auth()->user();
 
-        if (! $user->hasAnyPermission(['view-user', 'create-user', 'edit-user', 'delete-user'])) {
+        if (!$user->hasAnyPermission(['Create User', 'View User', 'Update User', 'Delete User'])) {
             abort(403);
         }
 
@@ -40,7 +40,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        Gate::authorize('create-user');
+        Gate::authorize('Create User');
 
         return Inertia::render('Users/Create', [
             'roles' => Role::pluck('name')->all()
@@ -52,7 +52,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        Gate::authorize('create-user');
+        Gate::authorize('Create User');
 
         $user = $this->userService->store($request->validated());
 
@@ -68,7 +68,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        Gate::authorize('view-user');
+        Gate::authorize('View User');
 
         return Inertia::render('Users/Show', [
             'user' => $user
@@ -80,7 +80,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        Gate::authorize('edit-user');
+        Gate::authorize('Update User');
 
         return Inertia::render('Users/Edit', [
             'user' => $user,
@@ -94,7 +94,7 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-        Gate::authorize('edit-user');
+        Gate::authorize('Update User');
 
         $user = $this->userService->update($user, $request->validated());
 
@@ -110,7 +110,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        Gate::authorize('delete-user');
+        Gate::authorize('Delete User');
 
         $this->userService->delete($user);
 

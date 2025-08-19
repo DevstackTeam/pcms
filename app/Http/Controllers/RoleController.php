@@ -26,7 +26,7 @@ class RoleController extends Controller
         /** @disregard P1013 Undefined method 'user'.intelephense */
         $user = auth()->user();
 
-        if (! $user->hasAnyPermission(['view-role', 'create-role', 'edit-role', 'delete-role'])) {
+        if (! $user->hasAnyPermission(['Create Role', 'View Role', 'Update Role', 'Delete Role'])) {
             abort(403);
         }
 
@@ -40,7 +40,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        Gate::authorize('create-role');
+        Gate::authorize('Create Role');
 
         return Inertia::render('Roles/Create', [
             'permissions' => Permission::pluck('name')->all()
@@ -52,7 +52,7 @@ class RoleController extends Controller
      */
     public function store(RoleRequest $request)
     {
-        Gate::authorize('create-role');
+        Gate::authorize('Create Role');
 
         $role = $this->roleService->store($request->validated());
         $role->syncPermissions($request->permissions);
@@ -67,7 +67,7 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        Gate::authorize('view-role');
+        Gate::authorize('View Role');
 
         return Inertia::render('Roles/Show', [
             'role' => $role,
@@ -80,7 +80,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        Gate::authorize('edit-role');
+        Gate::authorize('Update Role');
 
         return Inertia::render('Roles/Edit', [
             'role' => $role,
@@ -94,7 +94,7 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request, Role $role)
     {
-        Gate::authorize('edit-role');
+        Gate::authorize('Update Role');
 
         $role = $this->roleService->update($role, $request->validated());
         $role->syncPermissions($request->permissions);
@@ -109,7 +109,7 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        Gate::authorize('delete-role');
+        Gate::authorize('Delete Role');
 
         $this->roleService->delete($role);
 
