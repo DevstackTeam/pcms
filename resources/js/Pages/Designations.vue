@@ -174,10 +174,11 @@ import { useSanitizeInput } from '../Composables/Formatter'
 
 const props = defineProps({
   designations: Object,
-  flash: Object
+  flash: Object,
+  filters: Object,
 })
 
-const search = ref('')
+const search = ref(props.filters?.search || '')
 const showModal = ref(false)
 const showViewModal = ref(false)
 const isEditMode = ref(false)
