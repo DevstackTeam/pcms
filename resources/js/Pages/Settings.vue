@@ -105,7 +105,6 @@ import Modal from '@/Components/Modal.vue'
 import SuccessAlert from '@/Components/SuccessAlert.vue'
 import { useFlash } from '@/Composables/Flash'
 import { ref, watch, } from 'vue'
-import { defineProps, defineOptions } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 
 defineOptions({ layout: SidebarLayout })
