@@ -35,7 +35,7 @@
       </form>
 
       <div class="text-center mt-3">
-        <Link href="/login" class="text-decoration-none small text-muted">← Back to login</Link>
+        <Link :href="route('login')" class="text-decoration-none small text-muted">← Back to login</Link>
       </div>
     </div>
   </div>
@@ -45,6 +45,7 @@
 import { useForm, Head, Link } from '@inertiajs/vue3'
 import FormInput from '../../Components/FormInput.vue'
 import SuccessAlert from '@/Components/SuccessAlert.vue'
+import { route } from '../../../../vendor/tightenco/ziggy/src/js'
 
 defineProps({
   status: String,
@@ -55,6 +56,6 @@ const form = useForm({
 })
 
 function submit() {
-  form.post('/forgot-password')
+  form.post(route('password.email'))
 }
 </script>

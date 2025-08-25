@@ -76,7 +76,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-          <Link href="/users" class="btn btn-outline-secondary">Cancel</Link>
+          <Link :href="route('users.index')" class="btn btn-outline-secondary">Cancel</Link>
           <button v-if="can('Create User')" type="submit" class="btn btn-primary ms-2">Create</button>
         </div>
       </form>
@@ -91,6 +91,7 @@ import CardBox from '@/Components/CardBox.vue'
 import FormInput from '@/Components/FormInput.vue'
 import { can } from '@/Composables/Can'
 import { useForm, Link } from '@inertiajs/vue3';
+import { route } from '../../../../vendor/tightenco/ziggy/src/js'
 
 defineOptions({
   layout: SidebarLayout
@@ -109,6 +110,6 @@ const form = useForm({
 })
 
 const submit = () => {
-  form.post('/users')
+  form.post(route('users.store'))
 }
 </script>

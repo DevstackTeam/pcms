@@ -37,8 +37,8 @@
       </div>
 
       <div class="d-flex justify-content-end">
-        <Link href="/users" class="btn btn-outline-secondary">Close</Link>
-        <Link v-if="can('Update User') && !userRoles.includes(SUPER_ADMIN)" :href="`/users/${user.id}/edit`" class="btn btn-primary ms-2">Edit</Link>
+        <Link :href="route('users.index')" class="btn btn-outline-secondary">Close</Link>
+        <Link v-if="can('Update User') && !userRoles.includes(SUPER_ADMIN)" :href="route('users.edit', user.id)" class="btn btn-primary ms-2">Edit</Link>
       </div>
     </CardBox>
   </div>

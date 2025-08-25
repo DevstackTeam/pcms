@@ -29,8 +29,8 @@
         </div>
 
         <div class="d-flex justify-content-end">
-          <Link href="/roles" class="btn btn-outline-secondary">Close</Link>
-          <Link v-if="can('Update Role') && role.name != SUPER_ADMIN" :href="`/roles/${role.id}/edit`" class="btn btn-primary ms-2">Edit</Link>
+          <Link :href="route('roles.index')" class="btn btn-outline-secondary">Close</Link>
+          <Link v-if="can('Update Role') && role.name != SUPER_ADMIN" :href="route('roles.edit', role.id)" class="btn btn-primary ms-2">Edit</Link>
         </div>
       </div>
     </CardBox>
@@ -44,6 +44,7 @@ import CardBox from '@/Components/CardBox.vue'
 import FormDetail from '@/Components/FormDetail.vue'
 import { can } from '@/Composables/Can'
 import { Link } from '@inertiajs/vue3'
+import { route } from '../../../../vendor/tightenco/ziggy/src/js'
 
 defineOptions({
   layout: SidebarLayout

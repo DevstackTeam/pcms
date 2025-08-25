@@ -44,7 +44,7 @@
           v-if="can('Create User') || can('View User') || can('Update User') || can('Delete User')" 
           class="nav-item mb-2"
         >
-          <Link :href="'/users'" class="nav-link" :class="isActive('/users')">
+          <Link :href="route('users.index')" class="nav-link" :class="isActive('/users')">
             <i class="bi bi-person-badge me-2"></i> Users
           </Link>
         </li>
@@ -52,12 +52,12 @@
           v-if="can('Create Role') || can('View Role') || can('Update Role') || can('Delete Role')"
           class="nav-item mb-2"
         >
-          <Link :href="'/roles'" class="nav-link" :class="isActive('/roles')">
+          <Link :href="route('roles.index')" class="nav-link" :class="isActive('/roles')">
             <i class="bi bi-shield-lock me-2"></i> Roles
           </Link>
         </li>
         <li class="nav-item mb-2">
-          <Link href="#" class="nav-link" :class="isActive('/settings')">
+          <Link :href="route('settings.index')" class="nav-link" :class="isActive('/settings')">
             <i class="bi bi-gear me-2"></i> Settings
           </Link>
         </li>

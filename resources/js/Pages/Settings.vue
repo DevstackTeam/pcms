@@ -106,6 +106,7 @@ import SuccessAlert from '@/Components/SuccessAlert.vue'
 import { useFlash } from '@/Composables/Flash'
 import { ref, watch, } from 'vue'
 import { useForm } from '@inertiajs/vue3'
+import { route } from '../../../vendor/tightenco/ziggy/src/js'
 
 defineOptions({ layout: SidebarLayout })
 
@@ -154,7 +155,7 @@ watch(() => showChangePasswordModal.value, (val) => {
 
 function updateEmail() {
   emailForm.clearErrors()
-  emailForm.post('/settings/email', {
+  emailForm.post(route('settings.updateEmail'), {
     onSuccess: () => {
       showEditEmailModal.value = false
     }
@@ -163,7 +164,7 @@ function updateEmail() {
 
 function changePassword() {
   passwordForm.clearErrors()
-  passwordForm.post('/settings/password', {
+  passwordForm.post(route('settings.changePassword'), {
     onSuccess: () => {
       showChangePasswordModal.value = false
     }

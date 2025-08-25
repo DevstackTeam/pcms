@@ -56,7 +56,7 @@
                 Remember Me
               </label>
             </div>
-            <Link href="/forgot-password" class="text-decoration-none small text-muted">Forgot Password?</Link>
+            <Link :href="route('password.request')" class="text-decoration-none small text-muted">Forgot Password?</Link>
           </div>
 
           <button

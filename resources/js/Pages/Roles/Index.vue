@@ -46,10 +46,10 @@
                 v-if="can('View Role') || can('Update Role') || can('Delete Role')" 
                 class="justify-content-center"
               >
-                <Link v-if="can('View Role')" :href="`/roles/${role.id}`" class="text-warning me-2">
+                <Link v-if="can('View Role')" :href="route('roles.show', role.id)" class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
-                <Link v-if="can('Update Role') && role.name != SUPER_ADMIN" :href="`/roles/${role.id}/edit`" class="text-primary me-3">
+                <Link v-if="can('Update Role') && role.name != SUPER_ADMIN" :href="route('roles.edit', role.id)" class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
                 <button v-if="can('Delete Role') && role.name != SUPER_ADMIN" @click="confirmDelete(role.id)">
@@ -87,6 +87,7 @@ import { can } from '@/Composables/Can'
 import { useFlash } from '@/Composables/Flash'
 import { router, Link } from '@inertiajs/vue3'
 import { ref } from 'vue'
+import { route } from '../../../../vendor/tightenco/ziggy/src/js'
 
 defineOptions({
   layout: SidebarLayout
@@ -103,7 +104,7 @@ const showConfirmModal = ref(false)
 const { successMessage } = useFlash(props)
 
 const goToCreate = () => {
-  router.get('/roles/create')
+  router.get(route('roles.create'))
 }
 
 function confirmDelete(id) {
@@ -114,7 +115,7 @@ function confirmDelete(id) {
 function performDelete() {
   if (!confirmDeleteId.value) return
 
-  router.delete(`/roles/${confirmDeleteId.value}`, {
+  router.delete(route('roles.destroy', confirmDeleteId.value), {
     onSuccess: () => {
       showConfirmModal.value = false
       confirmDeleteId.value = null
