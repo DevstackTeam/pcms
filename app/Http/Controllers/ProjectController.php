@@ -7,6 +7,7 @@ use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
 use App\Services\ProjectService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class ProjectController extends Controller
@@ -20,6 +21,13 @@ class ProjectController extends Controller
 
     public function index(Request $request)
     {
+        /** @disregard P1013 Undefined method 'user'.intelephense */
+        $user = auth()->user();
+
+        if (! $user->hasAnyPermission(['Create Project', 'View Project', 'Update Project', 'Delete Project'])) {
+            abort(403);
+        }
+
         $search = $request->input('search');
         $status = $request->input('status');
 
@@ -34,6 +42,8 @@ class ProjectController extends Controller
 
     public function create()
     {
+        Gate::authorize('Create Project');
+
         return Inertia::render('Projects/Create', [
             'status' => ProjectStatus::cases(),
         ]);
@@ -41,6 +51,8 @@ class ProjectController extends Controller
 
     public function store(ProjectRequest $request)
     {
+        Gate::authorize('Create Project');
+
         $project = $this->projectService->store($request->validated());
 
         return redirect()
@@ -50,6 +62,8 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
+        Gate::authorize('View Project');
+
         return Inertia::render('Projects/Show', [
             'project' => $project
         ]);
@@ -57,6 +71,8 @@ class ProjectController extends Controller
 
     public function edit(Project $project)
     {
+        Gate::authorize('Update Project');
+
         return Inertia::render('Projects/Edit', [
             'project' => $project,
             'status' => ProjectStatus::cases(),
@@ -65,6 +81,8 @@ class ProjectController extends Controller
 
     public function update(ProjectRequest $request, Project $project)
     {
+        Gate::authorize('Update Project');
+
         $project = $this->projectService->update($project, $request->validated());
 
         return redirect()
@@ -74,6 +92,8 @@ class ProjectController extends Controller
 
     public function destroy(Project $project)
     {
+        Gate::authorize('Delete Project');
+
         $project->delete();
 
         return redirect()

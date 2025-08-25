@@ -1,19 +1,21 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-file-earmark-text" title="Project" :subtitle="project.name"></Header>
 
-    <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ successMessage }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+    <SuccessAlert :message="successMessage" />
 
     <TabLink :projectId="project.id"/>
 
-    <CardBox title="Project's Scenario" :showButton="true" buttonText="Add Scenario" @button-click="goToCreate">
+    <CardBox 
+      title="Project's Scenario" 
+      :showButton="can('Create Scenario')" 
+      buttonText="Add Scenario" 
+      @button-click="goToCreate"
+    >
       <div class="table-responsive">
         <table
-          class="table table-hover table-bordered table-striped align-middle text-center"
-          style="table-layout: fixed; width: 100%;">
+           class="table table-hover table-bordered table-striped align-middle text-center "
+          style="table-layout: fixed; min-width: 700px;">
           <thead class="table-light">
             <tr>
               <th scope="col" style="width: 7%;">No</th>
@@ -21,7 +23,13 @@
               <th scope="col" style="width: 15%;">Markup</th>
               <th scope="col" style="width: 24%;">Total Cost</th>
               <th scope="col" style="width: 24%;">Final Cost</th>
-              <th scope="col" style="width: 15%;">Actions</th>
+              <th 
+                v-if="can('View Scenario') || can('Update Scenario') || can('Delete Scenario')"
+                scope="col" 
+                style="width: 15%;"
+              >
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -32,11 +40,11 @@
 
               <td class="text-center">
                 <div class="d-inline-block text-start" style="width: 150px;">
-                  {{ 
+                  {{
                     parseFloat(scenario.total_cost).toLocaleString('ms-MY', {
                       style: 'currency',
                       currency: 'MYR'
-                    }) 
+                    })
                   }}
                 </div>
               </td>
@@ -52,16 +60,20 @@
                 </div>
               </td>
 
-              <td class="space-x-2">
-                <Link :href="route('projects.scenarios.show', [project.id, scenario.id])" class="text-primary me-2">
+              <td 
+                v-if="can('View Scenario') || can('Update Scenario') || can('Delete Scenario')"
+                class="space-x-2"
+              >
+                <Link v-if="can('View Scenario')" :href="route('projects.scenarios.show', [project.id, scenario.id])" class="text-warning me-2">
                   <i class="bi bi-eye me-2"></i>
                 </Link>
 
-                <Link :href="route('projects.scenarios.edit', [project.id, scenario.id])" class="text-primary me-3">
+                <Link v-if="can('Update Scenario')" :href="route('projects.scenarios.edit', [project.id, scenario.id])" class="text-primary me-3">
                   <i class="bi bi-pencil"></i>
                 </Link>
 
                 <button
+                  v-if="can('Delete Scenario')"
                   type="button"
                   class="btn btn-link text-danger p-0"
                   title="Delete"
@@ -85,18 +97,18 @@
         <div class="row justify-content-center mb-4">
           <div class="col-md-4 text-center">
             <select v-model="selectedScenario1" class="form-select">
-              <option disabled value="">Select Scenario 1</option>
+              <option disabled value="">Select First Scenario</option>
               <option v-for="scenario in scenarios" :key="scenario.id" :value="scenario">
-                {{ scenario.name || 'Scenario ' + scenario.id }}
+                {{ 'Scenario ' + scenario.id }}
               </option>
             </select>
           </div>
           <div class="col-md-1 text-center fw-bold align-self-center">vs</div>
           <div class="col-md-4 text-center">
             <select v-model="selectedScenario2" class="form-select">
-              <option disabled value="">Select Scenario 2</option>
+              <option disabled value="">Select Second Scenario</option>
               <option v-for="scenario in scenarios" :key="scenario.id + '-2'" :value="scenario">
-                {{ scenario.name || 'Scenario ' + scenario.id }}
+                {{ 'Scenario ' + scenario.id }}
               </option>
             </select>
           </div>
@@ -108,15 +120,19 @@
               <thead class="table-dark">
                 <tr>
                   <th></th>
-                <th>{{ selectedScenario1?.name || 'Scenario ' + selectedScenario1?.id }}</th>
-                <th>{{ selectedScenario2?.name || 'Scenario ' + selectedScenario2?.id }}</th>
+                <th>{{ 'Scenario ' + selectedScenario1?.id }}</th>
+                <th>{{ 'Scenario ' + selectedScenario2?.id }}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>Duration</td>
-                  <td>{{ selectedScenario1.duration }}</td>
-                  <td>{{ selectedScenario2.duration }}</td>
+                  <td>
+                    {{ selectedScenario1.duration }} {{ selectedScenario1.duration == 1 ? 'Month' : 'Months' }}
+                  </td>
+                  <td>
+                    {{ selectedScenario2.duration }} {{ selectedScenario2.duration == 1 ? 'Month' : 'Months' }}
+                  </td>
                 </tr>
                 <tr>
                   <td>Total Cost</td>
@@ -194,15 +210,17 @@
 </template>
 
 <script setup>
-import SidebarLayout from '@/Layouts/SideBarLayout.vue';
+import SidebarLayout from '@/Layouts/SidebarLayout.vue';
 import Header from '@/Components/Header.vue';
 import CardBox from '@/Components/CardBox.vue';
 import TabLink from '../../Components/TabLink.vue';
 import Modal from '../../Components/Modal.vue';
+import SuccessAlert from '@/Components/SuccessAlert.vue'
 import { useFlash } from '../../Composables/Flash';
 import { router, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
+import { can } from '@/Composables/Can'
 
 defineOptions({
   layout: SidebarLayout

@@ -1,6 +1,7 @@
 <template>
-  <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded shadow-sm mb-4">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-start bg-light p-3 rounded shadow-sm align-items-md-center gap-3 mb-4">
     <div class="d-flex align-items-center">
+
       <!-- Icon on the left -->
       <i :class="['bi', iconClass, 'me-3 fs-1']"></i>
 

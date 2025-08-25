@@ -1,16 +1,9 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-kanban" title="Project" :subtitle="project.name"></Header>
 
-    <div v-if="form.errors.total_cost" class="alert alert-danger d-flex align-items-center gap-2 p-2 small mb-3">
-      <i class="bi bi-exclamation-circle-fill"></i>
-      <div>{{ form.errors.total_cost }}</div>
-    </div>
-
-    <div v-if="form.errors.manpower" class="alert alert-danger d-flex align-items-center gap-2 p-2 small mb-3">
-      <i class="bi bi-exclamation-circle-fill"></i>
-      <div>{{ form.errors.manpower }}</div>
-    </div>
+    <ErrorAlert :error="form.errors.total_cost" />
+    <ErrorAlert :error="form.errors.manpower" />
 
     <CardBox title="Create Scenario">
       <form @submit.prevent="submit">
@@ -37,6 +30,7 @@
         </div>
 
         <h6>Manpower</h6>
+        <div class="table-responsive">
         <table class="table table-bordered text-center">
           <thead>
             <tr>
@@ -57,6 +51,7 @@
                   :items="designations"
                   item-title="name"
                   item-value="id"
+                  autocomplete="off"
                   label="Select Designation"
                   variant="outlined"
                   density="compact"
@@ -120,15 +115,28 @@
               <td>{{ (manpower.total_cost || 0).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
 
               <td>
-                <button type="button" class="btn btn-sm btn-danger" @click="removeManpower(index)">
+                <button 
+                  v-if="can('Delete Manpower')" 
+                  type="button" 
+                  class="btn btn-sm btn-danger" 
+                  @click="removeManpower(index)"
+                >
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
+        </div>
 
-        <button type="button" class="btn btn-primary mb-3" @click="addManpower">Add Manpower</button>
+        <button 
+          v-if="can('Create Manpower')" 
+          type="button" 
+          class="btn btn-primary mb-3" 
+          @click="addManpower"
+        >
+          Add Manpower
+        </button>
 
         <div class="row mb-3">
           <div class="col">
@@ -164,7 +172,7 @@
 
         <div class="d-flex justify-content-end">
           <Link :href="route('projects.scenarios.index', project.id)" class="btn btn-outline-secondary">Cancel</Link>
-          <button type="submit" class="btn btn-primary ms-2">Submit</button>
+          <button v-if="can('Create Scenario')" type="submit" class="btn btn-primary ms-2">Submit</button>
         </div>
       </form>
     </CardBox>
@@ -177,11 +185,13 @@ import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormInput from '../../Components/FormInput.vue'
 import FormDetail from '../../Components/FormDetail.vue'
+import ErrorAlert from '../../Components/ErrorAlert.vue'
 import { Link, useForm } from '@inertiajs/vue3'
 import { watch } from 'vue'
 import { useSanitizeInput } from '../../Composables/Formatter'
 import { useCostCalculator } from '../../Composables/Calculation'
 import { route } from '../../../../vendor/tightenco/ziggy/src/js'
+import { can } from '@/Composables/Can'
 
 defineOptions({
   layout: SidebarLayout,

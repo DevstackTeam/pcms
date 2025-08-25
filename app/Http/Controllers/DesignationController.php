@@ -5,6 +5,7 @@ use App\Http\Requests\DesignationRequest;
 use App\Models\Designation;
 use App\Services\DesignationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class DesignationController extends Controller
@@ -18,6 +19,13 @@ class DesignationController extends Controller
 
     public function index(Request $request)
     {
+        /** @disregard P1013 Undefined method 'user'.intelephense */
+        $user = auth()->user();
+
+        if (! $user->hasAnyPermission(['Create Designation', 'View Designation', 'Update Designation', 'Delete Designation'])) {
+            abort(403);
+        }
+
         $search = $request->input('search');
 
         $designations = $this->designationService->getFilteredDesignations($search);
@@ -31,15 +39,19 @@ class DesignationController extends Controller
 
     public function store(DesignationRequest $request)
     {
-        $designation = $this->designationService->store($request->only('name', 'rate_per_day'));
+        Gate::authorize('Create Designation');
+
+        $this->designationService->store($request->only('name', 'rate_per_day'));
 
         return redirect()
-            ->route('designations.index', ['designation' => $designation])
+            ->route('designations.index')
             ->with('success', 'Designation created.');
     }
 
     public function update(DesignationRequest $request, Designation $designation)
     {
+        Gate::authorize('Update Designation');
+
         $this->designationService->update($designation, $request->only('name', 'rate_per_day'));
 
         return redirect()->route('designations.index')
@@ -48,6 +60,8 @@ class DesignationController extends Controller
 
     public function destroy(Designation $designation)
     {
+        Gate::authorize('Delete Designation');
+
         $this->designationService->delete($designation);
 
         return redirect()->route('designations.index')

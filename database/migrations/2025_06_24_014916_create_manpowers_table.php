@@ -15,14 +15,15 @@ return new class extends Migration
     {
         Schema::create('manpowers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Designation::class);
-            $table->foreignIdFor(Scenario::class);
+            $table->foreignIdFor(Designation::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Scenario::class)->constrained()->cascadeOnDelete();
             $table->decimal('rate_per_day', 10, 2);
             $table->integer('no_of_people');
             $table->integer('total_day');
             $table->string('remark')->nullable();
             $table->decimal('total_cost', 10, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

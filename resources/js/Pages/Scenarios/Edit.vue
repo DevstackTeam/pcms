@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-kanban" title="Project" :subtitle="`${project.name} | Scenario ${scenario.id}`"></Header>
 
     <div v-if="form.errors.total_cost" class="alert alert-danger d-flex align-items-center gap-2 p-2 small mb-3">
@@ -16,7 +16,7 @@
       <form @submit.prevent="submit">
         <div class="row mb-4">
           <div class="col">
-            <FormInput 
+            <FormInput
               v-model="form.duration"
               label="Duration"
               id="duration"
@@ -26,7 +26,7 @@
           </div>
 
           <div class="col">
-            <FormInput 
+            <FormInput
               v-model="form.remark"
               label="Remark"
               id="remark"
@@ -37,9 +37,10 @@
         </div>
 
         <h6>Manpower</h6>
-        <table class="table table-bordered text-center">
-          <thead>
-            <tr>
+        <div class="table-responsive">
+          <table class="table table-bordered text-center">
+            <thead>
+              <tr>
               <th scope="col" style="width: 25%;">Designation</th>
               <th scope="col" style="width: 13%;">Rate/Day</th>
               <th scope="col" style="width: 15%;">No. of People</th>
@@ -47,12 +48,12 @@
               <th scope="col" style="width: 15%;">Remark</th>
               <th scope="col" style="width: 15%;">Cost</th>
               <th scope="col" style="width: 5%;">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(manpower, index) in form.manpower" :key="index">
-              <td>
-                <v-autocomplete
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(manpower, index) in form.manpower" :key="index">
+                <td>
+                  <v-autocomplete
                   v-model="manpower.designation_id"
                   :items="designations"
                   item-title="name"
@@ -62,13 +63,13 @@
                   density="compact"
                   hide-details="auto"
                   :error="!!form.errors?.[`manpower.${index}.designation_id`]"
-                  :error-messages="form.errors?.[`manpower.${index}.designation_id`] ? 
-                    [form.errors[`manpower.${index}.designation_id`]] : []"
-                ></v-autocomplete>
-              </td>
+                  :error-messages="form.errors?.[`manpower.${index}.designation_id`] ?
+                      [form.errors[`manpower.${index}.designation_id`]] : []"
+                  ></v-autocomplete>
+                </td>
 
-              <td>
-                <v-text-field
+                <td>
+                  <v-text-field
                   v-model="manpower.rate_per_day"
                   type="text"
                   variant="outlined"
@@ -77,11 +78,11 @@
                   :error="!!form.errors?.[`manpower.${index}.rate_per_day`]"
                   :error-messages="form.errors?.[`manpower.${index}.rate_per_day`] ? [form.errors[`manpower.${index}.rate_per_day`]] : []"
                   @input="e => handleRateInput(e, manpower)"
-                />
-              </td>
+                  />
+                </td>
 
-              <td>
-                <v-text-field
+                <td>
+                  <v-text-field
                   v-model.number="manpower.no_of_people"
                   type="number"
                   variant="outlined"
@@ -89,54 +90,69 @@
                   hide-details="auto"
                   :error="!!form.errors?.[`manpower.${index}.no_of_people`]"
                   :error-messages="form.errors?.[`manpower.${index}.no_of_people`] ? [form.errors[`manpower.${index}.no_of_people`]] : []"
-                />
-              </td>
+                  />
+                </td>
 
-              <td>
-                <v-text-field
-                  v-model.number="manpower.total_day"
-                  type="number"
-                  variant="outlined"
-                  density="compact"
-                  hide-details="auto"
-                  :error="!!form.errors?.[`manpower.${index}.total_day`]"
-                  :error-messages="form.errors?.[`manpower.${index}.total_day`] ? [form.errors[`manpower.${index}.total_day`]] : []"
-                />
-              </td>
+                <td>
+                  <v-text-field
+                    v-model.number="manpower.total_day"
+                    type="number"
+                    variant="outlined"
+                    density="compact"
+                    hide-details="auto"
+                    :error="!!form.errors?.[`manpower.${index}.total_day`]"
+                    :error-messages="form.errors?.[`manpower.${index}.total_day`] ? [form.errors[`manpower.${index}.total_day`]] : []"
+                  />
+                </td>
 
-              <td>
-                <v-textarea
-                  v-model="manpower.remark"
-                  type="text"
-                  variant="outlined"
-                  density="compact"
-                  hide-details="auto"
-                  rows="1"
-                  auto-grow
-                  :error="!!form.errors?.[`manpower.${index}.remark`]"
-                  :error-messages="form.errors?.[`manpower.${index}.remark`] ? [form.errors[`manpower.${index}.remark`]] : []"
-                />
-              </td>
+                <td>
+                  <v-textarea
+                    v-model="manpower.remark"
+                    type="text"
+                    variant="outlined"
+                    density="compact"
+                    hide-details="auto"
+                    rows="1"
+                    auto-grow
+                    :error="!!form.errors?.[`manpower.${index}.remark`]"
+                    :error-messages="form.errors?.[`manpower.${index}.remark`] ? [form.errors[`manpower.${index}.remark`]] : []"
+                  />
+                </td>
 
-              <td>{{ (manpower.total_cost || 0).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
-              
-              <td>
-                <button type="button" class="btn btn-sm btn-danger" @click="removeManpower(index)">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <td>
+                  {{ (manpower.total_cost || 0).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}
+                </td>
 
-        <button type="button" class="btn btn-primary mb-3" @click="addManpower">Add Manpower</button>
+                <td>
+                  <button 
+                    v-if="can('Delete Manpower')" 
+                    type="button" 
+                    class="btn btn-sm btn-danger" 
+                    @click="removeManpower(index)"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <button 
+          v-if="can('Create Manpower')" 
+          type="button" 
+          class="btn btn-primary mb-3" 
+          @click="addManpower"
+        >
+          Add Manpower
+        </button>
 
         <div class="row mb-3">
           <div class="col">
-            <FormDetail label="Total Cost" id="total-cost">
-              {{ parseFloat(form.total_cost).toLocaleString('ms-MY', { 
-                  style: 'currency', 
-                  currency: 'MYR' 
+            <FormDetail label="Total Cost">
+              {{ parseFloat(form.total_cost).toLocaleString('ms-MY', {
+                  style: 'currency',
+                  currency: 'MYR'
                 })
               }}
             </FormDetail>
@@ -153,11 +169,14 @@
           </div>
 
           <div class="col">
-            <FormDetail label="Final Cost" id="final-cost">
-              {{ parseFloat(form.final_cost).toLocaleString('ms-MY', { 
-                  style: 'currency', 
-                  currency: 'MYR' 
-                })  
+            <FormDetail label="Final Cost">
+              {{
+                form.final_cost
+                  ? parseFloat(form.final_cost).toLocaleString('ms-MY', {
+                    style: 'currency',
+                    currency: 'MYR'
+                  })
+                  : '-'
               }}
             </FormDetail>
           </div>
@@ -165,7 +184,7 @@
 
         <div class="d-flex justify-content-end">
           <Link :href="route('projects.scenarios.index', project.id)" class="btn btn-outline-secondary">Cancel</Link>
-          <button type="submit" class="btn btn-primary ms-2">Save</button>
+          <button v-if="can('Create Scenario')" type="submit" class="btn btn-primary ms-2">Save</button>
         </div>
       </form>
     </CardBox>
@@ -183,6 +202,7 @@ import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormInput from '../../Components/FormInput.vue'
 import FormDetail from '../../Components/FormDetail.vue'
 import { route } from '../../../../vendor/tightenco/ziggy/src/js'
+import { can } from '@/Composables/Can'
 
 defineOptions({
   layout: SidebarLayout,
@@ -201,7 +221,7 @@ const form = useForm({
   markup: props.scenario.markup,
   total_cost: props.scenario.total_cost,
   final_cost: props.scenario.final_cost,
-  
+
   manpower: props.manpowers.map(mp => ({
     designation_id: mp.designation_id,
     rate_per_day: mp.rate_per_day,
@@ -218,11 +238,11 @@ const submit = () => {
 }
 
 const addManpower = () => {
-  form.manpower.push({ 
-    designation_id: null, 
-    rate_per_day:null, 
-    no_of_people: null, 
-    total_day: null, 
+  form.manpower.push({
+    designation_id: null,
+    rate_per_day:null,
+    no_of_people: null,
+    total_day: null,
     remark: null,
     total_cost:null,
     rate_locked: false,

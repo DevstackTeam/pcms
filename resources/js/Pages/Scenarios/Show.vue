@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-kanban" title="Project" :subtitle="`${project.name} | Scenario ${scenario.id}`"></Header>
 
     <CardBox title="Scenario's Detail">
@@ -13,35 +13,37 @@
 
           <div class="col">
             <FormDetail label="Remark">
-              {{ scenario.remark }}
+              {{ scenario.remark || '-'}}
             </FormDetail>
           </div>
         </div>
 
         <h6>Manpower</h6>
-        <table class="table table-bordered text-center">
-          <thead>
-            <tr>
-              <th scope="col" style="width: 25%;">Designation</th>
-              <th scope="col" style="width: 13%;">Rate/Day</th>
-              <th scope="col" style="width: 15%;">No. of People</th>
-              <th scope="col" style="width: 12%;">Total Day</th>
-              <th scope="col" style="width: 15%;">Remark</th>
-              <th scope="col" style="width: 15%;">Cost</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(manpower, index) in manpowers" :key="index">
-              <td>{{ manpower.designation.name }}</td>
-              <td>
-                {{ parseFloat(manpower.rate_per_day).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
-              <td>{{ manpower.no_of_people }}</td>
-              <td>{{ manpower.total_day }}</td>
-              <td style="text-align: left;">{{ manpower.remark }}</td>
-              <td>{{ parseFloat(manpower.total_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                <th scope="col" style="width: 25%;">Designation</th>
+                <th scope="col" style="width: 13%;">Rate/Day</th>
+                <th scope="col" style="width: 15%;">No. of People</th>
+                <th scope="col" style="width: 12%;">Total Day</th>
+                <th scope="col" style="width: 15%;">Remark</th>
+                <th scope="col" style="width: 15%;">Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(manpower, index) in manpowers" :key="index">
+                <td>{{ manpower.designation.name }}</td>
+                <td>
+                    {{ parseFloat(manpower.rate_per_day).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
+                <td>{{ manpower.no_of_people }}</td>
+                <td>{{ manpower.total_day }}</td>
+                <td style="text-align: left;">{{ manpower.remark }}</td>
+                <td>{{ parseFloat(manpower.total_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}</td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
 
         <div class="row mb-3">
           <div class="col">
@@ -55,7 +57,7 @@
               {{ scenario.markup }}%
             </FormDetail>
           </div>
-          
+
           <div class="col">
             <FormDetail label="Final Cost">
               {{ parseFloat(scenario.final_cost).toLocaleString('ms-MY', { style: 'currency', currency: 'MYR' }) }}
@@ -65,7 +67,13 @@
 
         <div class="d-flex justify-content-end">
           <Link :href="route('projects.scenarios.index', project.id)" class="btn btn-outline-secondary">Close</Link>
-          <Link :href="route('projects.scenarios.edit', [project.id, scenario.id])" class="btn btn-primary ms-2">Edit</Link>
+          <Link 
+            v-if="can('Update Scenario')" 
+            :href="route('projects.scenarios.edit', [project.id, scenario.id])" 
+            class="btn btn-primary ms-2"
+          >
+            Edit
+          </Link>
         </div>
       </form>
     </CardBox>
@@ -79,6 +87,7 @@ import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormDetail from '../../Components/FormDetail.vue'
 import { route } from '../../../../vendor/tightenco/ziggy/src/js'
+import { can } from '@/Composables/Can'
 
 defineOptions({
   layout: SidebarLayout,

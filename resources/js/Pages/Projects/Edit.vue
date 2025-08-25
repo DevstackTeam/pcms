@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header
       iconClass="bi-pencil-square" title="Project" :subtitle="project.name"></Header>
 
@@ -8,6 +8,7 @@
         <div class="row">
           <div class="col-md-6">
             <FormInput
+              id="project-name"
               label="Project Name"
               type="text"
               v-model="form.name"
@@ -28,6 +29,7 @@
 
           <div class="col-md-6">
             <FormInput
+              id="client"
               label="Client"
               type="text"
               v-model="form.client"
@@ -38,6 +40,7 @@
               <label for="status" class="form-label">Status</label>
               <div class="dropdown">
                 <button
+                  id="status"
                   class="form-select text-start"
                   @click.prevent="isOpen = !isOpen"
                 >
@@ -70,7 +73,7 @@
 
         <div class="d-flex justify-content-end gap-2">
        <Link :href="route('projects.show', project.id)" class="btn btn-outline-secondary">Cancel
-       </Link><button type="submit" class="btn btn-primary">Save</button>
+       </Link><button v-if="can('Update Project')" type="submit" class="btn btn-primary">Save</button>
       </div>
 
       </form>
@@ -87,13 +90,14 @@ import { Link } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import FormInput from '../../Components/FormInput.vue'
 import { route } from '../../../../vendor/tightenco/ziggy/src/js'
-
-const hover = ref(null)
-const isOpen = ref(false)
+import { can } from '@/Composables/Can'
 
 defineOptions({
     layout: SidebarLayout
 })
+
+const hover = ref(null)
+const isOpen = ref(false)
 
 const props = defineProps({
   project: Object,

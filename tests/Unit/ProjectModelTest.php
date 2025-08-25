@@ -54,3 +54,50 @@ test('project has many scenarios', function () {
         expect($scenario)->toBeInstanceOf(Scenario::class);        
     }
 });
+
+test('soft deletes related scenarios when project is soft deleted', function () {
+    $project = Project::factory()->create();
+    $scenario = Scenario::factory()->create([
+        'project_id' => $project->id,
+    ]);
+
+    $project->delete();
+
+    $this->assertSoftDeleted($project);
+    $this->assertSoftDeleted($scenario);
+});
+
+test('force deletes related scenarios when project is force deleted', function () {
+    $project = Project::factory()->create();
+    $scenario = Scenario::factory()->for($project)->create();
+
+    $this->assertDatabaseHas('scenarios', [
+        'id' => $scenario->id,
+        'project_id' => $project->id,
+    ]);
+
+    $project->forceDelete();
+
+    $this->assertDatabaseMissing('projects', [
+        'id' => $project->id,
+    ]);
+
+    $this->assertDatabaseMissing('scenarios', [
+        'id' => $scenario->id,
+    ]);
+});
+
+test('restores related scenarios when restoring project', function () {
+    $project = Project::factory()->create();
+    $scenario = Scenario::factory()->for($project)->create();
+
+    $project->delete();
+    
+    $this->assertSoftDeleted($project);
+    $this->assertSoftDeleted($scenario);
+
+    $project->restore();
+
+    expect($project->trashed())->toBeFalse();
+    expect($scenario->trashed())->toBeFalse();
+});

@@ -16,7 +16,12 @@
         <div class="text-center mb-3">
           <img src="/images/pcms-logo.png" alt="Login Image" style="max-width: 120px;" />
         </div>
+
+        <SuccessAlert :message="status" />
+
         <h4 class="mb-3 text-center fw-bold" style="color: #525252;">Login to your Account</h4>
+
+        <ErrorAlert :error="form.errors.credential" />
 
         <form @submit.prevent="submit">
           <FormInput
@@ -51,7 +56,7 @@
                 Remember Me
               </label>
             </div>
-            <a href="#" class="text-decoration-none small text-muted">Forgot Password?</a>
+            <Link href="/forgot-password" class="text-decoration-none small text-muted">Forgot Password?</Link>
           </div>
 
           <button
@@ -68,28 +73,34 @@
 </template>
 
 <script setup>
-  import { useForm } from '@inertiajs/vue3'
-  import FormInput from '../../Components/FormInput.vue'
+import { Link, useForm } from '@inertiajs/vue3'
+import FormInput from '../../Components/FormInput.vue'
+import SuccessAlert from '@/Components/SuccessAlert.vue'
+import ErrorAlert from '../../Components/ErrorAlert.vue'
 
-  const form = useForm({
-    email: '',
-    password: '',
-    remember: false,
-  })
+defineProps({
+  status: String
+})
 
-  function submit() {
-    form.post('/login')
-  }
+const form = useForm({
+  email: '',
+  password: '',
+  remember: null,
+})
+
+function submit() {
+  form.post('/login')
+}
 </script>
 
 <style scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
-  
-  * {
-    font-family: 'Nunito Sans', sans-serif;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap');
 
-  body {
-    background-color: #f8f9fa;
-  }
+* {
+  font-family: 'Nunito Sans', sans-serif;
+}
+
+body {
+  background-color: #f8f9fa;
+}
 </style>

@@ -9,11 +9,17 @@
         class="page-item"
       >
         <Link
+          v-if="link.url"
           class="page-link"
           :href="link.url"
           v-html="link.label"
           preserve-scroll
           preserve-state
+        />
+        <span
+          v-else
+          class="page-link text-muted"
+          v-html="link.label"
         />
       </li>
     </ul>

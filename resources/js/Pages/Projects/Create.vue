@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid px-3 px-sm-4">
     <Header iconClass="bi-kanban" title="Project"></Header>
 
     <CardBox title="Create New Project">
@@ -10,7 +10,7 @@
               <FormInput
                 v-model="form.name"
                 label="Project Name"
-                id="name"
+                id="project-name"
                 :error="form.errors.name"
               />
             </div>
@@ -41,6 +41,7 @@
               <label for="status" class="form-label">Status</label>
               <div class="dropdown">
                 <button
+                  id="status"
                   class="form-select text-start"
                   @click.prevent="isOpen = !isOpen">
                   {{ form.status || 'Select status' }}
@@ -72,7 +73,7 @@
 
         <div class="d-flex justify-content-end">
           <Link :href="route('projects.index')" class="btn btn-outline-secondary">Cancel</Link>
-          <button type="submit" class="btn btn-primary ms-2">Create</button>
+          <button v-if="can('Create Project')" type="submit" class="btn btn-primary ms-2">Create</button>
         </div>
       </form>
     </CardBox>
@@ -87,16 +88,16 @@ import CardBox from '@/Components/CardBox.vue'
 import SidebarLayout from '@/Layouts/SidebarLayout.vue'
 import FormInput from '../../Components/FormInput.vue'
 import { route } from '../../../../vendor/tightenco/ziggy/src/js'
+import { can } from '@/Composables/Can'
+
+defineOptions({ layout: SidebarLayout })
 
 const hover = ref(null)
+const isOpen = ref(false)
 
 const props = defineProps({
   status: Array
 })
-
-defineOptions({ layout: SidebarLayout })
-
-const isOpen = ref(false)
 
 const form = useForm({
   name: '',
