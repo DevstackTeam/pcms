@@ -55,9 +55,7 @@ class UserController extends Controller
     {
         Gate::authorize('Create User');
 
-        $user = $this->userService->store($request->validated());
-
-        $user->syncRoles($request->roles);
+        $this->userService->store($request->validated());
 
         return redirect()
             ->route('users.index')
@@ -107,9 +105,7 @@ class UserController extends Controller
             abort(403);
         }
 
-        $user = $this->userService->update($user, $request->validated());
-
-        $user->syncRoles($request->roles);
+        $this->userService->update($user, $request->validated());
 
         return redirect()
             ->route('users.index')

@@ -62,8 +62,7 @@ class RoleController extends Controller
     {
         Gate::authorize('Create Role');
 
-        $role = $this->roleService->store($request->validated());
-        $role->syncPermissions($request->permissions);
+        $this->roleService->store($request->validated());
 
         return redirect()
             ->route('roles.index')
@@ -125,8 +124,7 @@ class RoleController extends Controller
             abort(403);
         }
 
-        $role = $this->roleService->update($role, $request->validated());
-        $role->syncPermissions($request->permissions);
+        $this->roleService->update($role, $request->validated());
 
         return redirect()
             ->route('roles.index')

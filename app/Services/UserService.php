@@ -3,18 +3,21 @@
 namespace App\Services;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
     public function store(array $data): User
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'username' => $data['username'],
-            'password' => Hash::make($data['password']),
+            'password' => bcrypt($data['password']),
         ]);
+
+        $user->syncRoles($data['roles']);
+
+        return $user;
     }
 
     public function update(User $user, array $data): User
@@ -26,10 +29,12 @@ class UserService
         ];
 
         if (!empty($data['password'])) {
-            $updateData['password'] = Hash::make($data['password']);
+            $updateData['password'] = bcrypt($data['password']);
         }
 
         $user->update($updateData);
+
+        $user->syncRoles($data['roles']);
 
         return $user;
     }

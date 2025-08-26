@@ -8,12 +8,18 @@ class RoleService
 {
     public function store(array $data): Role
     {
-        return Role::create(['name' => $data['name']]);
+        $role = Role::create(['name' => $data['name']]);
+
+        $role->syncPermissions($data['permissions']);
+
+        return $role;
     }
 
     public function update(Role $role, array $data): Role
     {
         $role->update(['name' => $data['name']]);
+
+        $role->syncPermissions($data['permissions']);
 
         return $role;
     }
