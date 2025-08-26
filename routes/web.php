@@ -33,13 +33,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('projects.scenarios', ScenarioController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
-});
-
-Route::middleware('auth:sanctum')->group(function () {
-});
-
-
-Route::middleware(['auth'])->group(function () {
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings/email', [SettingController::class, 'updateEmail'])->name('settings.updateEmail');
     Route::post('/settings/password', [SettingController::class, 'changePassword'])->name('settings.changePassword');
